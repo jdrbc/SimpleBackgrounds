@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -16,8 +17,11 @@ import ca.jdr23bc.simplebackgrounds.Colour;
 public class Tree extends Pattern {
 
     private static final int MAX_MIN_DISTANCE = 50;
-    private static final int MAX_LEAF_COUNT = 500;
+    private static final int MIN_MIN_DISTANCE = 15;
+    private static final int MAX_LEAF_COUNT = 1000;
     private static final int MIN_LEAF_COUNT = 50;
+    private static final int MIN_RANDOMNESS_SCALE = 1;
+    private static final int MAX_ADDITIONAL_RANDOMNESS = 5;
 
     public float minDist;
     public float maxDist;
@@ -40,6 +44,7 @@ public class Tree extends Pattern {
     public int minBranchWidth;
     public int maxBranchWidth;
     public int branchLength;
+    public float additionalRandomness;
 
     public static Double getAngle(PointF p1, PointF p2) { return Math.acos(p1.x * p2.x + p1.y * p2.y); }
 
@@ -75,7 +80,7 @@ public class Tree extends Pattern {
         this.branchWidthStep = random.nextFloat() + 0.25f;
         this.branchLength = random.nextInt(20) + 5;
 
-        this.minDist = nextIntInRange(branchLength, MAX_MIN_DISTANCE);
+        this.minDist = nextIntInRange(MIN_MIN_DISTANCE, MAX_MIN_DISTANCE);
         this.maxDist = Math.min(maxWidth, maxHeight);
 
         this.leafCount = nextIntInRange(MIN_LEAF_COUNT, MAX_LEAF_COUNT);
@@ -85,7 +90,8 @@ public class Tree extends Pattern {
         this.drawLeaves = random.nextBoolean();
 
         this.rootColor = Color.HSVToColor(new float[] { random.nextFloat() * 256, 128, 128 });
-        this.colorScheme = new ColorScheme(rootColor, Colour.ColorScheme.ColorSchemeMonochromatic);
+
+        this.additionalRandomness = nextFloatInRange(0, MAX_ADDITIONAL_RANDOMNESS);
 
         // Populate leaves
         for (int i = 0; i < leafCount; i++) {
@@ -123,6 +129,7 @@ public class Tree extends Pattern {
 
         int lastBranchesToGrowCount = 0;
         while(!freeLeaves.isEmpty()) {
+            Log.d("test", "growing: " + freeLeaves.size());
             ArrayList<Branch> branchesToGrow = new ArrayList<>();
             ArrayList<Leaf> connectedLeaves = new ArrayList<>();
             for (Leaf leaf : freeLeaves) {
@@ -191,11 +198,11 @@ public class Tree extends Pattern {
     @Override
     public void draw(Canvas canvas) {
         paint.setAntiAlias(true);
-        paint.setShadowLayer(5.0f, 0.0f, 2.0f, colorScheme.colors.get(4));
-        paint.setColor(colorScheme.colors.get(3));
+        paint.setShadowLayer(5.0f, 0.0f, 2.0f, colorScheme.popRandom());
+        paint.setColor(colorScheme.popRandom());
         drawBranches(canvas, paint);
         if (drawLeaves) {
-            int leafColor = colorScheme.colors.get(random.nextInt(1) + 1);
+            int leafColor = Colour.darken(colorScheme.getRandom(), 0.5f);
             paint.setColor(leafColor);
             drawLeaves(canvas, paint);
         }
@@ -247,12 +254,21 @@ public class Tree extends Pattern {
 
         public Branch next() {
             PointF attractedDir = new PointF(dir.x, dir.y);
+            double maxDist = Math.max(tree.width, tree.height);
+            double closestAttractorDist = maxDist;
             for (PointF attractor : curAttractors) {
                 attractedDir = add(attractedDir, normalize(sub(attractor, pos)));
+                double dist = getDist(pos, attractor);
+                if (dist < closestAttractorDist) {
+                    closestAttractorDist = dist;
+                }
             }
-            // 0 attractors, 0 randomness
-            // 10 attractors, 1 randomness
-            PointF randomness = mult(new PointF(nextFloatInRange(-1, 1), nextFloatInRange(-1, 1)), curAttractors.size()/2);
+
+            double scale = 1 - (closestAttractorDist / maxDist);
+            double randomnessScale = MIN_RANDOMNESS_SCALE + tree.additionalRandomness * scale;
+
+            // Closer the closest attractor is the more random things get
+            PointF randomness = mult(new PointF(nextFloatInRange(-1, 1), nextFloatInRange(-1, 1)), randomnessScale);
             attractedDir = normalize(add(randomness, attractedDir));
             curAttractors.clear();
             return new Branch(add(pos, mult(attractedDir, tree.branchLength)), attractedDir, this);

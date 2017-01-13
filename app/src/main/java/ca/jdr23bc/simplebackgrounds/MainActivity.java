@@ -9,6 +9,8 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+import ca.jdr23bc.simplebackgrounds.Patterns.Tree;
+
 public class MainActivity extends Activity {
 
     /** Called when the activity is first created. */
@@ -35,16 +37,16 @@ public class MainActivity extends Activity {
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
-            PatternPainter pp = new PatternPainter(canvas);
+//            PatternPainter pp = new PatternPainter(canvas);
 //            pp.style = PatternPainter.Style.Dot_Grid;
-            pp.paint();
+//            pp.paint();
 
-//            Tree t = new Tree(canvas.getWidth(), canvas.getHeight());
-//            t.leafCount = 500;
-//            t.minDist = t.branchLength;
-//            t.drawLeaves = true;
-//            t.grow();
-//            t.fillAndDraw(canvas);
+            Tree t = new Tree(canvas.getWidth(), canvas.getHeight());
+            t.leafCount = 1000;
+            t.minDist = 10;
+            t.drawLeaves = true;
+            t.grow();
+            t.fillAndDraw(canvas);
 
 //            Star s = new Star(canvas.getWidth(), canvas.getHeight());
 //            s.fillAndDraw(canvas);
