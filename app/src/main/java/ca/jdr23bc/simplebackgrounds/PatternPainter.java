@@ -21,7 +21,7 @@ public class PatternPainter {
             Collections.unmodifiableList(Arrays.asList(Style.values()));
 
     public enum Style {
-        Lines, Dots, Grid, Dot_Grid, Tree, Star, Random_Grid
+        Lines, Dots, Grid, Dot_Grid, Tree, Star
     }
     Canvas canvas;
     Style style;
@@ -50,8 +50,6 @@ public class PatternPainter {
             paintDotGrid();
         } else if (style == Style.Star) {
             paintStar();
-        } else if (style == Style.Random_Grid) {
-            paintRandomGrid();
         }
     }
 
@@ -84,12 +82,5 @@ public class PatternPainter {
     public void paintDotGrid() {
         DotGrid dg = new DotGrid(canvas.getWidth(), canvas.getHeight());
         dg.fillAndDraw(canvas);
-    }
-
-    public void paintRandomGrid() {
-        RandomTriangles randomTriangles = new RandomTriangles(
-                canvas.getWidth(),
-                canvas.getHeight());
-        randomTriangles.draw(canvas);
     }
 }

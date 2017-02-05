@@ -20,7 +20,6 @@ public class RandomTriangles extends Pattern {
         BlurMaskFilter maskFilter = new BlurMaskFilter(1.0f, BlurMaskFilter.Blur.SOLID);
         paint.setMaskFilter(maskFilter);
         randomGrid = new RandomGrid(width, height);
-
     }
 
     public void draw(Canvas canvas) {

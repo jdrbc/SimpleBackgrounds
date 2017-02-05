@@ -5,10 +5,10 @@ import android.graphics.PointF;
 import java.util.Random;
 
 public class RandomGrid {
-    public static float MAX_DEVIANCE = 6f / 7f;
+    public static float MAX_DEVIANCE = 3f / 7f;
 
-    public static int MIN_DEFAULT_ROWS = 5;
-    public static int MAX_DEFAULT_ROWS = 10;
+    public static int MIN_DEFAULT_ROWS = 2;
+    public static int MAX_DEFAULT_ROWS = 5;
 
     // [row][col] grid
     public PointF[][] points;
