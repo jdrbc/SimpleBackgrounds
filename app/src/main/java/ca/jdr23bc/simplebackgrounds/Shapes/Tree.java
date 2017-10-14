@@ -13,7 +13,7 @@ import ca.jdr23bc.simplebackgrounds.Colors.Colour;
 
 // TODO-jdr horribly inefficient probably
 // http://algorithmicbotany.org/papers/colonization.egwnp2007.html
-public class Tree extends Pattern {
+public class Tree extends Shape {
 
     private static final int MAX_MIN_DISTANCE = 50;
     private static final int MIN_MIN_DISTANCE = 15;

@@ -6,7 +6,7 @@ import android.graphics.PointF;
 
 import ca.jdr23bc.simplebackgrounds.Colors.Colour;
 
-public class Circle extends Pattern {
+public class Circle extends Shape {
     float radius;
     PointF pos;
     boolean target = false;
@@ -15,7 +15,7 @@ public class Circle extends Pattern {
     float innerCircleValueStep;
     int primaryColor;
 
-    public Circle(float radius, PointF pos, Pattern parentPattern) {
+    public Circle(float radius, PointF pos, Shape parentPattern) {
         super(parentPattern);
         this.radius = radius;
         this.pos = pos;

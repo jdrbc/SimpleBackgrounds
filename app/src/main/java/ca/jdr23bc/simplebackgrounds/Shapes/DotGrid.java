@@ -2,7 +2,7 @@ package ca.jdr23bc.simplebackgrounds.Shapes;
 
 import android.graphics.Canvas;
 
-public class DotGrid extends Pattern {
+public class DotGrid extends Shape {
     public final int MAX_ROWS = 20;
     public final int MIN_ROWS = 10;
     public final int MAX_COLS = 15;

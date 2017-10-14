@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-public class Squares extends Pattern {
+public class Squares extends Shape {
     public final int MAX_ROWS = 12;
     public final int MIN_ROWS = 2;
     public final int MAX_BORDER_WIDTH = 30;

@@ -3,7 +3,7 @@ package ca.jdr23bc.simplebackgrounds.Shapes;
 import android.graphics.Canvas;
 import android.graphics.Point;
 
-public class Lines extends Pattern {
+public class Lines extends Shape {
 
     public enum Direction { VERTICAL, HORIZONTAL {}}
 

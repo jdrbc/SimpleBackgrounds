@@ -9,7 +9,7 @@ import java.util.Random;
 import ca.jdr23bc.simplebackgrounds.Colors.ColorScheme;
 import ca.jdr23bc.simplebackgrounds.Utils.OpenSimplexNoise;
 
-public abstract class Pattern {
+public abstract class Shape {
     public ColorScheme colorScheme;
     public int rootColor;
     public Integer backgroundColor;
@@ -22,7 +22,7 @@ public abstract class Pattern {
     public abstract String toString();
     public abstract void draw(Canvas canvas);
 
-    public Pattern(Pattern parentPattern) {
+    public Shape(Shape parentPattern) {
         this.random = parentPattern.random;
         this.paint = parentPattern.paint;
         this.rootColor = parentPattern.rootColor;
@@ -31,7 +31,7 @@ public abstract class Pattern {
         this.osn = parentPattern.osn;
     }
 
-    public Pattern(int width, int height) {
+    public Shape(int width, int height) {
         this.width = width;
         this.height = height;
         this.random = new Random();

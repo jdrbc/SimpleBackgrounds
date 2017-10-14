@@ -2,7 +2,7 @@ package ca.jdr23bc.simplebackgrounds.Shapes;
 
 import android.graphics.Canvas;
 
-public class Star extends Pattern {
+public class Star extends Shape {
     float radius;
     float centerX;
     float centerY;

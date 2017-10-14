@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PointF;
 
-public class RandomDots extends Pattern {
+public class RandomDots extends Shape {
     public static final int MAX_CIRCLE_SIZE_RATIO_TO_WIDTH = 4;
     public static final int MIN_CIRCLE_SIZE_RATIO_TO_WIDTH = 32;
 
@@ -32,7 +32,7 @@ public class RandomDots extends Pattern {
     boolean sameColors;
     int primaryColor = Color.BLACK;
 
-    public RandomDots(int width, int height, Pattern parentPattern) {
+    public RandomDots(int width, int height, Shape parentPattern) {
         super(parentPattern);
         init(width, height);
     }
