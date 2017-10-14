@@ -11,7 +11,6 @@ import java.util.Random;
 import ca.jdr23bc.simplebackgrounds.Patterns.DotGrid;
 import ca.jdr23bc.simplebackgrounds.Patterns.Lines;
 import ca.jdr23bc.simplebackgrounds.Patterns.RandomDots;
-import ca.jdr23bc.simplebackgrounds.Patterns.RandomTriangles;
 import ca.jdr23bc.simplebackgrounds.Patterns.Squares;
 import ca.jdr23bc.simplebackgrounds.Patterns.Star;
 import ca.jdr23bc.simplebackgrounds.Patterns.Tree;
@@ -21,7 +20,7 @@ public class PatternPainter {
             Collections.unmodifiableList(Arrays.asList(Style.values()));
 
     public enum Style {
-        Lines, Dots, Grid, Dot_Grid, Tree, Star
+        Lines, Dots, Grid, Dot_Grid, Star//, Tree
     }
     Canvas canvas;
     Style style;
@@ -32,20 +31,19 @@ public class PatternPainter {
     public PatternPainter(Canvas canvas) {
         this.canvas = canvas;
         this.style = STYLES.get(random.nextInt(STYLES.size()));
+        rootColor = Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256));
+        this.colorScheme = new ColorScheme(rootColor);
     }
 
     public void paint() {
-        rootColor = Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256));
-        this.colorScheme = new ColorScheme(rootColor);
-
         if (style == Style.Lines) {
             paintLines();
         } else if (style == Style.Dots) {
             paintDots();
         } else if (style == Style.Grid) {
             paintGrid();
-        } else if (style == Style.Tree) {
-            paintTree();
+//        } else if (style == Style.Tree) {
+//            paintTree();
         } else if (style == Style.Dot_Grid) {
             paintDotGrid();
         } else if (style == Style.Star) {
@@ -82,5 +80,10 @@ public class PatternPainter {
     public void paintDotGrid() {
         DotGrid dg = new DotGrid(canvas.getWidth(), canvas.getHeight());
         dg.fillAndDraw(canvas);
+    }
+
+    public String toString() {
+        return "STYLE: " + style.toString() + "\n" +
+                colorScheme.toString();
     }
 }

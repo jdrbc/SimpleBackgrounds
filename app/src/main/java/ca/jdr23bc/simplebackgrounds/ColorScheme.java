@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import ca.jdr23bc.simplebackgrounds.Patterns.Pattern;
+
 public class ColorScheme {
 
     public List<Integer> colors = new ArrayList<>();
@@ -39,6 +41,11 @@ public class ColorScheme {
 
     public int getRandom() {
         return colors.get(randIndex());
+    }
+
+    public String toString() {
+        return "ROOT: " + rootColor + "\n" +
+                "COLOR SCHEME TYPE: " + csType;
     }
 
     private int randIndex() {

@@ -4,13 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-
-import ca.jdr23bc.simplebackgrounds.Patterns.RandomTriangles;
-import ca.jdr23bc.simplebackgrounds.Patterns.Tree;
 
 public class MainActivity extends Activity {
 
@@ -22,7 +18,6 @@ public class MainActivity extends Activity {
     }
 
     public class MyView extends View {
-
         GestureDetector gestureDetector;
 
         public MyView(Context context) {
@@ -39,37 +34,10 @@ public class MainActivity extends Activity {
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
             PatternPainter pp = new PatternPainter(canvas);
-//            pp.style = PatternPainter.Style.Dot_Grid;
             pp.paint();
-
-//            Tree t = new Tree(canvas.getWidth(), canvas.getHeight());
-//            t.leafCount = 1000;
-//            t.minDist = 10;
-//            t.drawLeaves = true;
-//            t.grow();
-//            t.fillAndDraw(canvas);
-
-//            Star s = new Star(canvas.getWidth(), canvas.getHeight());
-//            s.fillAndDraw(canvas);
-
-//            RandomDots rd = new RandomDots(canvas.getWidth(), canvas.getHeight());
-//            rd.fillAndDraw(canvas);
-
-//            Lines lines = new Lines(canvas.getWidth(), canvas.getHeight());
-//            lines.fillAndDraw(canvas);
-
-//            Grid grid = new Grid(canvas.getWidth(), canvas.getHeight());
-//            grid.draw(canvas);
-
-//            DotGrid dg = new DotGrid(canvas.getWidth(), canvas.getHeight());
-//            dg.fillAndDraw(canvas);
-//
-//            RandomTriangles dg = new RandomTriangles(canvas.getWidth(), canvas.getHeight());
-//            dg.fillAndDraw(canvas);
         }
 
         private class GestureListener extends GestureDetector.SimpleOnGestureListener {
-
             View v;
 
             public GestureListener(View v) {
@@ -84,12 +52,6 @@ public class MainActivity extends Activity {
             @Override
             public boolean onDoubleTap(MotionEvent e) {
                 v.invalidate();
-
-                float x = e.getX();
-                float y = e.getY();
-
-                Log.d("Double Tap", "Tapped at: (" + x + "," + y + ")");
-
                 return true;
             }
         }

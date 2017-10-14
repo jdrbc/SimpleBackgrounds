@@ -44,7 +44,9 @@ public class SimpleWallpaperService extends WallpaperService {
             try {
                 canvas = holder.lockCanvas();
                 canvas.drawColor(0, PorterDuff.Mode.CLEAR);
-                new PatternPainter(canvas).paint();
+                PatternPainter pp = new PatternPainter(canvas);
+                Log.newBackground(pp.toString());
+                pp.paint();
             } finally {
                 if (canvas != null)
                     holder.unlockCanvasAndPost(canvas);
