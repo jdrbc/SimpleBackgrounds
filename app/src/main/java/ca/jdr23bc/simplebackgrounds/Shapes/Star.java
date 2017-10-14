@@ -1,9 +1,8 @@
-package ca.jdr23bc.simplebackgrounds.Patterns;
+package ca.jdr23bc.simplebackgrounds.Shapes;
 
 import android.graphics.Canvas;
 
 public class Star extends Pattern {
-
     float radius;
     float centerX;
     float centerY;
@@ -18,7 +17,6 @@ public class Star extends Pattern {
         this.centerX = random.nextInt(width);
         this.centerY = random.nextInt(height);
         this.numPoints = Math.max(7, random.nextInt(250));
-        this.strokeWidth = Math.max(70 / numPoints, random.nextFloat() + 1.5f);
         this.rotationStep = (float) (2*Math.PI/numPoints);
         this.skip = (numPoints / 4) + random.nextInt(numPoints / 2);
     }

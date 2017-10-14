@@ -1,4 +1,4 @@
-package ca.jdr23bc.simplebackgrounds;
+package ca.jdr23bc.simplebackgrounds.Colors;
 
 import android.graphics.Color;
 

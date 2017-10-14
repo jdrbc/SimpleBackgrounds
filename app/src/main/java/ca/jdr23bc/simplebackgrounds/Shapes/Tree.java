@@ -1,4 +1,4 @@
-package ca.jdr23bc.simplebackgrounds.Patterns;
+package ca.jdr23bc.simplebackgrounds.Shapes;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,8 +9,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-import ca.jdr23bc.simplebackgrounds.ColorScheme;
-import ca.jdr23bc.simplebackgrounds.Colour;
+import ca.jdr23bc.simplebackgrounds.Colors.Colour;
 
 // TODO-jdr horribly inefficient probably
 // http://algorithmicbotany.org/papers/colonization.egwnp2007.html

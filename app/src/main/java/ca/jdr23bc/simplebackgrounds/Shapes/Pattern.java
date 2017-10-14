@@ -1,4 +1,4 @@
-package ca.jdr23bc.simplebackgrounds.Patterns;
+package ca.jdr23bc.simplebackgrounds.Shapes;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -6,8 +6,8 @@ import android.graphics.Paint;
 
 import java.util.Random;
 
-import ca.jdr23bc.simplebackgrounds.ColorScheme;
-import ca.jdr23bc.simplebackgrounds.OpenSimplexNoise;
+import ca.jdr23bc.simplebackgrounds.Colors.ColorScheme;
+import ca.jdr23bc.simplebackgrounds.Utils.OpenSimplexNoise;
 
 public abstract class Pattern {
     public ColorScheme colorScheme;

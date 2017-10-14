@@ -1,8 +1,6 @@
-package ca.jdr23bc.simplebackgrounds.Patterns;
+package ca.jdr23bc.simplebackgrounds.Shapes;
 
 import android.graphics.Canvas;
-
-import ca.jdr23bc.simplebackgrounds.Grid;
 
 public class DotGrid extends Pattern {
     public final int MAX_ROWS = 20;

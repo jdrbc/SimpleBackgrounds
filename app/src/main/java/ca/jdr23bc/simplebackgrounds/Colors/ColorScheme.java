@@ -1,10 +1,8 @@
-package ca.jdr23bc.simplebackgrounds;
+package ca.jdr23bc.simplebackgrounds.Colors;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import ca.jdr23bc.simplebackgrounds.Patterns.Pattern;
 
 public class ColorScheme {
 

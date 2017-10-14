@@ -7,6 +7,9 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
+import ca.jdr23bc.simplebackgrounds.Shapes.ShapeFactory;
+import ca.jdr23bc.simplebackgrounds.Utils.Log;
+
 public class SimpleWallpaperService extends WallpaperService {
     @Override
     public Engine onCreateEngine() {
@@ -44,7 +47,7 @@ public class SimpleWallpaperService extends WallpaperService {
             try {
                 canvas = holder.lockCanvas();
                 canvas.drawColor(0, PorterDuff.Mode.CLEAR);
-                PatternPainter pp = new PatternPainter(canvas);
+                ShapeFactory pp = new ShapeFactory(canvas);
                 Log.newBackground(pp.toString());
                 pp.paint();
             } finally {

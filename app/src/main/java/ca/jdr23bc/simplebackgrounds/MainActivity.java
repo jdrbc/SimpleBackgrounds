@@ -8,6 +8,8 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+import ca.jdr23bc.simplebackgrounds.Shapes.ShapeFactory;
+
 public class MainActivity extends Activity {
 
     /** Called when the activity is first created. */
@@ -33,7 +35,7 @@ public class MainActivity extends Activity {
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
-            PatternPainter pp = new PatternPainter(canvas);
+            ShapeFactory pp = new ShapeFactory(canvas);
             pp.paint();
         }
 

@@ -1,4 +1,4 @@
-package ca.jdr23bc.simplebackgrounds;
+package ca.jdr23bc.simplebackgrounds.Utils;
 
 /*
  * OpenSimplex Noise in Java.

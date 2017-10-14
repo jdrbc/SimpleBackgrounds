@@ -1,4 +1,4 @@
-package ca.jdr23bc.simplebackgrounds;
+package ca.jdr23bc.simplebackgrounds.Shapes;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -8,14 +8,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import ca.jdr23bc.simplebackgrounds.Patterns.DotGrid;
-import ca.jdr23bc.simplebackgrounds.Patterns.Lines;
-import ca.jdr23bc.simplebackgrounds.Patterns.RandomDots;
-import ca.jdr23bc.simplebackgrounds.Patterns.Squares;
-import ca.jdr23bc.simplebackgrounds.Patterns.Star;
-import ca.jdr23bc.simplebackgrounds.Patterns.Tree;
+import ca.jdr23bc.simplebackgrounds.Colors.ColorScheme;
 
-public class PatternPainter {
+public class ShapeFactory {
     private static final List<Style> STYLES =
             Collections.unmodifiableList(Arrays.asList(Style.values()));
 
@@ -28,7 +23,7 @@ public class PatternPainter {
     ColorScheme colorScheme;
     int rootColor;
 
-    public PatternPainter(Canvas canvas) {
+    public ShapeFactory(Canvas canvas) {
         this.canvas = canvas;
         this.style = STYLES.get(random.nextInt(STYLES.size()));
         rootColor = Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256));
