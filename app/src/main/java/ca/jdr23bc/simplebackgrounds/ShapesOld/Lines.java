@@ -1,4 +1,4 @@
-package ca.jdr23bc.simplebackgrounds.Shapes;
+package ca.jdr23bc.simplebackgrounds.ShapesOld;
 
 import android.graphics.Canvas;
 import android.graphics.Point;

@@ -3,12 +3,14 @@ package ca.jdr23bc.simplebackgrounds;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.PointF;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-import ca.jdr23bc.simplebackgrounds.Shapes.ShapeFactory;
+import ca.jdr23bc.simplebackgrounds.ShapesOld.ShapeFactory;
+import ca.jdr23bc.simplebackgrounds.painters.PainterFactory;
 
 public class MainActivity extends Activity {
 
@@ -35,8 +37,9 @@ public class MainActivity extends Activity {
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
-            ShapeFactory pp = new ShapeFactory(canvas);
-            pp.paint();
+            new PainterFactory().getRandomPainter(new PointF(0, 0),
+                     new PointF(canvas.getWidth(), canvas.getHeight()))
+                    .fillBackgroundAndPaint(canvas);
         }
 
         private class GestureListener extends GestureDetector.SimpleOnGestureListener {

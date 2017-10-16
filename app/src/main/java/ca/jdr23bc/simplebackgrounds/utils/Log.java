@@ -1,4 +1,4 @@
-package ca.jdr23bc.simplebackgrounds.Utils;
+package ca.jdr23bc.simplebackgrounds.utils;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -6,7 +6,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 import ca.jdr23bc.simplebackgrounds.R;
 

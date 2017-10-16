@@ -1,8 +1,10 @@
-package ca.jdr23bc.simplebackgrounds.Shapes;
+package ca.jdr23bc.simplebackgrounds.ShapesOld;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+
+import ca.jdr23bc.simplebackgrounds.shapes.Grid;
 
 public class Squares extends Shape {
     public final int MAX_ROWS = 12;

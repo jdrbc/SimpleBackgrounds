@@ -1,14 +1,16 @@
 package ca.jdr23bc.simplebackgrounds;
 
 import android.graphics.Canvas;
+import android.graphics.PointF;
 import android.graphics.PorterDuff;
 import android.service.wallpaper.WallpaperService;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
-import ca.jdr23bc.simplebackgrounds.Shapes.ShapeFactory;
-import ca.jdr23bc.simplebackgrounds.Utils.Log;
+import ca.jdr23bc.simplebackgrounds.ShapesOld.ShapeFactory;
+import ca.jdr23bc.simplebackgrounds.painters.PainterFactory;
+import ca.jdr23bc.simplebackgrounds.utils.Log;
 
 public class SimpleWallpaperService extends WallpaperService {
     @Override
@@ -47,9 +49,12 @@ public class SimpleWallpaperService extends WallpaperService {
             try {
                 canvas = holder.lockCanvas();
                 canvas.drawColor(0, PorterDuff.Mode.CLEAR);
-                ShapeFactory pp = new ShapeFactory(canvas);
-                Log.newBackground(pp.toString());
-                pp.paint();
+//                ShapeFactory pp = new ShapeFactory(canvas);
+//                Log.newBackground(pp.toString());
+//                pp.paint();
+                new PainterFactory().getRandomPainter(new PointF(0, 0),
+                        new PointF(canvas.getWidth(), canvas.getHeight()))
+                        .paint(canvas);
             } finally {
                 if (canvas != null)
                     holder.unlockCanvasAndPost(canvas);

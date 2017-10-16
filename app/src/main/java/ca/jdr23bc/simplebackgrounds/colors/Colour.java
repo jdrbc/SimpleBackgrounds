@@ -1,4 +1,4 @@
-package ca.jdr23bc.simplebackgrounds.Colors;
+package ca.jdr23bc.simplebackgrounds.colors;
 
 import android.graphics.Color;
 
@@ -19,7 +19,11 @@ public class Colour extends Color {
     }
 
     public static ColorScheme getRandomScheme() {
-        ColorScheme[] schemes = Colour.ColorScheme.values();
+        ColorScheme[] schemes = {
+                ColorScheme.ColorSchemeAnalagous,
+                ColorScheme.ColorSchemeMonochromatic,
+                ColorScheme.ColorSchemeComplementary
+        };
         Random rand = new Random();
         return schemes[rand.nextInt(schemes.length)];
     }

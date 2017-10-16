@@ -1,4 +1,4 @@
-package ca.jdr23bc.simplebackgrounds.Shapes;
+package ca.jdr23bc.simplebackgrounds.ShapesOld;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import ca.jdr23bc.simplebackgrounds.Colors.ColorScheme;
+import ca.jdr23bc.simplebackgrounds.colors.ColorScheme;
 
 public class ShapeFactory {
     private static final List<Style> STYLES =

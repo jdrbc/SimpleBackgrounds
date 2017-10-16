@@ -1,10 +1,10 @@
-package ca.jdr23bc.simplebackgrounds.Shapes;
+package ca.jdr23bc.simplebackgrounds.ShapesOld;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
 
-import ca.jdr23bc.simplebackgrounds.Colors.Colour;
+import ca.jdr23bc.simplebackgrounds.colors.Colour;
 
 public class Circle extends Shape {
     float radius;

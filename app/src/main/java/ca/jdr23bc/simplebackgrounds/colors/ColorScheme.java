@@ -1,4 +1,4 @@
-package ca.jdr23bc.simplebackgrounds.Colors;
+package ca.jdr23bc.simplebackgrounds.colors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,19 +6,12 @@ import java.util.Random;
 
 public class ColorScheme {
 
+    // TODO-jdr use black as a foreground color more often
+    // TODO-jdr Divide colors into base, main, accent ect
+
     public List<Integer> colors = new ArrayList<>();
     public Integer rootColor;
     Colour.ColorScheme csType;
-
-    public ColorScheme(int rootColor, Colour.ColorScheme csType) {
-        this.rootColor = rootColor;
-        colors.add(rootColor);
-        this.csType = csType;
-        int[] ints = Colour.colorSchemeOfType(rootColor, csType);
-        for (int index = 0; index < ints.length; index++) {
-            colors.add(ints[index]);
-        }
-    }
 
     public ColorScheme(int rootColor) {
         this.rootColor = rootColor;
