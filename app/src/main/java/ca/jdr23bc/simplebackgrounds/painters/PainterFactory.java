@@ -7,13 +7,14 @@ import ca.jdr23bc.simplebackgrounds.shapes.Grid;
 import ca.jdr23bc.simplebackgrounds.shapes.RectFactory;
 import ca.jdr23bc.simplebackgrounds.shapes.Star;
 import ca.jdr23bc.simplebackgrounds.shapes.StarFactory;
+import ca.jdr23bc.simplebackgrounds.shapes.Target;
 import ca.jdr23bc.simplebackgrounds.utils.RandomUtils;
 
 public class PainterFactory {
 
     public Painter getRandomPainter(PointF topLeft, PointF bottomRight) {
 //        int randomInt = new Random().nextInt(2);
-        int randomInt = 4;
+        int randomInt = 5;
         switch(randomInt) {
             case 0:
                 return getStarPainter(topLeft, bottomRight);
@@ -25,6 +26,8 @@ public class PainterFactory {
                 return getGridRectPainter(topLeft, bottomRight);
             case 4:
                 return getLinesPainter();
+            case 5:
+                return getTargetPainter(topLeft, bottomRight);
             default:
                 return getStarPainter(topLeft, bottomRight);
 
@@ -72,5 +75,10 @@ public class PainterFactory {
 
     public Painter getLinesPainter() {
         return new LinesPainter();
+    }
+
+    public Painter getTargetPainter(PointF topLeft, PointF bottomRight) {
+        Target target = new Target(topLeft, bottomRight);
+        return new TargetPainter(target);
     }
 }
