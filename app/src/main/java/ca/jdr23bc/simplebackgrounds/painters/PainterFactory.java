@@ -13,7 +13,7 @@ public class PainterFactory {
 
     public Painter getRandomPainter(PointF topLeft, PointF bottomRight) {
 //        int randomInt = new Random().nextInt(2);
-        int randomInt = 3;
+        int randomInt = 4;
         switch(randomInt) {
             case 0:
                 return getStarPainter(topLeft, bottomRight);
@@ -23,6 +23,8 @@ public class PainterFactory {
                 return getGridCirclePainter(topLeft, bottomRight);
             case 3:
                 return getGridRectPainter(topLeft, bottomRight);
+            case 4:
+                return getLinesPainter();
             default:
                 return getStarPainter(topLeft, bottomRight);
 
@@ -66,5 +68,9 @@ public class PainterFactory {
                 painter,
                 factory
         );
+    }
+
+    public Painter getLinesPainter() {
+        return new LinesPainter();
     }
 }
