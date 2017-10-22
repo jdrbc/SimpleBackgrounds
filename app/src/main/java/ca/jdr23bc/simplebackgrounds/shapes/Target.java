@@ -9,7 +9,7 @@ import ca.jdr23bc.simplebackgrounds.utils.RandomUtils;
 
 public class Target extends Shape implements Iterator<Target.TargetRing> {
     public static final int MAX_RINGS_FOR_RANDOM_INIT_VALUE = 20;
-    public static final int MIN_RINGS_FOR_RANDOM_INIT_VALUE = 2;
+    public static final int MIN_RINGS_FOR_RANDOM_INIT_VALUE = 4;
 
     TargetRing currentRing;
     PointF center;

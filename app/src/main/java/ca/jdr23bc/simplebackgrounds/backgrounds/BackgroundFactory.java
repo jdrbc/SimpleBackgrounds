@@ -32,7 +32,7 @@ public class BackgroundFactory {
                 layout = new GridLayout();
                 break;
             default:
-                layout = new GridLayout();
+                return null;
         }
         switch(patternNum) {
             case 0:
