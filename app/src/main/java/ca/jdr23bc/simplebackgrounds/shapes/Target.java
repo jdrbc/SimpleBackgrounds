@@ -8,8 +8,8 @@ import ca.jdr23bc.simplebackgrounds.utils.MathUtils;
 import ca.jdr23bc.simplebackgrounds.utils.RandomUtils;
 
 public class Target extends Shape implements Iterator<Target.TargetRing> {
-    public static final int MAX_RINGS_FOR_RANDOM_INIT_VALUE = 9;
-    public static final int MIN_RINGS_FOR_RANDOM_INIT_VALUE = 3;
+    public static final int MAX_RINGS_FOR_RANDOM_INIT_VALUE = 20;
+    public static final int MIN_RINGS_FOR_RANDOM_INIT_VALUE = 2;
 
     TargetRing currentRing;
     PointF center;
@@ -27,6 +27,16 @@ public class Target extends Shape implements Iterator<Target.TargetRing> {
                 MIN_RINGS_FOR_RANDOM_INIT_VALUE, MAX_RINGS_FOR_RANDOM_INIT_VALUE);
     }
 
+    public Target withCenter(PointF center) {
+        this.center = center;
+        return this;
+    }
+
+    public Target withRadius(float radius) {
+        this.radius = radius;
+        return this;
+    }
+
     public Target withRingCount(int ringCount) {
         this.ringCount = ringCount;
         return this;
@@ -34,6 +44,14 @@ public class Target extends Shape implements Iterator<Target.TargetRing> {
 
     public void init() {
         currentRing = new TargetRing(center, radius, 1);
+    }
+
+    public float getRadius() {
+        return this.radius;
+    }
+
+    public float getRingWidth() {
+        return radius / (ringCount + 1);
     }
 
     @Override
@@ -45,7 +63,7 @@ public class Target extends Shape implements Iterator<Target.TargetRing> {
     public TargetRing next() {
         currentRing = new TargetRing(
                 center,
-                3 * currentRing.getRadius() / 4,
+                currentRing.getRadius() - getRingWidth(),
                 currentRing.getRingNumber() + 1);
         return currentRing;
     }

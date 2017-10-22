@@ -33,7 +33,9 @@ public abstract class Painter {
         canvas.drawPaint(paint);
     }
 
-    protected int getRandomPaintColor() { return colorScheme.getRandom(); }
+    protected int getRandomPaintColor() {
+        return colorScheme.getRandom();
+    }
 
     protected void setRandomPaintColor(Paint paint) {
         paint.setColor(getRandomPaintColor());

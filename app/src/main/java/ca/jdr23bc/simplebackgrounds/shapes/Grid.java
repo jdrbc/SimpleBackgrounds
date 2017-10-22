@@ -4,10 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
 
 import ca.jdr23bc.simplebackgrounds.utils.MathUtils;
 import ca.jdr23bc.simplebackgrounds.utils.RandomUtils;
@@ -22,7 +19,11 @@ public class Grid implements Iterator<Grid.Cell> {
     private float padding;
     private float cellWidth;
     private float cellHeight;
-    private boolean shuffleRows = false;
+    private boolean cellOverlapActive = false;
+    private boolean rowSkewActive = false;
+    private boolean randomRowSkewActive = false;
+    private float rowSkew;
+    private float cellOverlap;
 
     private Cell currCell;
 
@@ -42,13 +43,37 @@ public class Grid implements Iterator<Grid.Cell> {
         this.padding = RandomUtils.getRandomFloatInRange(cellWidth, cellWidth * 2);
     }
 
+    public Grid withSquareCellsActive(Boolean active) {
+        if (active) {
+            return withSquareCells();
+        } else {
+            setRandomRectangularCellDimensions();
+            return this;
+        }
+    }
+
     public Grid withSquareCells() {
         setRandomSquareCellDimensions();
         return this;
     }
 
-    public Grid withRandomShuffleRowsSetting() {
-        this.shuffleRows = RandomUtils.random.nextBoolean();
+    public Grid withCellOverlapActive(boolean cellOverlap) {
+        this.cellOverlapActive = cellOverlap;
+        this.cellOverlap = RandomUtils.getRandomFloatInRange(0, cellWidth / 2);
+        return this;
+    }
+
+    public Grid withRandomRowSkewActive(Boolean randomRowSkewActive) {
+        this.randomRowSkewActive = randomRowSkewActive;
+        if (randomRowSkewActive) {
+            rowSkewActive = true;
+        }
+        return this;
+    }
+
+    public Grid withRowSkewActive(Boolean rowSkewActive) {
+        this.rowSkewActive = rowSkewActive;
+        this.rowSkew = RandomUtils.getRandomFloatInRange(-cellWidth, cellWidth);
         return this;
     }
 
@@ -84,8 +109,28 @@ public class Grid implements Iterator<Grid.Cell> {
         return new Cell(topLeftWithPadding.x, topLeftWithPadding.y, this);
     }
 
-    private float getRowShuffle() {
-        return -1 * RandomUtils.getRandomFloatInRange(0, cellWidth);
+    private Boolean isCellOverlapActive() {
+        return cellOverlapActive;
+    }
+
+    private float getRowSkew(int rowNumber) {
+        if (rowSkewActive) {
+            if (randomRowSkewActive) {
+                return -1 * RandomUtils.getRandomFloatInRange(0, cellWidth);
+            } else {
+                return rowSkew * (rowNumber / getNumberOfRows());
+            }
+        } else {
+            return 0;
+        }
+    }
+
+    private int getNumberOfRows() {
+        return (int) (getBottomRightWithPadding().y / cellHeight);
+    }
+
+    private float getCellOverlap() {
+        return cellOverlap;
     }
 
     @Override
@@ -117,6 +162,7 @@ public class Grid implements Iterator<Grid.Cell> {
         float height;
         float x;
         float y;
+        int rowNumber;
 
         public Cell(float x, float y, Grid grid) {
             this.grid = grid;
@@ -124,19 +170,22 @@ public class Grid implements Iterator<Grid.Cell> {
             this.y = y;
             this.width = grid.cellWidth;
             this.height = grid.cellHeight;
+            this.rowNumber = 1;
+        }
+
+        public Cell(float x, float y, Grid grid, int rowNumber) {
+            this(x, y, grid);
+            this.rowNumber = rowNumber;
         }
 
         public Cell getNextCell() {
-            float nextX = x + width;
+            float nextX = getNextX();
             float nextY = y;
             if (nextX > grid.getBottomRightWithPadding().x) {
-                nextX = grid.getTopLeftWithPadding().x;
-                if (grid.shuffleRows) {
-                    nextX += grid.getRowShuffle();
-                }
+                nextX = grid.getTopLeftWithPadding().x + getRowSkew(rowNumber + 1);
                 nextY += height;
             }
-            return new Cell(nextX, nextY, grid);
+            return new Cell(nextX, nextY, grid, rowNumber + 1);
         }
 
         public int getRow() {
@@ -157,6 +206,14 @@ public class Grid implements Iterator<Grid.Cell> {
 
         public PointF getBottomRight() {
             return new PointF(x + width, y + height);
+        }
+
+        private float getNextX() {
+            if (grid.isCellOverlapActive()) {
+                return x + width - getCellOverlap();
+            } else {
+                return x + width;
+            }
         }
 
         @Override

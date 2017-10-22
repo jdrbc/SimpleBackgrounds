@@ -8,6 +8,10 @@ import ca.jdr23bc.simplebackgrounds.shapes.Target;
 
 public class TargetPainter extends ShapePainter {
 
+    public TargetPainter() {
+        super();
+    }
+
     public TargetPainter(Target target) {
         super(target);
     }
@@ -17,14 +21,22 @@ public class TargetPainter extends ShapePainter {
         Target target = (Target) getShape();
         Paint paint = getPaint();
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(4);
+        paint.setStrokeWidth(target.getRingWidth());
         setRandomPaintColor(paint);
 
         target.init();
         while(target.hasNext()) {
             Target.TargetRing ring = target.next();
+            if (ring.getRingNumber() % 2 == 0) {
+                continue;
+            }
             PointF center = ring.getCenter();
-            canvas.drawCircle(center.x, center.y, ring.getRadius(), paint);
+            if (target.hasNext()) {
+                canvas.drawCircle(center.x, center.y, ring.getRadius(), paint);
+            } else {
+                paint.setStyle(Paint.Style.FILL_AND_STROKE);
+                canvas.drawCircle(center.x, center.y, ring.getRadius(), paint);
+            }
         }
     }
 }
