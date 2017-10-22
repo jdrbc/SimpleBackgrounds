@@ -47,7 +47,7 @@ public class LinesPainter extends Painter {
         Paint paint = getPaint();
         for (int i = 0; i < count; i++) {
             if (!sameColor) {
-                setRandomPaintColor();
+                setRandomPaintColor(paint);
                 paint.setAlpha(alpha);
             } else {
                 paint.setColor(color);

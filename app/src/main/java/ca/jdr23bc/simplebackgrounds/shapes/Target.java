@@ -14,7 +14,7 @@ public class Target extends Shape implements Iterator<Target.TargetRing> {
     TargetRing currentRing;
     PointF center;
     float radius;
-    int targetCount;
+    int ringCount;
 
     public Target(PointF topLeft, PointF bottomRight) {
         super(topLeft, bottomRight);
@@ -23,8 +23,13 @@ public class Target extends Shape implements Iterator<Target.TargetRing> {
                 MathUtils.getHeight(topLeft, bottomRight),
                 MathUtils.getWidth(topLeft, bottomRight)
         ) / 2;
-        targetCount = RandomUtils.getRandomIntInRange(
+        ringCount = RandomUtils.getRandomIntInRange(
                 MIN_RINGS_FOR_RANDOM_INIT_VALUE, MAX_RINGS_FOR_RANDOM_INIT_VALUE);
+    }
+
+    public Target withRingCount(int ringCount) {
+        this.ringCount = ringCount;
+        return this;
     }
 
     public void init() {
@@ -33,7 +38,7 @@ public class Target extends Shape implements Iterator<Target.TargetRing> {
 
     @Override
     public boolean hasNext() {
-        return currentRing.getRingNumber() <= targetCount;
+        return currentRing.getRingNumber() <= ringCount;
     }
 
     @Override

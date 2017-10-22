@@ -12,11 +12,8 @@ public abstract class Painter {
     private ColorScheme colorScheme;
     private int rootColor;
     private Random random;
-    private Paint paint;
 
     public Painter() {
-        this.paint = new Paint();
-        paint.setAntiAlias(true);
         this.random = new Random();
         this.rootColor = Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256));
         this.colorScheme = new ColorScheme(rootColor);
@@ -30,6 +27,7 @@ public abstract class Painter {
     public abstract void paint(Canvas canvas);
 
     private void fillBackground(Canvas canvas) {
+        Paint paint = getPaint();
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(colorScheme.popRandom());
         canvas.drawPaint(paint);
@@ -37,19 +35,13 @@ public abstract class Painter {
 
     protected int getRandomPaintColor() { return colorScheme.getRandom(); }
 
-    protected void setPaintColor(int color) {
-        paint.setColor(color);
-    }
-
-    protected void setRandomPaintColor() {
-        setPaintColor(getRandomPaintColor());
-    }
-
-    protected void setStrokeWidth(int strokeWidth) {
-        paint.setStrokeWidth(strokeWidth);
+    protected void setRandomPaintColor(Paint paint) {
+        paint.setColor(getRandomPaintColor());
     }
 
     protected Paint getPaint() {
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
         return paint;
     }
 }

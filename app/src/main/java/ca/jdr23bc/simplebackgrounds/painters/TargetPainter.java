@@ -18,7 +18,7 @@ public class TargetPainter extends ShapePainter {
         Paint paint = getPaint();
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(4);
-        setRandomPaintColor();
+        setRandomPaintColor(paint);
 
         target.init();
         while(target.hasNext()) {

@@ -1,6 +1,7 @@
 package ca.jdr23bc.simplebackgrounds.painters;
 
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.PointF;
 
 import ca.jdr23bc.simplebackgrounds.shapes.Circle;
@@ -18,11 +19,12 @@ public class CirclePainter extends ShapePainter {
     public void paint(Canvas canvas) {
         Circle circle = (Circle) getShape();
         PointF center = circle.getCenter();
+        Paint paint = getPaint();
         if (paintBlack) {
-            setPaintColor(0);
+            paint.setColor(0);
         } else {
-            setRandomPaintColor();
+            setRandomPaintColor(paint);
         }
-        canvas.drawCircle(center.x, center.y, circle.getRadius(), getPaint());
+        canvas.drawCircle(center.x, center.y, circle.getRadius(), paint);
     }
 }

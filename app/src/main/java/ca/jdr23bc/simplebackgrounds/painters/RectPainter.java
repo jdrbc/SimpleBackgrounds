@@ -31,8 +31,9 @@ public class RectPainter extends ShapePainter {
     @Override
     public void paint(Canvas canvas) {
         Rect rect = (Rect) getShape();
-        setRandomPaintColor();
-        canvas.drawRect(rect.getRectF(), getPaint());
+        Paint paint = getPaint();
+        setRandomPaintColor(paint);
+        canvas.drawRect(rect.getRectF(), paint);
         if (borderPaint != null) {
             canvas.drawRect(rect.getRectF(), borderPaint);
         }

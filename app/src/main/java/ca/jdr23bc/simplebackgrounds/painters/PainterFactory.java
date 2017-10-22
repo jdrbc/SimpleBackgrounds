@@ -79,6 +79,6 @@ public class PainterFactory {
 
     public Painter getTargetPainter(PointF topLeft, PointF bottomRight) {
         Target target = new Target(topLeft, bottomRight);
-        return new TargetPainter(target);
+        return new TargetPainter(target.withRingCount(9));
     }
 }
