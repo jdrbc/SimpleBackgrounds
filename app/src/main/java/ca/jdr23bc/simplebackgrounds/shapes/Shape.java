@@ -25,6 +25,13 @@ public abstract class Shape {
         return bottomRight.y - topLeft.y;
     }
 
+    @Override
+    public String toString() {
+        return "{ name: " + this.getClass().getSimpleName() + ", " +
+                "topLeft: " + topLeft + ", " +
+                "bottomRight: " + bottomRight + " }";
+    }
+
     protected PointF getTopLeft() {
         return topLeft;
     }

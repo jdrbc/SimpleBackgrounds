@@ -2,9 +2,39 @@ package ca.jdr23bc.simplebackgrounds.shapes;
 
 import android.graphics.PointF;
 
-public abstract class ShapeFactory {
+import java.util.Iterator;
 
-    public ShapeFactory() {}
+import ca.jdr23bc.simplebackgrounds.layout.Cell;
+import ca.jdr23bc.simplebackgrounds.layout.Layout;
+
+public abstract class ShapeFactory implements Iterator<Shape> {
+    private Layout layout;
+
+    public ShapeFactory(Layout layout) {
+        this.layout = layout;
+    }
+
+    public Layout getLayout() {
+        return layout;
+    }
+
+    public void init(PointF topLeft, PointF bottomRight) {
+        layout.init(topLeft, bottomRight);
+    }
+
+    public boolean hasNext() {
+        return layout.hasNext();
+    }
+
+    public Shape next() {
+        Cell cell = layout.next();
+        return build(cell.getTopLeft(), cell.getBottomRight());
+    }
 
     public abstract Shape build(PointF topLeft, PointF bottomRight);
+
+    @Override
+    public String toString() {
+        return "{ layout: " + layout.toString() + " }";
+    }
 }

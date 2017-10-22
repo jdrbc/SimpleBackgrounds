@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class ColorScheme {
 
-    // TODO-jdr use black as a foreground color more often
+    // TODO-jdr use black as a foreground & background color more often
     // TODO-jdr Divide colors into base, main, accent ect
 
     public List<Integer> colors = new ArrayList<>();

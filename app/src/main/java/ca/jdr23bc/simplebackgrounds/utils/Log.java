@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import ca.jdr23bc.simplebackgrounds.R;
 
 public class Log extends AppCompatActivity {
-
     private static String TAG = "LOG";
     private static ArrayList<String> backgrounds = new ArrayList<>();
     private static ListView backgroundsListView;

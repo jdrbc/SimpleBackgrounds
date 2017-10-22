@@ -5,14 +5,16 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-import ca.jdr23bc.simplebackgrounds.ShapesOld.ShapeFactory;
-import ca.jdr23bc.simplebackgrounds.painters.PainterFactory;
+import ca.jdr23bc.simplebackgrounds.backgrounds.Background;
+import ca.jdr23bc.simplebackgrounds.backgrounds.BackgroundFactory;
 
 public class MainActivity extends Activity {
+    private static final String TAG = MainActivity.class.getCanonicalName();
 
     /** Called when the activity is first created. */
     @Override
@@ -37,9 +39,9 @@ public class MainActivity extends Activity {
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
-            new PainterFactory().getRandomPainter(new PointF(0, 0),
-                     new PointF(canvas.getWidth(), canvas.getHeight()))
-                    .fillBackgroundAndPaint(canvas);
+            Background background = new BackgroundFactory().getRandomBackground();
+            background.fill(canvas);
+            Log.d(TAG, "drew background: " + background.toString());
         }
 
         private class GestureListener extends GestureDetector.SimpleOnGestureListener {

@@ -6,23 +6,18 @@ import android.graphics.PointF;
 
 import ca.jdr23bc.simplebackgrounds.shapes.Target;
 
-public class TargetPainter extends ShapePainter {
+public class TargetPainter extends ShapePainter<Target> {
 
     public TargetPainter() {
         super();
     }
 
-    public TargetPainter(Target target) {
-        super(target);
-    }
-
     @Override
-    public void paint(Canvas canvas) {
-        Target target = (Target) getShape();
+    public void paint(Canvas canvas, Target target) {
         Paint paint = getPaint();
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(target.getRingWidth());
-        setRandomPaintColor(paint);
+        paint.setColor(getRandomPaintColor());
 
         target.init();
         while(target.hasNext()) {

@@ -1,6 +1,7 @@
 package ca.jdr23bc.simplebackgrounds.shapes;
 
 import android.graphics.PointF;
+import android.hardware.camera2.params.StreamConfigurationMap;
 
 import ca.jdr23bc.simplebackgrounds.utils.MathUtils;
 import ca.jdr23bc.simplebackgrounds.utils.RandomUtils;
@@ -24,5 +25,12 @@ public class Circle extends Shape {
 
     public float getRadius() {
         return radius;
+    }
+
+    @Override
+    public String toString() {
+        return "{ name: " + Circle.class.getSimpleName() + ", " +
+                "center: " + center + ", " +
+                "radius: " + radius + " }";
     }
 }

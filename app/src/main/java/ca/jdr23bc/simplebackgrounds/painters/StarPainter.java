@@ -8,23 +8,18 @@ import android.util.Pair;
 
 import ca.jdr23bc.simplebackgrounds.shapes.Star;
 
-public class StarPainter extends ShapePainter {
-    private static final String TAG = StarPainter.class.getName();
+public class StarPainter extends ShapePainter<Star> {
+    private static final String TAG = StarPainter.class.getCanonicalName();
     private static final int STAR_STROKE_WIDTH = 3;
 
     public StarPainter() {}
 
-    public StarPainter(Star star) {
-        super(star);
-    }
-
     @Override
-    public void paint(Canvas canvas) {
+    public void paint(Canvas canvas, Star star) {
         Paint paint = getPaint();
-        setRandomPaintColor(paint);
+        paint.setColor(getRandomPaintColor());
         paint.setStrokeWidth(STAR_STROKE_WIDTH);
 
-        Star star = (Star) getShape();
         Log.d(TAG, "painting star " + star.toString());
         PointF point = star.init();
         canvas.drawPoint(point.x, point.y, paint);

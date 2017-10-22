@@ -9,7 +9,7 @@ import java.util.Iterator;
 import ca.jdr23bc.simplebackgrounds.utils.RandomUtils;
 
 public class Star extends Shape implements Iterator<Pair<PointF, PointF>> {
-    private static final String TAG = Star.class.getName();
+    private static final String TAG = Star.class.getCanonicalName();
     private static final float TWO_PI = (float) (2 * Math.PI);
     private static final float MIN_DISTANCE_BETWEEN_POINTS = 10;
     private static final float MIN_NUMBER_OF_POINTS = 3f;
