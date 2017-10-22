@@ -29,6 +29,12 @@ public class RectPainter extends ShapePainter {
     }
 
     @Override
+    public void fillBackgroundAndPaint(Canvas canvas) {
+        // No need to fill background
+        paint(canvas);
+    }
+
+    @Override
     public void paint(Canvas canvas) {
         Rect rect = (Rect) getShape();
         Paint paint = getPaint();

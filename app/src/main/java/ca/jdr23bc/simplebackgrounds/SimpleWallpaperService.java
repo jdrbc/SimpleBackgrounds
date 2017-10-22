@@ -9,8 +9,10 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
 import ca.jdr23bc.simplebackgrounds.ShapesOld.ShapeFactory;
+import ca.jdr23bc.simplebackgrounds.painters.Painter;
 import ca.jdr23bc.simplebackgrounds.painters.PainterFactory;
 import ca.jdr23bc.simplebackgrounds.utils.Log;
+import ca.jdr23bc.simplebackgrounds.utils.RandomUtils;
 
 public class SimpleWallpaperService extends WallpaperService {
     @Override
@@ -49,12 +51,9 @@ public class SimpleWallpaperService extends WallpaperService {
             try {
                 canvas = holder.lockCanvas();
                 canvas.drawColor(0, PorterDuff.Mode.CLEAR);
-//                ShapeFactory pp = new ShapeFactory(canvas);
-//                Log.newBackground(pp.toString());
-//                pp.paint();
-                new PainterFactory().getRandomPainter(new PointF(0, 0),
-                        new PointF(canvas.getWidth(), canvas.getHeight()))
-                        .paint(canvas);
+                Painter p = new PainterFactory().getRandomPainter(new PointF(0, 0),
+                        new PointF(canvas.getWidth(), canvas.getHeight()));
+                p.paint(canvas);
             } finally {
                 if (canvas != null)
                     holder.unlockCanvasAndPost(canvas);
