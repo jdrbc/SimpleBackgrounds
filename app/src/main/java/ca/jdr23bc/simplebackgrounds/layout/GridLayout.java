@@ -63,13 +63,13 @@ public class GridLayout extends Layout {
     @Override
     public boolean finished() {
         if (currCell == null) {
-            return true;
+            return false;
         } else {
-            boolean hasNext = currCell.y < getBottomRightWithPadding().y;
-            if (!hasNext) {
+            boolean finished = currCell.y >= getBottomRightWithPadding().y;
+            if (finished) {
                 currCell = null;
             }
-            return hasNext;
+            return finished;
         }
     }
 

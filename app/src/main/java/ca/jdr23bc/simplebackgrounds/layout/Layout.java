@@ -5,6 +5,8 @@ import android.graphics.PointF;
 
 import java.util.Iterator;
 
+import ca.jdr23bc.simplebackgrounds.utils.MathUtils;
+
 public abstract class Layout implements Iterator<Cell> {
     private PointF topLeft;
     private PointF bottomRight;
@@ -22,7 +24,8 @@ public abstract class Layout implements Iterator<Cell> {
 
     @Override
     public boolean hasNext() {
-        return initCalled && finished();
+        boolean finished = finished();
+        return initCalled && !finished;
     }
 
     @Override
@@ -38,5 +41,13 @@ public abstract class Layout implements Iterator<Cell> {
 
     protected PointF getBottomRight() {
         return bottomRight;
+    }
+
+    protected float getWidth() {
+        return MathUtils.getWidth(getTopLeft(), getBottomRight());
+    }
+
+    protected float getHeight() {
+        return MathUtils.getHeight(getTopLeft(), getBottomRight());
     }
 }

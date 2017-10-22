@@ -9,7 +9,7 @@ public class SingleCellLayout extends Layout {
 
     @Override
     public boolean finished() {
-        return hasNext;
+        return !hasNext;
     }
 
     @Override
