@@ -15,7 +15,7 @@ public class BackgroundFactory {
         Layout layout;
         int layoutNum = RandomUtils.random.nextInt(NUM_LAYOUTS);
         int patternNum = RandomUtils.random.nextInt(NUM_PATTERNS);
-        switch(2) {
+        switch(layoutNum) {
             case 0:
                 layout = new SingleCellLayout();
                 break;
