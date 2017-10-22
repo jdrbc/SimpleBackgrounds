@@ -17,7 +17,7 @@ public class PainterFactory {
 
     public Painter getRandomPainter(PointF topLeft, PointF bottomRight) {
         int randomInt = RandomUtils.random.nextInt(NUM_PATTERNS + 1);
-        randomInt = 3;
+//        randomInt = 3;
         switch(randomInt) {
             case 0:
                 return getStarPainter(topLeft, bottomRight);
