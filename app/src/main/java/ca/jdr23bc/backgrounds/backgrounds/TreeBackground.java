@@ -74,10 +74,8 @@ public class TreeBackground implements Background {
     public void fill(Canvas canvas) {
         init(canvas.getWidth(), canvas.getHeight());
         grow();
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(colorScheme.colors.get(0));
-        canvas.drawPaint(paint);
-        paint.setAntiAlias(true);
+
+        fillBackground(canvas);
         paint.setShadowLayer(5.0f, 0.0f, 2.0f, colorScheme.popRandom());
         paint.setColor(colorScheme.popRandom());
         drawBranches(canvas, paint);
@@ -215,6 +213,12 @@ public class TreeBackground implements Background {
         for (Branch branch : endBranches) {
             branch.setWidth(minBranchWidth);
         }
+    }
+
+    private void fillBackground(Canvas canvas) {
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(colorScheme.popRandom());
+        canvas.drawPaint(paint);
     }
 
     private void drawBranches(Canvas c, Paint p) {
