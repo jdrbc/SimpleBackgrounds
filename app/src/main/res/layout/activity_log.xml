@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ca.jdr23bc.simplebackgrounds.utils.Log">
+    tools:context="ca.jdr23bc.backgrounds.utils.Log">
     <ListView
         android:id="@+id/backgrounds"
         android:layout_height="wrap_content"
