@@ -12,31 +12,33 @@ public class BackgroundFactory {
     public static final int NUM_LAYOUTS = 3;
 
     public Background getRandomBackground() {
-        Layout layout;
-        int layoutNum = RandomUtils.random.nextInt(NUM_LAYOUTS);
         int patternNum = RandomUtils.random.nextInt(NUM_PATTERNS);
-        switch(layoutNum) {
-            case 0:
-                layout = new SingleCellLayout();
-                break;
-            case 1:
-                layout = new GridLayout();
-                break;
-            default:
-                layout = new RandomLayout();
-                break;
-        }
+
         switch(patternNum) {
             case 0:
-                return new CircleBackground(layout);
+                return new CircleBackground(getRandomLayout());
             case 1:
                 return new LineBackground();
             case 2:
-                return new RectBackground(layout);
+                return new RectBackground(getRandomLayout());
             case 3:
-                return new TargetBackground(layout);
+                return new TargetBackground(getRandomLayout());
+            case 4:
+                return new TreeBackground();
             default:
-                return new StarBackground(layout);
+                return new StarBackground(getRandomLayout());
+        }
+    }
+
+    private Layout getRandomLayout() {
+        int layoutNum = RandomUtils.random.nextInt(NUM_LAYOUTS);
+        switch(layoutNum) {
+            case 0:
+                return new SingleCellLayout();
+            case 1:
+                return new GridLayout();
+            default:
+                return new RandomLayout();
         }
     }
 
