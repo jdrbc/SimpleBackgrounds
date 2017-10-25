@@ -46,5 +46,6 @@ public class RectPainter extends ShapePainter<Rect> {
         if (borderPaint != null) {
             canvas.drawRect(rect.getRectF(), borderPaint);
         }
+        drawn = true;
     }
 }

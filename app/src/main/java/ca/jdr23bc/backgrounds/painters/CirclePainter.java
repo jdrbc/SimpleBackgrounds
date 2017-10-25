@@ -31,5 +31,6 @@ public class CirclePainter extends ShapePainter<Circle> {
         Log.d(TAG, "painting color: " + paint.getColor());
         Log.d(TAG, "painting circle: " + circle.toString());
         canvas.drawCircle(center.x, center.y, circle.getRadius(), paint);
+        drawn = true;
     }
 }

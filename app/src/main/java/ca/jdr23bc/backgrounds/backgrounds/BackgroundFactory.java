@@ -13,7 +13,6 @@ public class BackgroundFactory {
 
     public Background getRandomBackground(int width, int height) {
         int patternNum = RandomUtils.random.nextInt(NUM_PATTERNS);
-
         switch(patternNum) {
             case 0:
                 return new CircleBackground(width, height, getRandomLayout());
