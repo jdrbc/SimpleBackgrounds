@@ -1,11 +1,8 @@
 package ca.jdr23bc.backgrounds.backgrounds;
 
-import android.graphics.Canvas;
 import android.graphics.PointF;
-import android.util.Log;
 
 import ca.jdr23bc.backgrounds.painters.ShapePainter;
-import ca.jdr23bc.backgrounds.shapes.Shape;
 import ca.jdr23bc.backgrounds.shapes.ShapeFactory;
 
 public abstract class ShapeBackground extends Background {
@@ -18,21 +15,25 @@ public abstract class ShapeBackground extends Background {
     @Override
     public void init() {
         ShapeFactory factory = getFactory();
-        ShapePainter painter = getPainter();
-        painter.fillBackground(getCanvas());
         factory.init(new PointF(0, 0), new PointF(getWidth(), getHeight()));
+
+        ShapePainter painter = getPainter();
+        painter.init(factory.next());
+        painter.fillBackground(getCanvas());
     }
 
     @Override
     public Boolean hasNextDrawStep() {
-        return getFactory().hasNext();
+        return getPainter().hasNextPaintStep() || getFactory().hasNext();
     }
 
     @Override
     public void drawStep() {
-        Shape shape = getFactory().next();
-        Log.d(TAG, "Painting shape: " + shape.toString());
-        getPainter().paint(getCanvas(), shape);
+        ShapePainter painter = getPainter();
+        if (!painter.hasNextPaintStep()) {
+            painter.init(getFactory().next());
+        }
+        painter.paintStep(getCanvas());
     }
 
     public String toString() {

@@ -17,6 +17,7 @@ public class Star extends Shape implements Iterator<Pair<PointF, PointF>> {
 
     private float radius;
     private PointF center;
+    private PointF startingPoint;
     private int numberOfPoints;
     private float rotationStep;
     private int skip;
@@ -41,6 +42,10 @@ public class Star extends Shape implements Iterator<Pair<PointF, PointF>> {
         this.center = getRandomPoint();
     }
 
+    public PointF getStartingPoint() {
+        return startingPoint;
+    }
+
     public Star withIsCentered(Boolean isCentered) {
         if (isCentered) {
             this.center = getCenter();
@@ -50,11 +55,11 @@ public class Star extends Shape implements Iterator<Pair<PointF, PointF>> {
         return this;
     }
 
-    public PointF init() {
+    public void init() {
         this.count = 0;
         this.currentRotationStepCount = 1;
         this.currentRotationStepStartingAngle = (float) (Math.PI / 4);
-        return getPoint(currentRotationStepStartingAngle);
+        this.startingPoint = getPoint(currentRotationStepStartingAngle);
     }
 
     @Override

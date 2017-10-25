@@ -5,33 +5,39 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 
 import ca.jdr23bc.backgrounds.shapes.Target;
+import ca.jdr23bc.backgrounds.shapes.Tree;
 
 public class TargetPainter extends ShapePainter<Target> {
 
-    public TargetPainter() {
-        super();
-    }
+    private Target target;
 
-    @Override
-    public void paint(Canvas canvas, Target target) {
+    public TargetPainter() {
         Paint paint = getPaint();
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(target.getRingWidth());
         paint.setColor(getRandomPaintColor());
+    }
 
+    public void init(Target target) {
+        this.target = target;
+        getPaint().setStrokeWidth(target.getRingWidth());
         target.init();
-        while(target.hasNext()) {
-            Target.TargetRing ring = target.next();
-            if (ring.getRingNumber() % 2 == 0) {
-                continue;
-            }
-            PointF center = ring.getCenter();
-            if (target.hasNext()) {
-                canvas.drawCircle(center.x, center.y, ring.getRadius(), paint);
-            } else {
-                paint.setStyle(Paint.Style.FILL_AND_STROKE);
-                canvas.drawCircle(center.x, center.y, ring.getRadius(), paint);
-            }
+    }
+
+    public Boolean hasNextPaintStep() {
+        return target.hasNext();
+    }
+
+    public void paintStep(Canvas canvas) {
+        Target.TargetRing ring = target.next();
+        if (ring.getRingNumber() % 2 == 0) {
+            return;
+        }
+        PointF center = ring.getCenter();
+        if (target.hasNext()) {
+            canvas.drawCircle(center.x, center.y, ring.getRadius(), getPaint());
+        } else {
+            getPaint().setStyle(Paint.Style.FILL_AND_STROKE);
+            canvas.drawCircle(center.x, center.y, ring.getRadius(), getPaint());
         }
     }
 }
