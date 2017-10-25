@@ -1,25 +1,20 @@
 package ca.jdr23bc.backgrounds.painters;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
 
-import java.util.Random;
 
 import ca.jdr23bc.backgrounds.colors.ColorScheme;
+import ca.jdr23bc.backgrounds.utils.RandomUtils;
 
 public abstract class ShapePainter<Shape> {
     private static final String TAG = ShapePainter.class.getCanonicalName();
 
     private ColorScheme colorScheme;
-    private int rootColor;
-    private Random random;
 
     public ShapePainter() {
-        this.random = new Random();
-        this.rootColor = Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256));
-        this.colorScheme = new ColorScheme(rootColor);
+        this.colorScheme = new ColorScheme(RandomUtils.getRandomColor());
     }
 
     public abstract void paint(Canvas canvas, Shape shape);

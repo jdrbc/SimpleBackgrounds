@@ -1,11 +1,16 @@
 package ca.jdr23bc.backgrounds.utils;
 
+import android.graphics.Color;
 import android.graphics.PointF;
 
 import java.util.Random;
 
 public class RandomUtils {
     public static final Random random = new Random();
+
+    public static int getRandomColor() {
+        return Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256));
+    }
 
     public static PointF getRandomPointInRect(PointF topLeft, PointF bottomRight) {
         return new PointF(
