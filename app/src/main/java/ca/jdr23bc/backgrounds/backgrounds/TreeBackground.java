@@ -11,6 +11,7 @@ import java.util.Random;
 
 import ca.jdr23bc.backgrounds.colors.ColorScheme;
 import ca.jdr23bc.backgrounds.colors.Colour;
+import ca.jdr23bc.backgrounds.utils.MathUtils;
 import ca.jdr23bc.backgrounds.utils.RandomUtils;
 
 // TODO-jdr refactor
@@ -54,23 +55,6 @@ public class TreeBackground extends Background {
     public int branchColor;
     public float width;
     public float height;
-
-    public static Double getAngle(PointF p1, PointF p2) { return Math.acos(p1.x * p2.x + p1.y * p2.y); }
-
-    public static Double getDist(PointF p1, PointF p2) { return Math.hypot(p1.x - p2.x, p1.y - p2.y); }
-
-    public static PointF add(PointF p1, PointF p2) { return new PointF(p1.x + p2.x, p1.y + p2.y); }
-
-    public static PointF sub(PointF p1, PointF p2) { return new PointF(p1.x - p2.x, p1.y - p2.y); }
-
-    public static PointF mult(PointF p1, int length) { return new PointF(p1.x * length, p1.y * length); }
-
-    public static PointF mult(PointF p1, double length) { return new PointF(new Float(p1.x * length), new Float(p1.y * length)); }
-
-    public static PointF normalize(PointF p) {
-        Double len = getDist(p, new PointF(0, 0));
-        return new PointF(new Float(p.x / len), new Float(p.y / len));
-    }
 
     public TreeBackground(int width, int height) {
         super(width, height);
@@ -150,7 +134,7 @@ public class TreeBackground extends Background {
         Branch currBranch = root;
         while(!withinRange) {
             for (Leaf leaf : leaves) {
-                Double dist = getDist(leaf.pos, currBranch.pos);
+                Double dist = MathUtils.getDist(leaf.pos, currBranch.pos);
                 if (dist < maxDist) {
                     withinRange = true;
                 }
@@ -178,7 +162,7 @@ public class TreeBackground extends Background {
                 double closestDist = 0;
                 // Find the closest branch
                 for (Branch branch : nearBranches) {
-                    double dist = getDist(leaf.pos, branch.pos);
+                    double dist = MathUtils.getDist(leaf.pos, branch.pos);
 
                     if (dist < minDist) {
                         // Leaf has been reached
@@ -279,8 +263,8 @@ public class TreeBackground extends Background {
             double maxDist = Math.max(tree.width, tree.height);
             double closestAttractorDist = maxDist;
             for (PointF attractor : curAttractors) {
-                attractedDir = add(attractedDir, normalize(sub(attractor, pos)));
-                double dist = getDist(pos, attractor);
+                attractedDir = MathUtils.add(attractedDir, MathUtils.normalize(MathUtils.sub(attractor, pos)));
+                double dist = MathUtils.getDist(pos, attractor);
                 if (dist < closestAttractorDist) {
                     closestAttractorDist = dist;
                 }
@@ -290,11 +274,11 @@ public class TreeBackground extends Background {
             double randomnessScale = MIN_RANDOMNESS_SCALE + tree.additionalRandomness * scale;
 
             // Closer the closest attractor is the more random things get
-            PointF randomness = mult(new PointF(RandomUtils.getRandomFloatInRange(-1, 1),
+            PointF randomness = MathUtils.mult(new PointF(RandomUtils.getRandomFloatInRange(-1, 1),
                     RandomUtils.getRandomFloatInRange(-1, 1)), randomnessScale);
-            attractedDir = normalize(add(randomness, attractedDir));
+            attractedDir = MathUtils.normalize(MathUtils.add(randomness, attractedDir));
             curAttractors.clear();
-            return new Branch(add(pos, mult(attractedDir, tree.branchLength)), attractedDir, this);
+            return new Branch(MathUtils.add(pos, MathUtils.mult(attractedDir, tree.branchLength)), attractedDir, this);
         }
 
         public void setWidth(float width) {
@@ -339,14 +323,14 @@ public class TreeBackground extends Background {
 
             // Get vector from middle top of screen to the leaf to get tip of leaf
             PointF top = new PointF(random.nextInt(canvas.getWidth() / 2) + canvas.getWidth() / 4, -canvas.getHeight()/4);
-            PointF topToPos = normalize(sub(pos, top));
-            PointF tip = add(pos, mult(topToPos, tree.leafLength));
-            PointF midTip = add(pos, mult(topToPos, tree.leafLength * leafWidestPoint));
+            PointF topToPos = MathUtils.normalize(MathUtils.sub(pos, top));
+            PointF tip = MathUtils.add(pos, MathUtils.mult(topToPos, tree.leafLength));
+            PointF midTip = MathUtils.add(pos, MathUtils.mult(topToPos, tree.leafLength * leafWidestPoint));
 
             // Find sides
             float width =  tree.leafLength * tree.leafWidthRatio;
-            PointF side1 = add(midTip, mult(new PointF(-topToPos.y, topToPos.x), width / 2));
-            PointF side2 = add(midTip, mult(new PointF(topToPos.y, -topToPos.x), width / 2));
+            PointF side1 = MathUtils.add(midTip, MathUtils.mult(new PointF(-topToPos.y, topToPos.x), width / 2));
+            PointF side2 = MathUtils.add(midTip, MathUtils.mult(new PointF(topToPos.y, -topToPos.x), width / 2));
 
             leaf.quadTo(side1.x, side1.y, tip.x, tip.y);
             leaf.quadTo(side2.x, side2.y, pos.x, pos.y);
