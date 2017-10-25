@@ -3,7 +3,9 @@ package ca.jdr23bc.backgrounds;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -15,18 +17,24 @@ import ca.jdr23bc.backgrounds.backgrounds.BackgroundFactory;
 public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getCanonicalName();
 
-    /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(new MyView(this));
+        setContentView(new BackgroundView(this));
     }
 
-    public class MyView extends View {
+    private static final int LOADING_ANIMATION_STEP_LENGTH_MS = 10;
+    public class BackgroundView extends View {
         GestureDetector gestureDetector;
+        Background currentBackground;
+        Boolean processing;
+        Boolean doNotStartBackgroundCreation;
+        BackgroundBuilder backgroundBuilder;
 
-        public MyView(Context context) {
+        public BackgroundView(Context context) {
             super(context);
+            processing = false;
+            doNotStartBackgroundCreation = false;
             gestureDetector = new GestureDetector(context, new GestureListener(this));
         }
 
@@ -38,9 +46,57 @@ public class MainActivity extends Activity {
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
-            Background background = new BackgroundFactory().getRandomBackground();
-            background.fill(canvas);
-            Log.d(TAG, "drew background: " + background.toString());
+            Log.d(TAG, "processing : " + processing);
+
+            if (!processing && !doNotStartBackgroundCreation) {
+                currentBackground = startBackgroundCreation(canvas);
+                processing = true;
+            }
+            doNotStartBackgroundCreation = false;
+            canvas.drawBitmap(currentBackground.getBitmap(), new Matrix(), null);
+        }
+
+        private Background startBackgroundCreation(Canvas canvas) {
+            Background background = new BackgroundFactory()
+                    .getRandomBackground(canvas.getWidth(), canvas.getHeight());
+            Log.d(TAG, "drawing: " + background.toString());
+            backgroundBuilder = new BackgroundBuilder(this, LOADING_ANIMATION_STEP_LENGTH_MS, background);
+            backgroundBuilder.start();
+            return background;
+        }
+
+        public void onBackgroundCreationComplete() {
+            processing = false;
+            doNotStartBackgroundCreation = true;
+            this.invalidate();
+        }
+
+        private class BackgroundBuilder extends Handler implements Runnable {
+            BackgroundView view;
+            Background background;
+            int delay;
+
+            public BackgroundBuilder(BackgroundView view, int delay, Background background) {
+                this.view = view;
+                this.delay = delay;
+                this.background = background;
+            }
+
+            public void start() {
+                background.init();
+                post(this);
+            }
+
+            @Override
+            public void run() {
+                if (background.hasNextDrawStep()) {
+                    background.drawStep();
+                    view.invalidate();
+                    postDelayed(this, delay);
+                } else {
+                    view.onBackgroundCreationComplete();
+                }
+            }
         }
 
         private class GestureListener extends GestureDetector.SimpleOnGestureListener {

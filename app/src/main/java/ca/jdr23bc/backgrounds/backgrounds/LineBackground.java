@@ -9,30 +9,32 @@ import android.graphics.Point;
 import ca.jdr23bc.backgrounds.colors.ColorScheme;
 import ca.jdr23bc.backgrounds.utils.RandomUtils;
 
-public class LineBackground implements Background {
+public class LineBackground extends Background {
 
-    public enum Direction { VERTICAL, HORIZONTAL {}}
+    public enum Direction { VERTICAL, HORIZONTAL }
 
-    public int MIN_COUNT = 1;
-    public int MAX_COUNT = 9;
+    public static final int MIN_COUNT = 1;
+    public static final int MAX_COUNT = 9;
 
-    public int MAX_WIDTH = 150;
-    public int MIN_WIDTH = 25;
+    public static final int MAX_WIDTH = 150;
+    public static final int MIN_WIDTH = 25;
 
-    public int MIN_ALPHA = 100;
-    public int MAX_ALPHA = 255;
+    public static final int MIN_ALPHA = 100;
+    public static final int MAX_ALPHA = 255;
 
-    int alpha = MIN_ALPHA;
-    Direction direction;
-    boolean sameDirection;
-    boolean sameColor;
-    int color;
-    boolean sameWeight;
-    float strokeWeight;
-    int count;
-    ColorScheme colorScheme;
+    private int alpha = MIN_ALPHA;
+    private Direction direction;
+    private boolean sameDirection;
+    private boolean sameColor;
+    private int color;
+    private boolean sameWeight;
+    private float strokeWeight;
+    private int numberOfLines;
+    private int lineCount;
+    private ColorScheme colorScheme;
 
-    public LineBackground() {
+    public LineBackground(int width, int height) {
+        super(width, height);
         int rootColor = Color.rgb(
                 RandomUtils.random.nextInt(256),
                 RandomUtils.random.nextInt(256),
@@ -45,51 +47,58 @@ public class LineBackground implements Background {
         color = colorScheme.getRandom();
         sameWeight = RandomUtils.random.nextBoolean();
         strokeWeight = RandomUtils.getRandomFloatInRange(MIN_WIDTH, MAX_WIDTH);
-        count = RandomUtils.getRandomIntInRange(MIN_COUNT, MAX_COUNT);
+        numberOfLines = RandomUtils.getRandomIntInRange(MIN_COUNT, MAX_COUNT);
     }
 
     @Override
-    public void fill(Canvas canvas) {
-        int width = canvas.getWidth();
-        int height = canvas.getHeight();
+    public void init() {
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(colorScheme.popRandom());
-        canvas.drawPaint(paint);
-
+        getCanvas().drawPaint(paint);
         paint.setAntiAlias(true);
-        for (int i = 0; i < count; i++) {
-            if (!sameColor) {
-                paint.setColor(colorScheme.getRandom());
-                paint.setAlpha(alpha);
-            } else {
-                paint.setColor(color);
-                paint.setAlpha(RandomUtils.getRandomIntInRange(MIN_ALPHA, MAX_ALPHA));
-            }
+        lineCount = 0;
+    }
 
-            if (!sameDirection) {
-                direction = Direction.values()[RandomUtils.random.nextInt(2)];
-            }
+    @Override
+    public Boolean hasNextDrawStep() {
+        return lineCount < numberOfLines;
+    }
 
-            if (!sameWeight) {
-                strokeWeight = RandomUtils.getRandomFloatInRange(MIN_WIDTH, MAX_WIDTH);
-            }
-            paint.setStrokeWidth(strokeWeight);
-
-            Point start = new Point();
-            Point end = new Point();
-            if (direction == Direction.VERTICAL) {
-                start.y = -500;
-                start.x = RandomUtils.random.nextInt(width);
-                end.y = height + 500;
-                end.x = RandomUtils.random.nextInt(width);
-            } else {
-                start.y = RandomUtils.random.nextInt(height);
-                start.x = -500;
-                end.y = RandomUtils.random.nextInt(height);
-                end.x = width + 500;
-            }
-            canvas.drawLine(start.x, start.y, end.x, end.y, paint);
+    @Override
+    public void drawStep() {
+        Paint paint = new Paint();
+        lineCount++;
+        if (!sameColor) {
+            paint.setColor(colorScheme.getRandom());
+            paint.setAlpha(alpha);
+        } else {
+            paint.setColor(color);
+            paint.setAlpha(RandomUtils.getRandomIntInRange(MIN_ALPHA, MAX_ALPHA));
         }
+
+        if (!sameDirection) {
+            direction = Direction.values()[RandomUtils.random.nextInt(2)];
+        }
+
+        if (!sameWeight) {
+            strokeWeight = RandomUtils.getRandomFloatInRange(MIN_WIDTH, MAX_WIDTH);
+        }
+        paint.setStrokeWidth(strokeWeight);
+
+        Point start = new Point();
+        Point end = new Point();
+        if (direction == Direction.VERTICAL) {
+            start.y = -500;
+            start.x = RandomUtils.random.nextInt(getWidth());
+            end.y = getHeight() + 500;
+            end.x = RandomUtils.random.nextInt(getWidth());
+        } else {
+            start.y = RandomUtils.random.nextInt(getHeight());
+            start.x = -500;
+            end.y = RandomUtils.random.nextInt(getHeight());
+            end.x = getWidth() + 500;
+        }
+        getCanvas().drawLine(start.x, start.y, end.x, end.y, paint);
     }
 }

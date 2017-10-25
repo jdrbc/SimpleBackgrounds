@@ -13,7 +13,8 @@ public class RectBackground extends ShapeBackground {
     RectFactory factory;
     RectPainter painter;
 
-    public RectBackground(Layout layout) {
+    public RectBackground(int width, int height, Layout layout) {
+        super(width, height);
         if (layout instanceof GridLayout) {
             ((GridLayout) layout).withSquareCellsActive(true)
                     .withRowSkewActive(RandomUtils.random.nextBoolean())

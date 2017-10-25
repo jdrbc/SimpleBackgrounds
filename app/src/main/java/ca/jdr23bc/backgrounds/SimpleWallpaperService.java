@@ -1,12 +1,14 @@
 package ca.jdr23bc.backgrounds;
 
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.PorterDuff;
 import android.service.wallpaper.WallpaperService;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
+import ca.jdr23bc.backgrounds.backgrounds.Background;
 import ca.jdr23bc.backgrounds.backgrounds.BackgroundFactory;
 
 public class SimpleWallpaperService extends WallpaperService {
@@ -46,7 +48,8 @@ public class SimpleWallpaperService extends WallpaperService {
             try {
                 canvas = holder.lockCanvas();
                 canvas.drawColor(0, PorterDuff.Mode.CLEAR);
-                new BackgroundFactory().getRandomBackground().fill(canvas);
+                Background background = new BackgroundFactory().getRandomBackground(canvas.getWidth(), canvas.getHeight());
+                canvas.drawBitmap(background.create(), new Matrix(), null);
             } finally {
                 if (canvas != null)
                     holder.unlockCanvasAndPost(canvas);

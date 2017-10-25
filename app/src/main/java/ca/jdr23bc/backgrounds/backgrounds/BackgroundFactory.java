@@ -11,22 +11,22 @@ public class BackgroundFactory {
     public static final int NUM_PATTERNS = 5;
     public static final int NUM_LAYOUTS = 3;
 
-    public Background getRandomBackground() {
+    public Background getRandomBackground(int width, int height) {
         int patternNum = RandomUtils.random.nextInt(NUM_PATTERNS);
 
         switch(patternNum) {
             case 0:
-                return new CircleBackground(getRandomLayout());
+                return new CircleBackground(width, height, getRandomLayout());
             case 1:
-                return new LineBackground();
+                return new LineBackground(width, height);
             case 2:
-                return new RectBackground(getRandomLayout());
+                return new RectBackground(width, height, getRandomLayout());
             case 3:
-                return new TargetBackground(getRandomLayout());
+                return new TargetBackground(width, height, getRandomLayout());
             case 4:
-                return new TreeBackground();
+                return new TreeBackground(width, height);
             default:
-                return new StarBackground(getRandomLayout());
+                return new StarBackground(width, height, getRandomLayout());
         }
     }
 

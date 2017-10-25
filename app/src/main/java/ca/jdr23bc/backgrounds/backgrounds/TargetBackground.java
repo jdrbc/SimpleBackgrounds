@@ -15,7 +15,8 @@ public class TargetBackground extends ShapeBackground {
     TargetFactory factory;
     TargetPainter painter;
 
-    public TargetBackground(Layout layout) {
+    public TargetBackground(int width, int height, Layout layout) {
+        super(width, height);
         factory = new TargetFactory(layout);
         painter = new TargetPainter();
         if (layout instanceof SingleCellLayout) {

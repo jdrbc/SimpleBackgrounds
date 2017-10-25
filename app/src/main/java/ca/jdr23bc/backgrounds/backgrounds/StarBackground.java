@@ -11,7 +11,8 @@ public class StarBackground extends ShapeBackground {
     StarPainter painter;
     StarFactory factory;
 
-    public StarBackground(Layout layout) {
+    public StarBackground(int width, int height, Layout layout) {
+        super(width, height);
         this.painter = new StarPainter();
         this.factory = new StarFactory(layout);
     }

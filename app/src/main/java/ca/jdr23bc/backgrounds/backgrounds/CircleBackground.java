@@ -10,7 +10,8 @@ public class CircleBackground extends ShapeBackground {
     CirclePainter painter;
     CircleFactory factory;
 
-    public CircleBackground(Layout layout) {
+    public CircleBackground(int width, int height, Layout layout) {
+        super(width, height);
         factory = new CircleFactory(layout);
         painter = new CirclePainter();
     }

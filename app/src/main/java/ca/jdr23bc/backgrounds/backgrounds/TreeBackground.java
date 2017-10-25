@@ -15,7 +15,7 @@ import ca.jdr23bc.backgrounds.utils.RandomUtils;
 
 // TODO-jdr refactor
 // http://algorithmicbotany.org/papers/colonization.egwnp2007.html
-public class TreeBackground implements Background {
+public class TreeBackground extends Background {
 
     private static final int MAX_MIN_DISTANCE = 50;
     private static final int MIN_MIN_DISTANCE = 15;
@@ -50,6 +50,8 @@ public class TreeBackground implements Background {
     public Random random = RandomUtils.random;
     public Paint paint;
     public ColorScheme colorScheme;
+    public int leafColor;
+    public int branchColor;
     public float width;
     public float height;
 
@@ -70,23 +72,13 @@ public class TreeBackground implements Background {
         return new PointF(new Float(p.x / len), new Float(p.y / len));
     }
 
-    @Override
-    public void fill(Canvas canvas) {
-        init(canvas.getWidth(), canvas.getHeight());
-        grow();
-
-        fillBackground(canvas);
-        paint.setShadowLayer(5.0f, 0.0f, 2.0f, colorScheme.popRandom());
-        paint.setColor(colorScheme.popRandom());
-        drawBranches(canvas, paint);
-        if (drawLeaves) {
-            int leafColor = Colour.darken(colorScheme.getRandom(), 0.5f);
-            paint.setColor(leafColor);
-            drawLeaves(canvas, paint);
-        }
+    public TreeBackground(int width, int height) {
+        super(width, height);
     }
 
-    private void init(int maxWidth, int maxHeight) {
+    public void init() {
+        int maxWidth = getWidth();
+        int maxHeight = getHeight();
         int heightRatio = random.nextInt(7) + 3;
         this.maxHeight = maxHeight * (heightRatio - 1) / heightRatio;
         int minRootHeight = maxHeight / 8;
@@ -127,6 +119,30 @@ public class TreeBackground implements Background {
         paint = new Paint();
         paint.setAntiAlias(true);
         branches.add(root);
+
+        fillBackground(getCanvas());
+        paint.setShadowLayer(5.0f, 0.0f, 2.0f, colorScheme.popRandom());
+        leafColor =  Colour.darken(colorScheme.popRandom(), 0.5f);
+        branchColor = colorScheme.popRandom();
+        grow();
+    }
+
+
+    private Boolean drawn = false;
+    @Override
+    public Boolean hasNextDrawStep() {
+        return !drawn;
+    }
+
+    @Override
+    public void drawStep() {
+        drawn = true;
+        paint.setColor(branchColor);
+        drawBranches(getCanvas(), paint);
+        if (drawLeaves) {
+            paint.setColor(leafColor);
+            drawLeaves(getCanvas(), paint);
+        }
     }
 
     private void grow() {        // Need to ensure that the root is within range of a leaf
