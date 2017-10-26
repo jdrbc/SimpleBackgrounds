@@ -32,4 +32,8 @@ public class MathUtils {
     public static PointF getPointBetween(PointF p1, PointF p2) {
         return new PointF((p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
     }
+
+    public static float getMillisecondsBetweenFrames(int fps) {
+        return (1 / fps) * 1000;
+    }
 }

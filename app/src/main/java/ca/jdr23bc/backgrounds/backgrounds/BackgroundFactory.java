@@ -23,9 +23,9 @@ public class BackgroundFactory {
             case 3:
                 return new TargetBackground(width, height, getRandomLayout());
             case 4:
-                return new TreeBackground(width, height);
-            default:
                 return new StarBackground(width, height, getRandomLayout());
+            default:
+                return new TreeBackground(width, height);
         }
     }
 

@@ -16,12 +16,12 @@ public abstract class Background {
         return bitmap;
     }
 
-    public Bitmap create() {
+    public Background draw() {
         init();
         while (hasNextDrawStep()) {
             drawStep();
         }
-        return bitmap;
+        return this;
     }
 
     public abstract void init();
