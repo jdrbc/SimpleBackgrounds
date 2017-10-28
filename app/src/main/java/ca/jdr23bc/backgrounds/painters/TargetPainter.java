@@ -5,7 +5,6 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 
 import ca.jdr23bc.backgrounds.shapes.Target;
-import ca.jdr23bc.backgrounds.shapes.Tree;
 
 public class TargetPainter extends ShapePainter<Target> {
 

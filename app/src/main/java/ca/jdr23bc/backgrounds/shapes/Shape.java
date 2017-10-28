@@ -40,6 +40,10 @@ public abstract class Shape {
         return bottomRight;
     }
 
+    protected PointF getCenterRight() {
+        return new PointF(bottomRight.x, bottomRight.y / 2);
+    }
+
     protected PointF getCenter() {
         return new PointF(topLeft.x + (bottomRight.x - topLeft.x) / 2, topLeft.y + (bottomRight.y - topLeft.y) / 2);
     }

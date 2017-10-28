@@ -21,6 +21,10 @@ public class MathUtils {
         return new PointF(new Float(p.x / len), new Float(p.y / len));
     }
 
+    public static float getMagnitude(PointF p) {
+        return (float) Math.hypot(p.x, p.y);
+    }
+
     public static float getWidth(PointF left, PointF right) {
         return right.x - left.x;
     }

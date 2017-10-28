@@ -47,6 +47,10 @@ public abstract class ShapePainter<Shape> {
         return colorScheme.getRandom();
     }
 
+    protected int popRandomPaintColor() {
+        return colorScheme.popRandom();
+    }
+
     protected Paint newPaint() {
         Paint paint = new Paint();
         paint.setAntiAlias(true);
