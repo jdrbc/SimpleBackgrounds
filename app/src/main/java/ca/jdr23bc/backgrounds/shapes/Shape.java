@@ -48,18 +48,18 @@ public abstract class Shape {
         return new PointF(topLeft.x + (bottomRight.x - topLeft.x) / 2, topLeft.y + (bottomRight.y - topLeft.y) / 2);
     }
 
-    protected PointF getRandomPoint() {
-        return new PointF(random.nextFloat() * getWidth(), random.nextFloat() * getHeight());
+    PointF getRandomPoint() {
+        return RandomUtils.getRandomPointInRect(topLeft, bottomRight);
     }
 
-    protected int getRandomIntInRange(int min, int max) {
+    int getRandomIntInRange(int min, int max) {
         if (min <= 0 || max <= min) {
             return max;
         }
         return RandomUtils.getRandomIntInRange(min, max);
     }
 
-    protected float getRandomFloatInRange(float min, float max) {
+    float getRandomFloatInRange(float min, float max) {
         if (min <= 0 || max <= min) {
             return max;
         }
