@@ -11,6 +11,9 @@ import ca.jdr23bc.backgrounds.utils.RandomUtils;
 
 public class Tree extends Shape {
     private static final float ATTRACTOR_CONNECTED_THRESHOLD = 25f;
+    private static final float TRUNK_WIDTH = 80f;
+    private static final float MIN_BRANCH_WIDTH = 5f;
+    private static final float BRANCH_CHILD_WIDTH_PERCENTAGE_OF_PARENT = 0.985f;
 
     private static PointF getUpUnitVector() {
         return new PointF(0, -1);
@@ -20,12 +23,11 @@ public class Tree extends Shape {
         INIT,
         GROW_TRUNK,
         GROW_BRANCHES,
-        GROW_LEAVES
+        COMPLETE
     }
 
     // Init properties
     private float branchLength;
-    private float branchWidth;
     private float leafLength;
     private float leafWidth;
     private int numberOfAttractors;
@@ -36,7 +38,7 @@ public class Tree extends Shape {
     private Branch trunkTip;
     private ArrayList<Branch> growableBranches;
     private ArrayList<Branch> unreturnedBranches;
-    private ArrayList<Branch> endBranches;
+    private ArrayList<Leaf> unreturnedLeaves;
 
     // Growing state
     private GrowState currentGrowState;
@@ -44,11 +46,10 @@ public class Tree extends Shape {
     public Tree(PointF topLeft, PointF bottomRight) {
         super(topLeft, bottomRight);
         branchLength = 10;
-        branchWidth = 20;
-        leafLength = 100;
+        leafLength = 50;
         leafWidth = 50;
         numberOfAttractors = 100;
-        attractorInitCenter = RandomUtils.getRandomPointInRect(getTopLeft(), getCenterRight());
+        attractorInitCenter = getUpperHalfCenter();
     }
 
     public float getLeafLength() {
@@ -66,57 +67,27 @@ public class Tree extends Shape {
 
         growableBranches = new ArrayList<>();
         unreturnedBranches = new ArrayList<>();
-        endBranches = new ArrayList<>();
+        unreturnedLeaves = new ArrayList<>();
+    }
+
+    public Boolean isComplete() {
+        return currentGrowState == GrowState.COMPLETE;
     }
 
     public Boolean hasNextBranch() {
-        // return true if branches are not all returned
-        return (currentGrowState == GrowState.INIT || currentGrowState == GrowState.GROW_TRUNK ||
-                currentGrowState == GrowState.GROW_BRANCHES);
+        return !unreturnedBranches.isEmpty();
     }
 
     public Boolean hasNextLeaf() {
-        return endBranches.size() > 0;
+        return !unreturnedLeaves.isEmpty();
     }
 
     public Branch nextBranch() {
-        switch (currentGrowState) {
-            case INIT:
-                growableBranches.add(trunkTip);
-                currentGrowState = GrowState.GROW_TRUNK;
-                return trunkTip;
-            case GROW_TRUNK:
-                trunkTip = trunkTip.grow();
-                growableBranches.add(trunkTip);
-                if (isTrunkWithinRangeOfAttractor()) {
-                    currentGrowState = GrowState.GROW_BRANCHES;
-                }
-                return trunkTip;
-            case GROW_BRANCHES:
-                if (unreturnedBranches.size() > 1) {
-                    return unreturnedBranches.remove(0);
-                } else {
-                    int prevSize = unreturnedBranches.size();
-                    growBranches();
-                    // If growth did not create any new branches then branch growth is complete
-                    if (unreturnedBranches.size() == prevSize) {
-                        currentGrowState = GrowState.GROW_LEAVES;
-                    }
-                    if (unreturnedBranches.size() != 0) {
-                        return unreturnedBranches.remove(0);
-                    }
-                }
-            default:
-                return trunkTip;
-        }
+        return unreturnedBranches.remove(0);
     }
 
     public Leaf nextLeaf() {
-        if (endBranches.size() >= 1) {
-            return new Leaf(RandomUtils.removeRandomElement(endBranches).getTip(), this);
-        } else {
-            return null;
-        }
+        return unreturnedLeaves.remove(0);
     }
 
     private float getHalfWidth() {
@@ -125,7 +96,7 @@ public class Tree extends Shape {
 
     private void initTrunk() {
         // Trunk starts in middle bottom and grows straight up
-        trunkTip = new Branch(new PointF(getHalfWidth(), getHeight()), getUpUnitVector(), branchLength, branchWidth);
+        trunkTip = new Branch(new PointF(getHalfWidth(), getHeight()), getUpUnitVector(), branchLength, TRUNK_WIDTH);
     }
 
     private void initAttractors() {
@@ -137,8 +108,34 @@ public class Tree extends Shape {
     }
 
     private PointF getRandomAttractor() {
-        float attractorRadius = 3 * Math.min(getWidth(), getHeight()) / 4;
+        float attractorRadius = 0.9f * (Math.min(getWidth(), getHeight()) / 2);
         return RandomUtils.getRandomPointInCircle(attractorInitCenter, attractorRadius);
+    }
+
+    public void growStep() {
+        switch (currentGrowState) {
+            case INIT:
+                growableBranches.add(trunkTip);
+                currentGrowState = GrowState.GROW_TRUNK;
+                unreturnedBranches.add(trunkTip);
+                break;
+            case GROW_TRUNK:
+                trunkTip = trunkTip.grow();
+                growableBranches.add(trunkTip);
+                if (isTrunkWithinRangeOfAttractor()) {
+                    currentGrowState = GrowState.GROW_BRANCHES;
+                }
+                unreturnedBranches.add(trunkTip);
+                break;
+            case GROW_BRANCHES:
+                int prevSize = unreturnedBranches.size();
+                growBranches();
+                // If growth did not create any new branches then branch growth is complete
+                if (unreturnedBranches.size() == prevSize) {
+                    currentGrowState = GrowState.COMPLETE;
+                }
+                break;
+        }
     }
 
     private Boolean isTrunkWithinRangeOfAttractor() {
@@ -164,9 +161,8 @@ public class Tree extends Shape {
                 if (dist < ATTRACTOR_CONNECTED_THRESHOLD) {
                     // Attractor has been reached
                     connectedAttractors.add(attractor);
-                    if (!endBranches.contains(branch)) {
-                        endBranches.add(branch);
-                    }
+                    branch.setLeaf(new Leaf(branch.getTip(), this));
+                    unreturnedLeaves.add(branch.getLeaf());
                     closestBranch = null;
                     break;
                 } else if (dist < getMaxAttractorDistance() &&
@@ -193,6 +189,9 @@ public class Tree extends Shape {
         // Grow any attracted branches
         for (Branch branch : branchesToGrow) {
             Branch next = branch.grow();
+            if (next.getWidth() > MIN_BRANCH_WIDTH) {
+                next.setWidth(branch.getWidth() * BRANCH_CHILD_WIDTH_PERCENTAGE_OF_PARENT);
+            }
             growableBranches.add(branch);
             growableBranches.add(next);
             unreturnedBranches.add(next);

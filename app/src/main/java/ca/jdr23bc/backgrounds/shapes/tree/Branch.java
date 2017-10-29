@@ -12,6 +12,7 @@ public class Branch {
     private PointF base;
     private PointF dir;
     private float lengthOfChildBranches;
+    private Leaf leaf;
 
     // List of attracting points
     private ArrayList<PointF> curAttractors = new ArrayList<>();
@@ -57,6 +58,22 @@ public class Branch {
 
     public float getWidth() {
         return width;
+    }
+
+    public float getLength() {
+        return MathUtils.getDistF(base, tip);
+    }
+
+    public Boolean hasLeaf() {
+        return leaf != null;
+    }
+
+    public Leaf getLeaf() {
+        return leaf;
+    }
+
+    public void setLeaf(Leaf leaf) {
+        this.leaf = leaf;
     }
 
     public void setWidth(float width) {

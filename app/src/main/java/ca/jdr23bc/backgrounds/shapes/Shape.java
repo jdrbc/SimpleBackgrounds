@@ -40,12 +40,17 @@ public abstract class Shape {
         return bottomRight;
     }
 
-    protected PointF getCenterRight() {
+    protected PointF getMiddleRight() {
         return new PointF(bottomRight.x, bottomRight.y / 2);
     }
 
     protected PointF getCenter() {
         return new PointF(topLeft.x + (bottomRight.x - topLeft.x) / 2, topLeft.y + (bottomRight.y - topLeft.y) / 2);
+    }
+
+    protected PointF getUpperHalfCenter() {
+        PointF midRight = getMiddleRight();
+        return new PointF(topLeft.x + (midRight.x - topLeft.x) / 2, topLeft.y + (midRight.y - topLeft.y) / 2);
     }
 
     PointF getRandomPoint() {

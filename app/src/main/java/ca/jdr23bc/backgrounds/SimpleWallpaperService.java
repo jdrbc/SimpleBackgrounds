@@ -16,6 +16,18 @@ import ca.jdr23bc.backgrounds.backgrounds.Background;
 import ca.jdr23bc.backgrounds.backgrounds.BackgroundFactory;
 import ca.jdr23bc.backgrounds.utils.MathUtils;
 
+/**
+ * TODO list
+ *      - better & different trees
+ *          - 'tree properties/dna class'
+ *              - attractor bunching for savana, pine, oak ect
+ *              - attractor density
+ *              - branch length, width ect
+ *              - branch & trunk tapering (1/2 width if is second child?)
+ *              - leaf types (pine, long, fat, ect)
+ *      - that 'wind vector' simple background
+ *      - better color schemes
+ */
 public class SimpleWallpaperService extends WallpaperService {
     private static final String TAG = SimpleWallpaperService.class.getCanonicalName();
 
@@ -56,8 +68,7 @@ public class SimpleWallpaperService extends WallpaperService {
                 backgroundAnimation.stop();
             }
             Log.d(TAG, "start creation!");
-            Background background = new BackgroundFactory().getRandomBackground(
-                    getDesiredMinimumWidth(), getDesiredMinimumHeight());
+            Background background = new BackgroundFactory().getRandomBackground();
             backgroundAnimation = new BackgroundAnimation(24, background, getSurfaceHolder());
             backgroundAnimation.start();
         }

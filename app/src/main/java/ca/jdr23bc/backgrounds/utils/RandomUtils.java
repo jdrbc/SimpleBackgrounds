@@ -22,11 +22,12 @@ public class RandomUtils {
         );
     }
 
+    // http://www.anderswallin.net/2009/05/uniform-random-points-in-a-circle-using-polar-coordinates/
     public static PointF getRandomPointInCircle(PointF center, float radius) {
         double randomAngle = random.nextDouble() * 2 * Math.PI;
-        float randomManitude = random.nextFloat() * radius;
-        float y = (float) Math.sin(randomAngle) * randomManitude;
-        float x = (float) Math.cos(randomAngle) * randomManitude;
+        float randomMangitude = radius * (float) Math.sqrt(random.nextFloat());
+        float y = (float) Math.sin(randomAngle) * randomMangitude;
+        float x = (float) Math.cos(randomAngle) * randomMangitude;
         return new PointF(center.x + x, center.y + y);
     }
 

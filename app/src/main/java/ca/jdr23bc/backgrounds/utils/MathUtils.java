@@ -2,11 +2,10 @@ package ca.jdr23bc.backgrounds.utils;
 
 import android.graphics.PointF;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MathUtils {
     public static Double getDist(PointF p1, PointF p2) { return Math.hypot(p1.x - p2.x, p1.y - p2.y); }
+
+    public static Float getDistF(PointF p1, PointF p2) { return (float) Math.hypot(p1.x - p2.x, p1.y - p2.y); }
 
     public static PointF add(PointF p1, PointF p2) { return new PointF(p1.x + p2.x, p1.y + p2.y); }
 
