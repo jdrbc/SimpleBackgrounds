@@ -7,7 +7,7 @@ public abstract class Background {
     private Bitmap bitmap;
     private Canvas canvas;
 
-    public Background(int width, int height) {
+    Background(int width, int height) {
         this.bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         this.canvas = new Canvas(bitmap);
     }
@@ -29,6 +29,12 @@ public abstract class Background {
     public abstract Boolean hasNextDrawStep();
 
     public abstract void drawStep();
+
+    public void freeMemory() {
+        bitmap = null;
+        canvas = null;
+        System.gc();
+    }
 
     protected Canvas getCanvas() { return canvas; }
 

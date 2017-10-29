@@ -1,5 +1,6 @@
 package ca.jdr23bc.backgrounds;
 
+import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.PorterDuff;
@@ -55,30 +56,35 @@ public class SimpleWallpaperService extends WallpaperService {
             }
             Log.d(TAG, "start creation!");
             backgroundAnimation = new BackgroundAnimation(24);
+
+            getSurfaceHolder().addCallback(backgroundAnimation);
             backgroundAnimation.start();
         }
 
-        private class BackgroundAnimation extends Handler implements Runnable {
+        // Handler class doesn't need to be static because it doesn't post long-delayed messages
+        @SuppressLint("HandlerLeak")
+        private class BackgroundAnimation extends Handler implements Runnable, SurfaceHolder.Callback {
             Background background;
             int delay;
             boolean initCalled;
 
-            public BackgroundAnimation(int fps) {
+            BackgroundAnimation(int fps) {
                 this.delay = Math.round(MathUtils.getMillisecondsBetweenFrames(fps));
                 this.background = new BackgroundFactory().getRandomBackground(
                         getDesiredMinimumWidth(), getDesiredMinimumHeight());
                 initCalled = false;
             }
 
-            public void start() {
+            void start() {
                 Log.d(TAG, "start!");
                 background.init();
                 post(this);
             }
 
-            public void stop() {
+            void stop() {
                 Log.d(TAG, "stop!");
                 removeCallbacks(this);
+                background.freeMemory();
             }
 
             @Override
@@ -97,12 +103,29 @@ public class SimpleWallpaperService extends WallpaperService {
                 Canvas canvas = null;
                 try {
                     canvas = holder.lockCanvas();
-                    canvas.drawColor(0, PorterDuff.Mode.CLEAR);
-                    canvas.drawBitmap(background.getBitmap(), new Matrix(), null);
+                    if (canvas != null) {
+                        canvas.drawColor(0, PorterDuff.Mode.CLEAR);
+                        canvas.drawBitmap(background.getBitmap(), new Matrix(), null);
+                    }
                 } finally {
                     if (canvas != null)
                         holder.unlockCanvasAndPost(canvas);
                 }
+            }
+
+            @Override
+            public void surfaceCreated(SurfaceHolder surfaceHolder) {
+                stop();
+            }
+
+            @Override
+            public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
+                stop();
+            }
+
+            @Override
+            public void surfaceDestroyed(SurfaceHolder holder) {
+                stop();
             }
         }
 
