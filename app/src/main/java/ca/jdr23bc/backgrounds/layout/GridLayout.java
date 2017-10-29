@@ -1,7 +1,5 @@
 package ca.jdr23bc.backgrounds.layout;
 
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.PointF;
 
 import ca.jdr23bc.backgrounds.utils.MathUtils;
@@ -15,13 +13,20 @@ public class GridLayout extends Layout {
     private float padding;
     private float cellWidth;
     private float cellHeight;
-    private boolean squareCellsActive = false;
-    private boolean cellOverlapActive = false;
-    private boolean rowSkewActive = false;
-    private boolean shuffledRowsActive = false;
+    private boolean squareCellsActive;
+    private boolean cellOverlapActive;
+    private boolean rowSkewActive;
+    private boolean shuffledRowsActive;
     private float rowSkew;
     private float cellOverlap;
     private GridCell currCell;
+
+    public GridLayout() {
+        squareCellsActive = true;
+        cellOverlapActive = false;
+        rowSkewActive = false;
+        shuffledRowsActive = false;
+    }
 
     public GridLayout withSquareCellsActive(Boolean active) {
         this.squareCellsActive = active;
@@ -157,7 +162,7 @@ public class GridLayout extends Layout {
         float x;
         float y;
 
-        public GridCell(float x, float y, GridLayout grid) {
+        GridCell(float x, float y, GridLayout grid) {
             super(new PointF(x, y), new PointF(x + grid.cellWidth, y + grid.cellHeight));
             this.grid = grid;
             this.x = x;
@@ -166,7 +171,7 @@ public class GridLayout extends Layout {
             this.height = grid.cellHeight;
         }
 
-        public GridCell getNextCell() {
+        GridCell getNextCell() {
             float nextX = getNextX();
             float nextY = y;
             if (nextX > grid.getBottomRightWithPadding().x) {
@@ -176,16 +181,8 @@ public class GridLayout extends Layout {
             return new GridCell(nextX, nextY, grid);
         }
 
-        public int getRow() {
+        int getRow() {
             return (int) (y / cellHeight);
-        }
-
-        public int getCol() {
-            return (int) (x / cellWidth);
-        }
-
-        public void draw(Canvas canvas, Paint paint) {
-            canvas.drawRect(x, y, x + cellWidth, y + cellHeight, paint);
         }
 
         public PointF getTopLeft() {
