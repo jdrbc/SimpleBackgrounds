@@ -1,6 +1,5 @@
 package ca.jdr23bc.backgrounds;
 
-import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.PorterDuff;
@@ -10,6 +9,8 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
+
+import java.lang.ref.WeakReference;
 
 import ca.jdr23bc.backgrounds.backgrounds.Background;
 import ca.jdr23bc.backgrounds.backgrounds.BackgroundFactory;
@@ -55,78 +56,10 @@ public class SimpleWallpaperService extends WallpaperService {
                 backgroundAnimation.stop();
             }
             Log.d(TAG, "start creation!");
-            backgroundAnimation = new BackgroundAnimation(24);
-
-            getSurfaceHolder().addCallback(backgroundAnimation);
+            Background background = new BackgroundFactory().getRandomBackground(
+                    getDesiredMinimumWidth(), getDesiredMinimumHeight());
+            backgroundAnimation = new BackgroundAnimation(24, background, getSurfaceHolder());
             backgroundAnimation.start();
-        }
-
-        // Handler class doesn't need to be static because it doesn't post long-delayed messages
-        @SuppressLint("HandlerLeak")
-        private class BackgroundAnimation extends Handler implements Runnable, SurfaceHolder.Callback {
-            Background background;
-            int delay;
-            boolean initCalled;
-
-            BackgroundAnimation(int fps) {
-                this.delay = Math.round(MathUtils.getMillisecondsBetweenFrames(fps));
-                this.background = new BackgroundFactory().getRandomBackground(
-                        getDesiredMinimumWidth(), getDesiredMinimumHeight());
-                initCalled = false;
-            }
-
-            void start() {
-                Log.d(TAG, "start!");
-                background.init();
-                post(this);
-            }
-
-            void stop() {
-                Log.d(TAG, "stop!");
-                removeCallbacks(this);
-                background.freeMemory();
-            }
-
-            @Override
-            public void run() {
-                Log.d(TAG, "run!");
-                background.drawStep();
-                draw();
-                if (background.hasNextDrawStep()) {
-                    postDelayed(this, delay);
-                }
-            }
-
-            private void draw() {
-                Log.d(TAG, "draw!");
-                SurfaceHolder holder = getSurfaceHolder();
-                Canvas canvas = null;
-                try {
-                    canvas = holder.lockCanvas();
-                    if (canvas != null) {
-                        canvas.drawColor(0, PorterDuff.Mode.CLEAR);
-                        canvas.drawBitmap(background.getBitmap(), new Matrix(), null);
-                    }
-                } finally {
-                    if (canvas != null)
-                        holder.unlockCanvasAndPost(canvas);
-                }
-            }
-
-            @Override
-            public void surfaceCreated(SurfaceHolder surfaceHolder) {
-                stop();
-            }
-
-            @Override
-            public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-                stop();
-            }
-
-            @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
-                stop();
-            }
         }
 
         private class GestureListener extends GestureDetector.SimpleOnGestureListener {
@@ -136,6 +69,77 @@ public class SimpleWallpaperService extends WallpaperService {
                 startBackgroundCreation();
                 return true;
             }
+        }
+    }
+
+    static class BackgroundAnimation extends Handler implements Runnable, SurfaceHolder.Callback {
+        Background background;
+        int delay;
+        WeakReference<SurfaceHolder> holder;
+
+        BackgroundAnimation(int fps, Background background, SurfaceHolder holder) {
+            this.delay = Math.round(MathUtils.getMillisecondsBetweenFrames(fps));
+            this.background = background;
+            this.holder = new WeakReference<> (holder);
+            holder.addCallback(this);
+        }
+
+        void start() {
+            Log.d(TAG, "start!");
+            background.init();
+            post(this);
+        }
+
+        void stop() {
+            Log.d(TAG, "stop!");
+            removeCallbacks(this);
+            background.freeMemory();
+        }
+
+        @Override
+        public void run() {
+            Log.d(TAG, "run!");
+            background.drawStep();
+            // Check if holder has been gc'd
+            SurfaceHolder strongReferenceToHolder = holder.get();
+            if (strongReferenceToHolder != null) {
+                draw(strongReferenceToHolder);
+                if (background.hasNextDrawStep()) {
+                    postDelayed(this, delay);
+                }
+            } else {
+                stop();
+            }
+        }
+
+        private void draw(SurfaceHolder holder) {
+            Log.d(TAG, "draw!");
+            Canvas canvas = null;
+            try {
+                canvas = holder.lockCanvas();
+                if (canvas != null) {
+                    canvas.drawColor(0, PorterDuff.Mode.CLEAR);
+                    canvas.drawBitmap(background.getBitmap(), new Matrix(), null);
+                }
+            } finally {
+                if (canvas != null)
+                    holder.unlockCanvasAndPost(canvas);
+            }
+        }
+
+        @Override
+        public void surfaceCreated(SurfaceHolder surfaceHolder) {
+            stop();
+        }
+
+        @Override
+        public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
+            stop();
+        }
+
+        @Override
+        public void surfaceDestroyed(SurfaceHolder holder) {
+            stop();
         }
     }
 }
