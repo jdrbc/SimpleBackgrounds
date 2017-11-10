@@ -8,10 +8,13 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
 
+import ca.jdr23bc.backgrounds.colors.ColorScheme;
+import ca.jdr23bc.backgrounds.colors.Colour;
 import ca.jdr23bc.backgrounds.shapes.tree.Branch;
 import ca.jdr23bc.backgrounds.shapes.tree.Leaf;
 import ca.jdr23bc.backgrounds.shapes.tree.Tree;
 import ca.jdr23bc.backgrounds.utils.MathUtils;
+import ca.jdr23bc.backgrounds.utils.RandomUtils;
 
 public class TreePainter extends ShapePainter<Tree> {
 
@@ -24,6 +27,12 @@ public class TreePainter extends ShapePainter<Tree> {
     private Canvas branchLayerCanvas;
     private Bitmap leafLayer;
     private Canvas leafLayerCanvas;
+
+    public TreePainter() {
+        super();
+        setColorScheme(Colour.ColorScheme.ColorSchemeMonochromatic);
+    }
+
 
     @Override
     public void init(Tree tree) {

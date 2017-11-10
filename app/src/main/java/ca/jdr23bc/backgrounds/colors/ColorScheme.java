@@ -14,8 +14,12 @@ public class ColorScheme {
     Colour.ColorScheme csType;
 
     public ColorScheme(int rootColor) {
+        this(rootColor, Colour.getRandomScheme());
+    }
+
+    public ColorScheme(int rootColor, Colour.ColorScheme csType) {
         this.rootColor = rootColor;
-        csType = Colour.getRandomScheme();
+        this.csType = csType;
         int[] ints = Colour.colorSchemeOfType(rootColor, csType);
         for (int index = 0; index < ints.length; index++) {
             colors.add(ints[index]);

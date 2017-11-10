@@ -6,6 +6,7 @@ import android.util.Log;
 
 
 import ca.jdr23bc.backgrounds.colors.ColorScheme;
+import ca.jdr23bc.backgrounds.colors.Colour;
 import ca.jdr23bc.backgrounds.utils.RandomUtils;
 
 public abstract class ShapePainter<Shape> {
@@ -41,6 +42,10 @@ public abstract class ShapePainter<Shape> {
 
     protected Paint getPaint() {
         return paint;
+    }
+
+    protected void setColorScheme(Colour.ColorScheme scheme) {
+        colorScheme = new ColorScheme(RandomUtils.getRandomColor(), scheme);
     }
 
     protected int getRandomPaintColor() {
