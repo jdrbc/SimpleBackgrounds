@@ -16,14 +16,6 @@ public abstract class Background {
         return bitmap;
     }
 
-    public Background draw() {
-        init();
-        while (hasNextDrawStep()) {
-            drawStep();
-        }
-        return this;
-    }
-
     public abstract void init();
 
     public abstract Boolean hasNextDrawStep();

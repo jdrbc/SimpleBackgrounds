@@ -44,17 +44,17 @@ public class SimpleWallpaperService extends WallpaperService {
 
         @Override
         public void onSurfaceCreated(SurfaceHolder holder) {
-            startBackgroundCreation();
+            drawBackgroundOrStartNewBackgroundCreation();
         }
 
         @Override
         public void onSurfaceRedrawNeeded(SurfaceHolder holder) {
-            startBackgroundCreation();
+            drawBackgroundOrStartNewBackgroundCreation();
         }
 
         @Override
         public void onDesiredSizeChanged(int desiredWidth, int desiredHeight) {
-            startBackgroundCreation();
+            drawBackgroundOrStartNewBackgroundCreation();
         }
 
         @Override
@@ -65,7 +65,15 @@ public class SimpleWallpaperService extends WallpaperService {
             }
         }
 
-        private void startBackgroundCreation() {
+        private void drawBackgroundOrStartNewBackgroundCreation() {
+            if (backgroundAnimation == null || !backgroundAnimation.isValid()) {
+                startNewBackgroundCreation();
+            } else {
+                backgroundAnimation.draw();
+            }
+        }
+
+        private void startNewBackgroundCreation() {
             if (backgroundAnimation != null) {
                 backgroundAnimation.stop();
             }
@@ -79,7 +87,7 @@ public class SimpleWallpaperService extends WallpaperService {
             // event when double tap occurs
             @Override
             public boolean onDoubleTap(MotionEvent e) {
-                startBackgroundCreation();
+                startNewBackgroundCreation();
                 return true;
             }
         }
@@ -89,11 +97,13 @@ public class SimpleWallpaperService extends WallpaperService {
         Background background;
         int delay;
         WeakReference<SurfaceHolder> holder;
+        Boolean isValid;
 
         BackgroundAnimation(int fps, Background background, SurfaceHolder holder) {
             this.delay = Math.round(MathUtils.getMillisecondsBetweenFrames(fps));
             this.background = background;
             this.holder = new WeakReference<> (holder);
+            isValid = true;
             holder.addCallback(this);
         }
 
@@ -107,21 +117,31 @@ public class SimpleWallpaperService extends WallpaperService {
             Log.d(TAG, "stop!");
             removeCallbacks(this);
             background.freeMemory();
+            isValid = false;
         }
 
         @Override
         public void run() {
             Log.d(TAG, "run!");
             background.drawStep();
+            draw();
+
+            if (background.hasNextDrawStep() && holder.get() != null) {
+                postDelayed(this, delay);
+            } else {
+                stop();
+            }
+        }
+
+        public Boolean isValid() {
+            return isValid;
+        }
+
+        public void draw() {
             // Check if holder has been gc'd
             SurfaceHolder strongReferenceToHolder = holder.get();
             if (strongReferenceToHolder != null) {
                 draw(strongReferenceToHolder);
-                if (background.hasNextDrawStep()) {
-                    postDelayed(this, delay);
-                }
-            } else {
-                stop();
             }
         }
 

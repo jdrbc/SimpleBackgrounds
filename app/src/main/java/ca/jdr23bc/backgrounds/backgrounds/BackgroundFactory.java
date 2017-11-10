@@ -10,7 +10,7 @@ import ca.jdr23bc.backgrounds.utils.RandomUtils;
 
 
 public class BackgroundFactory {
-    public static final int NUM_PATTERNS = 10;
+    public static final int NUM_PATTERNS = 9;
 
     public Background getRandomBackground() {
         int width = Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -22,24 +22,20 @@ public class BackgroundFactory {
         int patternType =  RandomUtils.random.nextInt(NUM_PATTERNS);
         switch(patternType) {
             case 0:
-                return new CircleBackground(width, height, new SingleCellLayout());
-            case 1:
                 return new CircleBackground(width, height, new GridLayout());
-            case 2:
+            case 1:
                 return new CircleBackground(width, height, new RandomLayout());
-            case 3:
+            case 2:
                 return new RectBackground(width, height, new GridLayout());
-            case 4:
+            case 3:
                 return new RectBackground(width, height, new RandomLayout());
-            case 5:
+            case 4:
                 return new TargetBackground(width, height, new GridLayout());
-            case 6:
-                return new TargetBackground(width, height, new SingleCellLayout());
-            case 7:
+            case 5:
                 return new StarBackground(width, height, new GridLayout());
-            case 8:
+            case 6:
                 return new StarBackground(width, height, new SingleCellLayout());
-            case 9:
+            case 7:
                 return new LineBackground(width, height);
             default:
                 return new TreeBackground(width, height, new SingleCellLayout());
