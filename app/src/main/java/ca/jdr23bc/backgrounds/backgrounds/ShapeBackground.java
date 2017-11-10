@@ -1,8 +1,10 @@
 package ca.jdr23bc.backgrounds.backgrounds;
 
 import android.graphics.PointF;
+import android.util.Log;
 
 import ca.jdr23bc.backgrounds.painters.ShapePainter;
+import ca.jdr23bc.backgrounds.shapes.Shape;
 import ca.jdr23bc.backgrounds.shapes.ShapeFactory;
 
 public abstract class ShapeBackground extends Background {
@@ -31,7 +33,9 @@ public abstract class ShapeBackground extends Background {
     public void drawStep() {
         ShapePainter painter = getPainter();
         if (!painter.hasNextPaintStep()) {
-            painter.init(getFactory().next());
+            Shape next = getFactory().next();
+            Log.d(TAG, "painting shape: " + next.toString());
+            painter.init(next);
         }
         painter.paintStep(getCanvas());
     }

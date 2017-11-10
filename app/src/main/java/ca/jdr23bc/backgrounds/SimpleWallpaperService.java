@@ -27,6 +27,8 @@ import ca.jdr23bc.backgrounds.utils.MathUtils;
  *              - leaf types (pine, long, fat, ect)
  *      - that 'wind vector' simple background
  *      - better color schemes
+ *      - make use of simplex noise
+ *      - grid layout on angle
  */
 public class SimpleWallpaperService extends WallpaperService {
     private static final String TAG = SimpleWallpaperService.class.getCanonicalName();

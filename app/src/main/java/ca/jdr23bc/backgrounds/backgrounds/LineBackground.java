@@ -55,8 +55,8 @@ public class LineBackground extends Background {
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(colorScheme.popRandom());
-        getCanvas().drawPaint(paint);
         paint.setAntiAlias(true);
+        getCanvas().drawPaint(paint);
         lineCount = 0;
     }
 
@@ -68,6 +68,7 @@ public class LineBackground extends Background {
     @Override
     public void drawStep() {
         Paint paint = new Paint();
+        paint.setAntiAlias(true);
         lineCount++;
         if (!sameColor) {
             paint.setColor(colorScheme.getRandom());
