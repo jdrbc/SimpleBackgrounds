@@ -74,10 +74,10 @@ public class SimpleWallpaperService extends WallpaperService {
         }
 
         private void startNewBackgroundCreation() {
+            Log.d(TAG, "start new background creation!");
             if (backgroundAnimation != null) {
                 backgroundAnimation.stop();
             }
-            Log.d(TAG, "start creation!");
             Background background = new BackgroundFactory().getRandomBackground();
             backgroundAnimation = new BackgroundAnimation(24, background, getSurfaceHolder());
             backgroundAnimation.start();
@@ -108,7 +108,7 @@ public class SimpleWallpaperService extends WallpaperService {
         }
 
         void start() {
-            Log.d(TAG, "start!");
+            Log.d(TAG, "start! creation of " + background.toString());
             background.init();
             post(this);
         }

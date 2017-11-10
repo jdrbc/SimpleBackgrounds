@@ -21,8 +21,7 @@ public class Colour extends Color {
     public static ColorScheme getRandomScheme() {
         ColorScheme[] schemes = {
                 ColorScheme.ColorSchemeAnalagous,
-                ColorScheme.ColorSchemeMonochromatic,
-                ColorScheme.ColorSchemeComplementary
+                ColorScheme.ColorSchemeMonochromatic
         };
         Random rand = new Random();
         return schemes[rand.nextInt(schemes.length)];

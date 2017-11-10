@@ -31,10 +31,6 @@ public class RandomUtils {
         return new PointF(center.x + x, center.y + y);
     }
 
-    public static Branch removeRandomElement(ArrayList<Branch> branches) {
-        return branches.remove(getRandomIntInRange(0, branches.size()));
-    }
-
     public static int getRandomIntInRange(int min, int max) {
         return min + random.nextInt(max - min);
     }
