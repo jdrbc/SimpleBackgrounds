@@ -3,19 +3,16 @@ package ca.jdr23bc.backgrounds.backgrounds;
 import android.content.res.Resources;
 
 import ca.jdr23bc.backgrounds.layout.GridLayout;
-import ca.jdr23bc.backgrounds.layout.Layout;
 import ca.jdr23bc.backgrounds.layout.RandomLayout;
 import ca.jdr23bc.backgrounds.layout.SingleCellLayout;
 import ca.jdr23bc.backgrounds.utils.RandomUtils;
 
 
 public class BackgroundFactory {
-    public static final int NUM_PATTERNS = 9;
+    private static final int NUM_PATTERNS = 9;
 
     public Background getRandomBackground() {
-        int width = Resources.getSystem().getDisplayMetrics().widthPixels;
-        int height = Resources.getSystem().getDisplayMetrics().heightPixels;
-        return getRandomBackground(width, height);
+        return getRandomBackground(getDefaultWidth(), getDefaultHeight());
     }
 
     public Background getRandomBackground(int width, int height) {
@@ -38,7 +35,23 @@ public class BackgroundFactory {
             case 7:
                 return new LineBackground(width, height);
             default:
-                return new TreeBackground(width, height, new SingleCellLayout());
+                return getTreeBackground(width, height);
         }
+    }
+
+    public TreeBackground getTreeBackground() {
+        return getTreeBackground(getDefaultWidth(), getDefaultHeight());
+    }
+
+    public TreeBackground getTreeBackground(int width, int height) {
+        return new TreeBackground(width, height, new SingleCellLayout());
+    }
+
+    private int getDefaultWidth() {
+        return Resources.getSystem().getDisplayMetrics().widthPixels;
+    }
+
+    private int getDefaultHeight() {
+        return Resources.getSystem().getDisplayMetrics().heightPixels;
     }
 }
