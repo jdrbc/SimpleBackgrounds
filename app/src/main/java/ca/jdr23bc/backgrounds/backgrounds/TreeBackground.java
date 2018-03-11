@@ -9,13 +9,20 @@ import ca.jdr23bc.backgrounds.shapes.tree.TreeFactory;
 
 public class TreeBackground extends ShapeBackground {
 
-    TreeFactory factory;
-    TreePainter painter;
+    private TreeFactory factory;
+    private TreePainter painter;
 
-    public TreeBackground(int width, int height, Layout layout) {
+    TreeBackground(int width, int height, Layout layout) {
         super(width, height);
         factory = new TreeFactory(layout);
         painter = new TreePainter();
+    }
+
+    @Override
+    public void freeMemory() {
+        factory = null;
+        painter = null;
+        super.freeMemory();
     }
 
     @Override
