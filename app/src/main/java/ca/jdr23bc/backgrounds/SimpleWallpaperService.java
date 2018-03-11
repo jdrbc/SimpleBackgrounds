@@ -44,21 +44,25 @@ public class SimpleWallpaperService extends WallpaperService {
 
         @Override
         public void onSurfaceCreated(SurfaceHolder holder) {
+            Log.i(TAG, "surface created");
             drawBackgroundOrStartNewBackgroundCreation();
         }
 
         @Override
         public void onSurfaceRedrawNeeded(SurfaceHolder holder) {
+            Log.i(TAG, "surface redraw needed");
             drawBackgroundOrStartNewBackgroundCreation();
         }
 
         @Override
         public void onDesiredSizeChanged(int desiredWidth, int desiredHeight) {
+            Log.i(TAG, "desired size changed");
             drawBackgroundOrStartNewBackgroundCreation();
         }
 
         @Override
         public void onTouchEvent(MotionEvent event) {
+            Log.i(TAG, "touch event");
             super.onTouchEvent(event);
             if (isVisible()) {
                 gestureDetector.onTouchEvent(event);
@@ -66,21 +70,33 @@ public class SimpleWallpaperService extends WallpaperService {
         }
 
         private void drawBackgroundOrStartNewBackgroundCreation() {
-            if (backgroundAnimation == null || !backgroundAnimation.isValid()) {
+            Log.d(TAG, "drawing background or starting new background creation...");
+            if (backgroundAnimation == null || backgroundAnimation.hasStopped() || !backgroundAnimation.isValid()) {
+                Log.d(TAG, "...background animation not defined, finished animating or lost " +
+                        "reference to background");
                 startNewBackgroundCreation();
             } else {
+                Log.d(TAG, "...background animation in progress - drawing background");
                 backgroundAnimation.draw();
             }
         }
 
         private void startNewBackgroundCreation() {
-            Log.d(TAG, "start new background creation!");
+            Log.d(TAG, "starting new background creation!");
             if (backgroundAnimation != null) {
+                Log.d(TAG, "stopping old background animation");
                 backgroundAnimation.stop();
             }
-            Background background = new BackgroundFactory().getRandomBackground();
+
+            Log.d(TAG, "creating new background");
+//            Background background = new BackgroundFactory().getRandomBackground();
+            Background background = new BackgroundFactory().getTreeBackground();
+            Log.d(TAG, "new background created");
+
+            Log.d(TAG, "creating new background animation");
             backgroundAnimation = new BackgroundAnimation(24, background, getSurfaceHolder());
             backgroundAnimation.start();
+            Log.d(TAG, "new background animation created & started");
         }
 
         private class GestureListener extends GestureDetector.SimpleOnGestureListener {
@@ -93,36 +109,41 @@ public class SimpleWallpaperService extends WallpaperService {
         }
     }
 
+    private static Integer backgroundAnimationCount = 0;
     static class BackgroundAnimation extends Handler implements Runnable, SurfaceHolder.Callback {
         Background background;
         int delay;
         WeakReference<SurfaceHolder> holder;
-        Boolean isValid;
+        Boolean hasStopped;
+        Integer animationNumber;
+        String logTag;
 
         BackgroundAnimation(int fps, Background background, SurfaceHolder holder) {
             this.delay = Math.round(MathUtils.getMillisecondsBetweenFrames(fps));
             this.background = background;
             this.holder = new WeakReference<> (holder);
-            isValid = true;
+            this.hasStopped = false;
+            this.animationNumber = backgroundAnimationCount++;
+            this.logTag = BackgroundAnimation.class.getCanonicalName() + "-" + animationNumber;
             holder.addCallback(this);
         }
 
         void start() {
-            Log.d(TAG, "start! creation of " + background.toString());
+            Log.d(logTag, "start! initializing " + background.toString());
             background.init();
             post(this);
         }
 
         void stop() {
-            Log.d(TAG, "stop!");
+            Log.d(logTag, "stop!");
             removeCallbacks(this);
             background.freeMemory();
-            isValid = false;
+            hasStopped = true;
         }
 
         @Override
         public void run() {
-            Log.d(TAG, "run!");
+            Log.d(logTag, "run!");
             background.drawStep();
             draw();
 
@@ -133,20 +154,30 @@ public class SimpleWallpaperService extends WallpaperService {
             }
         }
 
-        public Boolean isValid() {
-            return isValid;
+        /**
+         * @return True if this animation has a valid background image to draw
+         */
+        Boolean isValid() {
+            return holder.get() != null;
         }
 
-        public void draw() {
+        Boolean hasStopped() {
+            return hasStopped;
+        }
+
+        void draw() {
             // Check if holder has been gc'd
             SurfaceHolder strongReferenceToHolder = holder.get();
             if (strongReferenceToHolder != null) {
                 draw(strongReferenceToHolder);
+            } else {
+                Log.e(logTag, "lost reference to the surface holder! Stopping");
+                stop();
             }
         }
 
         private void draw(SurfaceHolder holder) {
-            Log.d(TAG, "draw!");
+            Log.d(logTag, "draw!");
             Canvas canvas = null;
             try {
                 canvas = holder.lockCanvas();
