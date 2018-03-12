@@ -3,6 +3,7 @@ package ca.jdr23bc.backgrounds.painters;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -13,8 +14,11 @@ import ca.jdr23bc.backgrounds.shapes.tree.Branch;
 import ca.jdr23bc.backgrounds.shapes.tree.Leaf;
 import ca.jdr23bc.backgrounds.shapes.tree.Tree;
 import ca.jdr23bc.backgrounds.utils.MathUtils;
+import ca.jdr23bc.backgrounds.utils.RandomUtils;
 
 public class TreePainter extends ShapePainter<Tree> {
+    // Set saturation in the middle so that leaves & branches don't blend into background color
+    private static final float ROOT_COLOR_SATURATION = 0.5f;
 
     private Tree tree;
     private int branchColor;
@@ -28,15 +32,26 @@ public class TreePainter extends ShapePainter<Tree> {
 
     public TreePainter() {
         super();
-        setColorScheme(Colour.ColorScheme.ColorSchemeMonochromatic);
+        float[] rootColorHsv = new float[3];
+        Color.colorToHSV(RandomUtils.getRandomColor(), rootColorHsv);
+        rootColorHsv[1] = ROOT_COLOR_SATURATION;
+        setColorScheme(Color.HSVToColor(rootColorHsv), Colour.ColorScheme.ColorSchemeMonochromatic);
     }
 
     @Override
     public void init(Tree tree) {
         this.tree = tree;
-        this.branchColor = popRandomPaintColor();
-        this.leafColor = popRandomPaintColor();
-        this.shadowColor = popRandomPaintColor();
+        if (RandomUtils.random.nextBoolean()) {
+            this.leafColor = popLightestPaintColor();
+            this.shadowColor = popDarkestPaintColor();
+            this.branchColor = popDarkestPaintColor();
+            setBackgroundColor(popDarkestPaintColor());
+        } else {
+            this.leafColor = popDarkestPaintColor();
+            setBackgroundColor(popLightestPaintColor());
+            this.branchColor = popLightestPaintColor();
+            this.shadowColor = popLightestPaintColor();
+        }
         this.lightDir = MathUtils.normalize(new PointF(-1, -1));
         this.branchLayer = Bitmap.createBitmap((int) tree.getWidth(), (int) tree.getHeight(), Bitmap.Config.ARGB_8888);
         this.branchLayerCanvas = new Canvas(branchLayer);

@@ -2,8 +2,8 @@ package ca.jdr23bc.backgrounds.painters;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.os.Build;
 import android.util.Log;
-
 
 import ca.jdr23bc.backgrounds.colors.ColorScheme;
 import ca.jdr23bc.backgrounds.colors.Colour;
@@ -14,6 +14,7 @@ public abstract class ShapePainter<Shape> {
 
     private ColorScheme colorScheme;
     private Paint paint;
+    private Integer backgroundColor;
 
     public ShapePainter() {
         this.paint = newPaint();
@@ -29,9 +30,8 @@ public abstract class ShapePainter<Shape> {
     public void fillBackground(Canvas canvas) {
         Paint paint = newPaint();
         paint.setStyle(Paint.Style.FILL);
-        int background = colorScheme.popRandom();
-        Log.d(TAG, "Background color: " + background);
-        paint.setColor(background);
+        Log.d(TAG, "Background color: " + getBackgroundColor());
+        paint.setColor(getBackgroundColor());
         canvas.drawPaint(paint);
     }
 
@@ -40,25 +40,56 @@ public abstract class ShapePainter<Shape> {
         return "{ colorScheme: " + colorScheme.toString() + " }";
     }
 
-    protected Paint getPaint() {
+    Paint getPaint() {
         return paint;
     }
 
-    protected void setColorScheme(Colour.ColorScheme scheme) {
-        colorScheme = new ColorScheme(RandomUtils.getRandomColor(), scheme);
+    void setColorScheme(int rootColor, Colour.ColorScheme schemeType) {
+        colorScheme = new ColorScheme(rootColor, schemeType);
     }
 
-    protected int getRandomPaintColor() {
+    protected int getRootColor() {
+        return colorScheme.getRootColor();
+    }
+
+    int getRandomPaintColor() {
         return colorScheme.getRandom();
     }
 
-    protected int popRandomPaintColor() {
+    private int popRandomPaintColor() {
         return colorScheme.popRandom();
     }
 
-    protected Paint newPaint() {
+    int popDarkestPaintColor() {
+        if (Build.VERSION.SDK_INT >= 24) {
+            return colorScheme.popDarkest();
+        } else {
+            return colorScheme.popRandom();
+        }
+    }
+
+    int popLightestPaintColor() {
+        if (Build.VERSION.SDK_INT >= 24) {
+            return colorScheme.popLightest();
+        } else {
+            return colorScheme.popRandom();
+        }
+    }
+
+    Paint newPaint() {
         Paint paint = new Paint();
         paint.setAntiAlias(true);
         return paint;
+    }
+
+    void setBackgroundColor(int backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
+    private int getBackgroundColor() {
+        if (backgroundColor == null) {
+            backgroundColor = popRandomPaintColor();
+        }
+        return backgroundColor;
     }
 }

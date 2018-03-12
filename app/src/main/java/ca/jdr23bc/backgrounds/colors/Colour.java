@@ -8,6 +8,7 @@ import java.util.Random;
  * The type Colour.
  */
 public class Colour extends Color {
+    private static final String TAG = Color.class.getCanonicalName();
 
     //Color Scheme Enumeration (for color scheme generation)
     public enum ColorScheme {
@@ -18,7 +19,7 @@ public class Colour extends Color {
         ColorDistanceFormulaCIE76, ColorDistanceFormulaCIE94, ColorDistanceFormulaCIE2000
     }
 
-    public static ColorScheme getRandomScheme() {
+    static ColorScheme getRandomScheme() {
         ColorScheme[] schemes = {
                 ColorScheme.ColorSchemeAnalagous,
                 ColorScheme.ColorSchemeMonochromatic
@@ -84,16 +85,15 @@ public class Colour extends Color {
         return Color.HSVToColor(hsv);
     }
 
-    // TODO-jdr improve by mimicing palleton
     public static int[] monochromaticColors(float[] hsv) {
-        float[] CA1 = {hsv[0], (hsv[1]), (hsv[2] * 5 / 3)};
-        float[] CA2 = {hsv[0], (hsv[1] * 5 / 3), (hsv[2])};
-        float[] CB1 = {hsv[0], (hsv[1]), (hsv[2] * 3 / 5)};
-        float[] CB2 = {hsv[0], (hsv[1] * 3 / 5), hsv[2]};
+        float[] CA1 = {hsv[0], (hsv[1]), ((hsv[2] + 1.0f) / 2)};
+        float[] CA2 = {hsv[0], ((hsv[1] + 1.0f) / 2), (hsv[2])};
+        float[] CB1 = {hsv[0], (hsv[1]), (hsv[2] / 2)};
+        float[] CB2 = {hsv[0], (hsv[1] / 2), hsv[2]};
 
         return new int[]{Color.HSVToColor(CA1), Color.HSVToColor(CA2), Color.HSVToColor(hsv),
                 Color.HSVToColor(CB1), Color.HSVToColor(CB2)};
-    }
+}
 
     public static int[] triadColors(float[] hsv) {
 

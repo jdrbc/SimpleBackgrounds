@@ -1,5 +1,8 @@
 package ca.jdr23bc.backgrounds.colors;
 
+import android.annotation.TargetApi;
+import android.graphics.Color;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -9,9 +12,9 @@ public class ColorScheme {
     // TODO-jdr use black as a foreground & background color more often
     // TODO-jdr Divide colors into base, main, accent ect
 
-    public List<Integer> colors = new ArrayList<>();
-    public Integer rootColor;
-    Colour.ColorScheme csType;
+    private List<Integer> colors = new ArrayList<>();
+    private Integer rootColor;
+    private Colour.ColorScheme csType;
 
     public ColorScheme(int rootColor) {
         this(rootColor, Colour.getRandomScheme());
@@ -20,9 +23,9 @@ public class ColorScheme {
     public ColorScheme(int rootColor, Colour.ColorScheme csType) {
         this.rootColor = rootColor;
         this.csType = csType;
-        int[] ints = Colour.colorSchemeOfType(rootColor, csType);
-        for (int index = 0; index < ints.length; index++) {
-            colors.add(ints[index]);
+        int[] colors = Colour.colorSchemeOfType(rootColor, csType);
+        for (int color : colors) {
+            this.colors.add(color);
         }
     }
 
@@ -34,8 +37,44 @@ public class ColorScheme {
         }
     }
 
+    @TargetApi(24)
+    public int popDarkest() {
+        if (colors.size() == 0) {
+            return rootColor;
+        }
+        Integer darkestIndex = null;
+        Float darkestLuminance = null;
+        for (int i = 0; i < colors.size(); i++) {
+            if (darkestLuminance == null || darkestLuminance < Color.luminance(colors.get(i))) {
+                darkestLuminance = Color.luminance(colors.get(i));
+                darkestIndex = i;
+            }
+        }
+        return colors.get(darkestIndex);
+    }
+
+    @TargetApi(24)
+    public int popLightest() {
+        if (colors.size() == 0) {
+            return rootColor;
+        }
+        Integer lightestIndex = null;
+        Float lightestLuminance = null;
+        for (int i = 0; i < colors.size(); i++) {
+            if (lightestLuminance == null || lightestLuminance > Color.luminance(colors.get(i))) {
+                lightestLuminance = Color.luminance(colors.get(i));
+                lightestIndex = i;
+            }
+        }
+        return colors.get(lightestIndex);
+    }
+
     public int getRandom() {
         return colors.get(randIndex());
+    }
+
+    public int getRootColor() {
+        return rootColor;
     }
 
     public String toString() {
