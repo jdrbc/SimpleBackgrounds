@@ -89,8 +89,8 @@ public class SimpleWallpaperService extends WallpaperService {
             }
 
             Log.d(TAG, "creating new background");
-//            Background background = new BackgroundFactory().getRandomBackground();
-            Background background = new BackgroundFactory().getTreeBackground();
+            Background background = new BackgroundFactory().getRandomBackground();
+//            Background background = new BackgroundFactory().getMultiTreeBackground();
             Log.d(TAG, "new background created");
 
             Log.d(TAG, "creating new background animation");

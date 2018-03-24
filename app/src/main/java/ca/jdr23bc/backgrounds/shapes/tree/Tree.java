@@ -10,6 +10,7 @@ import ca.jdr23bc.backgrounds.utils.RandomUtils;
 
 
 public class Tree extends Shape {
+    // TODO-jdr many properties only look good on a certain sized screen. need to dynamically set based on available space
     private static final float ATTRACTOR_CONNECTED_THRESHOLD = 25f;
     private static final float TRUNK_WIDTH = 80f;
     private static final float MIN_BRANCH_WIDTH = 5f;
@@ -43,7 +44,7 @@ public class Tree extends Shape {
     // Growing state
     private GrowState currentGrowState;
 
-    public Tree(PointF topLeft, PointF bottomRight) {
+    Tree(PointF topLeft, PointF bottomRight) {
         super(topLeft, bottomRight);
         branchLength = 10;
         leafLength = 50;
@@ -52,11 +53,11 @@ public class Tree extends Shape {
         attractorInitCenter = getUpperHalfCenter();
     }
 
-    public float getLeafLength() {
+    float getLeafLength() {
         return leafLength;
     }
 
-    public float getLeafWidth() {
+    float getLeafWidth() {
         return leafWidth;
     }
 
@@ -90,13 +91,9 @@ public class Tree extends Shape {
         return unreturnedLeaves.remove(0);
     }
 
-    private float getHalfWidth() {
-        return getWidth() / 2;
-    }
-
     private void initTrunk() {
         // Trunk starts in middle bottom and grows straight up
-        trunkTip = new Branch(new PointF(getHalfWidth(), getHeight()), getUpUnitVector(), branchLength, TRUNK_WIDTH);
+        trunkTip = new Branch(new PointF(getCenter().x, getHeight()), getUpUnitVector(), branchLength, TRUNK_WIDTH);
     }
 
     private void initAttractors() {

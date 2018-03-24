@@ -36,11 +36,6 @@ public class TreePainter extends ShapePainter<Tree> {
         Color.colorToHSV(RandomUtils.getRandomColor(), rootColorHsv);
         rootColorHsv[1] = ROOT_COLOR_SATURATION;
         setColorScheme(Color.HSVToColor(rootColorHsv), Colour.ColorScheme.ColorSchemeMonochromatic);
-    }
-
-    @Override
-    public void init(Tree tree) {
-        this.tree = tree;
         if (RandomUtils.random.nextBoolean()) {
             this.leafColor = popLightestPaintColor();
             this.shadowColor = popDarkestPaintColor();
@@ -52,6 +47,11 @@ public class TreePainter extends ShapePainter<Tree> {
             this.branchColor = popLightestPaintColor();
             this.shadowColor = popLightestPaintColor();
         }
+    }
+
+    @Override
+    public void init(Tree tree) {
+        this.tree = tree;
         this.lightDir = MathUtils.normalize(new PointF(-1, -1));
         this.branchLayer = Bitmap.createBitmap((int) tree.getWidth(), (int) tree.getHeight(), Bitmap.Config.ARGB_8888);
         this.branchLayerCanvas = new Canvas(branchLayer);
@@ -74,7 +74,6 @@ public class TreePainter extends ShapePainter<Tree> {
         while (tree.hasNextLeaf()) {
             paintLeaf(tree.nextLeaf());
         }
-        fillBackground(canvas);
         canvas.drawBitmap(branchLayer, new Matrix(), null);
         canvas.drawBitmap(leafLayer, new Matrix(), null);
     }
