@@ -42,15 +42,15 @@ public class ColorScheme {
         if (colors.size() == 0) {
             return rootColor;
         }
-        Integer darkestIndex = null;
-        Float darkestLuminance = null;
-        for (int i = 0; i < colors.size(); i++) {
-            if (darkestLuminance == null || darkestLuminance < Color.luminance(colors.get(i))) {
+        int darkestIndex = 0;
+        float darkestLuminance = Color.luminance(colors.get(0));
+        for (int i = 1; i < colors.size(); i++) {
+            if (darkestLuminance < Color.luminance(colors.get(i))) {
                 darkestLuminance = Color.luminance(colors.get(i));
                 darkestIndex = i;
             }
         }
-        return colors.get(darkestIndex);
+        return colors.remove(darkestIndex);
     }
 
     @TargetApi(24)
@@ -58,15 +58,15 @@ public class ColorScheme {
         if (colors.size() == 0) {
             return rootColor;
         }
-        Integer lightestIndex = null;
-        Float lightestLuminance = null;
-        for (int i = 0; i < colors.size(); i++) {
-            if (lightestLuminance == null || lightestLuminance > Color.luminance(colors.get(i))) {
+        int lightestIndex = 0;
+        float lightestLuminance = Color.luminance(colors.get(0));
+        for (int i = 1; i < colors.size(); i++) {
+            if (lightestLuminance > Color.luminance(colors.get(i))) {
                 lightestLuminance = Color.luminance(colors.get(i));
                 lightestIndex = i;
             }
         }
-        return colors.get(lightestIndex);
+        return colors.remove(lightestIndex);
     }
 
     public int getRandom() {
