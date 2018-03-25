@@ -10,11 +10,9 @@ import ca.jdr23bc.backgrounds.utils.RandomUtils;
 
 
 public class Tree extends Shape {
-    // TODO-jdr many properties only look good on a certain sized screen. need to dynamically set based on available space
-    private static final float ATTRACTOR_CONNECTED_THRESHOLD = 25f;
-    private static final float TRUNK_WIDTH = 80f;
-    private static final float MIN_BRANCH_WIDTH = 5f;
     private static final float BRANCH_CHILD_WIDTH_PERCENTAGE_OF_PARENT = 0.985f;
+    private static final float DEFAULT_LEAF_WIDTH = 50;
+    private static final float DEFAULT_LEAF_LENGTH = 50;
 
     private static PointF getUpUnitVector() {
         return new PointF(0, -1);
@@ -28,17 +26,14 @@ public class Tree extends Shape {
     }
 
     // Init properties
-    private float branchLength;
-    private float leafLength;
-    private float leafWidth;
-    private int numberOfAttractors;
+    private TreeDna dna;
     private PointF attractorInitCenter;
 
     // Growing properties
     private ArrayList<PointF> attractors;
-    private Branch trunkTip;
-    private ArrayList<Branch> growableBranches;
-    private ArrayList<Branch> unreturnedBranches;
+    private BranchSegment trunkTip;
+    private ArrayList<BranchSegment> growableBranchSegments;
+    private ArrayList<BranchSegment> unreturnedBranchSegments;
     private ArrayList<Leaf> unreturnedLeaves;
 
     // Growing state
@@ -46,19 +41,16 @@ public class Tree extends Shape {
 
     Tree(PointF topLeft, PointF bottomRight) {
         super(topLeft, bottomRight);
-        branchLength = 10;
-        leafLength = 50;
-        leafWidth = 50;
-        numberOfAttractors = 100;
+        dna = new TreeDna();
         attractorInitCenter = getUpperHalfCenter();
     }
 
     float getLeafLength() {
-        return leafLength;
+        return DEFAULT_LEAF_LENGTH;
     }
 
     float getLeafWidth() {
-        return leafWidth;
+        return DEFAULT_LEAF_WIDTH;
     }
 
     public void init() {
@@ -66,8 +58,8 @@ public class Tree extends Shape {
         initAttractors();
         currentGrowState = GrowState.INIT;
 
-        growableBranches = new ArrayList<>();
-        unreturnedBranches = new ArrayList<>();
+        growableBranchSegments = new ArrayList<>();
+        unreturnedBranchSegments = new ArrayList<>();
         unreturnedLeaves = new ArrayList<>();
     }
 
@@ -76,15 +68,15 @@ public class Tree extends Shape {
     }
 
     public Boolean hasNextBranch() {
-        return !unreturnedBranches.isEmpty();
+        return !unreturnedBranchSegments.isEmpty();
     }
 
     public Boolean hasNextLeaf() {
         return !unreturnedLeaves.isEmpty();
     }
 
-    public Branch nextBranch() {
-        return unreturnedBranches.remove(0);
+    public BranchSegment nextBranch() {
+        return unreturnedBranchSegments.remove(0);
     }
 
     public Leaf nextLeaf() {
@@ -93,42 +85,47 @@ public class Tree extends Shape {
 
     private void initTrunk() {
         // Trunk starts in middle bottom and grows straight up
-        trunkTip = new Branch(new PointF(getCenter().x, getHeight()), getUpUnitVector(), branchLength, TRUNK_WIDTH);
+        trunkTip = new BranchSegment(new PointF(getCenter().x, getHeight()),
+                getUpUnitVector(), dna.getBranchSegmentLength(), dna.getTrunkMaxWidth());
     }
 
     private void initAttractors() {
         // Populate attractors
         attractors = new ArrayList<>();
-        for (int i = 0; i < numberOfAttractors; i++) {
+        for (int i = 0; i < dna.getNumberOfAttractors(); i++) {
             attractors.add(getRandomAttractor());
         }
     }
 
+    private float getAttractorRadius() {
+        return 0.9f * (Math.min(getWidth(), getHeight()) / 2);
+    }
+
     private PointF getRandomAttractor() {
-        float attractorRadius = 0.9f * (Math.min(getWidth(), getHeight()) / 2);
+        float attractorRadius = getAttractorRadius();
         return RandomUtils.getRandomPointInCircle(attractorInitCenter, attractorRadius);
     }
 
     public void growStep() {
         switch (currentGrowState) {
             case INIT:
-                growableBranches.add(trunkTip);
+                growableBranchSegments.add(trunkTip);
                 currentGrowState = GrowState.GROW_TRUNK;
-                unreturnedBranches.add(trunkTip);
+                unreturnedBranchSegments.add(trunkTip);
                 break;
             case GROW_TRUNK:
                 trunkTip = trunkTip.grow();
-                growableBranches.add(trunkTip);
+                growableBranchSegments.add(trunkTip);
                 if (isTrunkWithinRangeOfAttractor()) {
                     currentGrowState = GrowState.GROW_BRANCHES;
                 }
-                unreturnedBranches.add(trunkTip);
+                unreturnedBranchSegments.add(trunkTip);
                 break;
             case GROW_BRANCHES:
-                int prevSize = unreturnedBranches.size();
+                int prevSize = unreturnedBranchSegments.size();
                 growBranches();
                 // If growth did not create any new branches then branch growth is complete
-                if (unreturnedBranches.size() == prevSize) {
+                if (unreturnedBranchSegments.size() == prevSize) {
                     currentGrowState = GrowState.COMPLETE;
                 }
                 break;
@@ -146,52 +143,52 @@ public class Tree extends Shape {
     }
 
     private void growBranches() {
-        ArrayList<Branch> branchesToGrow = new ArrayList<>();
+        ArrayList<BranchSegment> segmentsToGrow = new ArrayList<>();
         ArrayList<PointF> connectedAttractors = new ArrayList<>();
         // Add attractors to each branch
         for (PointF attractor : attractors) {
-            Branch closestBranch = null;
+            BranchSegment closestBranchSegment = null;
             double closestDist = 0;
             // Find the closest branch
-            for (Branch branch : growableBranches) {
-                double dist = MathUtils.getDist(attractor, branch.getTip());
-                if (dist < ATTRACTOR_CONNECTED_THRESHOLD) {
+            for (BranchSegment branchSegment : growableBranchSegments) {
+                double dist = MathUtils.getDist(attractor, branchSegment.getTip());
+                if (dist < dna.getAttractorConnectedThreshold()) {
                     // Attractor has been reached
                     connectedAttractors.add(attractor);
-                    branch.setLeaf(new Leaf(branch.getTip(), this));
-                    unreturnedLeaves.add(branch.getLeaf());
-                    closestBranch = null;
+                    branchSegment.setLeaf(new Leaf(branchSegment.getTip(), this));
+                    unreturnedLeaves.add(branchSegment.getLeaf());
+                    closestBranchSegment = null;
                     break;
                 } else if (dist < getMaxAttractorDistance() &&
-                        (closestBranch == null || dist < closestDist)) {
-                    // Found a new closest branch
-                    closestBranch = branch;
+                        (closestBranchSegment == null || dist < closestDist)) {
+                    // Found a new closest branchSegment
+                    closestBranchSegment = branchSegment;
                     closestDist = dist;
                 }
             }
 
             // Add the attractor to the branch
-            if (closestBranch != null) {
-                closestBranch.addAttractor(attractor);
-                if (!branchesToGrow.contains(closestBranch)) {
-                    branchesToGrow.add(closestBranch);
+            if (closestBranchSegment != null) {
+                closestBranchSegment.addAttractor(attractor);
+                if (!segmentsToGrow.contains(closestBranchSegment)) {
+                    segmentsToGrow.add(closestBranchSegment);
                 }
             }
         }
 
         // Prune any connected attractors
         attractors.removeAll(connectedAttractors);
-        growableBranches = new ArrayList<>();
+        growableBranchSegments = new ArrayList<>();
 
         // Grow any attracted branches
-        for (Branch branch : branchesToGrow) {
-            Branch next = branch.grow();
-            if (next.getWidth() > MIN_BRANCH_WIDTH) {
-                next.setWidth(branch.getWidth() * BRANCH_CHILD_WIDTH_PERCENTAGE_OF_PARENT);
+        for (BranchSegment branchSegment : segmentsToGrow) {
+            BranchSegment next = branchSegment.grow();
+            if (next.getWidth() > dna.getBranchTipWidth()) {
+                next.setWidth(branchSegment.getWidth() * BRANCH_CHILD_WIDTH_PERCENTAGE_OF_PARENT);
             }
-            growableBranches.add(branch);
-            growableBranches.add(next);
-            unreturnedBranches.add(next);
+            growableBranchSegments.add(branchSegment);
+            growableBranchSegments.add(next);
+            unreturnedBranchSegments.add(next);
         }
     }
 

@@ -3,10 +3,7 @@ package ca.jdr23bc.backgrounds.utils;
 import android.graphics.Color;
 import android.graphics.PointF;
 
-import java.util.ArrayList;
 import java.util.Random;
-
-import ca.jdr23bc.backgrounds.shapes.tree.Branch;
 
 public class RandomUtils {
     public static final Random random = new Random();

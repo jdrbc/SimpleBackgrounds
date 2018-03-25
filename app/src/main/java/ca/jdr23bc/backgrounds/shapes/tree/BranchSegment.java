@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import ca.jdr23bc.backgrounds.utils.MathUtils;
 
-public class Branch {
+public class BranchSegment {
     private float width;
     private PointF tip;
     private PointF base;
@@ -17,7 +17,7 @@ public class Branch {
     // List of attracting points
     private ArrayList<PointF> curAttractors = new ArrayList<>();
 
-    public Branch(PointF tip, PointF base, PointF dir, float lengthOfChildBranches, float width) {
+    BranchSegment(PointF tip, PointF base, PointF dir, float lengthOfChildBranches, float width) {
         this.tip = tip;
         this.base = base;
         this.dir = dir;
@@ -26,11 +26,11 @@ public class Branch {
     }
 
     // Root constructor - root has length of 0, but child branches will have length 'lengthOfChildBranches'
-    public Branch(PointF tip, PointF dir, float lengthOfChildBranches, float width) {
+    BranchSegment(PointF tip, PointF dir, float lengthOfChildBranches, float width) {
         this(tip, tip, dir, lengthOfChildBranches, width);
     }
 
-    public Branch grow() {
+    BranchSegment grow() {
         PointF attractedDir = new PointF(dir.x, dir.y);
         // Two attractors leads to risk of branch trapping
         if (curAttractors.size() == 2) {
@@ -45,7 +45,7 @@ public class Branch {
         curAttractors.clear();
         PointF nextBranchTip = MathUtils.add(tip, MathUtils.mult(attractedDir, lengthOfChildBranches));
         PointF nextBranchBase = tip;
-        return new Branch(nextBranchTip, nextBranchBase, attractedDir, lengthOfChildBranches, width);
+        return new BranchSegment(nextBranchTip, nextBranchBase, attractedDir, lengthOfChildBranches, width);
     }
 
     public PointF getTip() {
@@ -68,11 +68,11 @@ public class Branch {
         return leaf != null;
     }
 
-    public Leaf getLeaf() {
+    Leaf getLeaf() {
         return leaf;
     }
 
-    public void setLeaf(Leaf leaf) {
+    void setLeaf(Leaf leaf) {
         this.leaf = leaf;
     }
 
@@ -80,7 +80,7 @@ public class Branch {
         this.width = width;
     }
 
-    public void addAttractor(PointF p) {
+    void addAttractor(PointF p) {
         curAttractors.add(p);
     }
 }

@@ -23,7 +23,7 @@ public class MainActivity extends Activity {
         setContentView(new BackgroundView(this));
     }
 
-    private static final int LOADING_ANIMATION_STEP_LENGTH_MS = 10;
+    private static final int LOADING_ANIMATION_STEP_LENGTH_MS = 5;
     public class BackgroundView extends View {
         GestureDetector gestureDetector;
         Background currentBackground;
@@ -57,8 +57,7 @@ public class MainActivity extends Activity {
         }
 
         private Background startBackgroundCreation(Canvas canvas) {
-            Background background = new BackgroundFactory()
-                    .getRandomBackground(canvas.getWidth(), canvas.getHeight());
+            Background background = new BackgroundFactory().getTreeBackground(canvas.getWidth(), canvas.getHeight());
             Log.d(TAG, "drawing: " + background.toString());
             backgroundBuilder = new BackgroundBuilder(this, LOADING_ANIMATION_STEP_LENGTH_MS, background);
             backgroundBuilder.start();
@@ -76,13 +75,13 @@ public class MainActivity extends Activity {
             Background background;
             int delay;
 
-            public BackgroundBuilder(BackgroundView view, int delay, Background background) {
+            BackgroundBuilder(BackgroundView view, int delay, Background background) {
                 this.view = view;
                 this.delay = delay;
                 this.background = background;
             }
 
-            public void start() {
+            void start() {
                 background.init();
                 post(this);
             }
@@ -102,7 +101,7 @@ public class MainActivity extends Activity {
         private class GestureListener extends GestureDetector.SimpleOnGestureListener {
             View v;
 
-            public GestureListener(View v) {
+            GestureListener(View v) {
                 this.v = v;
             }
 

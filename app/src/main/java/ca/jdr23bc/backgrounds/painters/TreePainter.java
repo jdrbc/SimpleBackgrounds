@@ -10,7 +10,7 @@ import android.graphics.Path;
 import android.graphics.PointF;
 
 import ca.jdr23bc.backgrounds.colors.Colour;
-import ca.jdr23bc.backgrounds.shapes.tree.Branch;
+import ca.jdr23bc.backgrounds.shapes.tree.BranchSegment;
 import ca.jdr23bc.backgrounds.shapes.tree.Leaf;
 import ca.jdr23bc.backgrounds.shapes.tree.Tree;
 import ca.jdr23bc.backgrounds.utils.MathUtils;
@@ -69,7 +69,7 @@ public class TreePainter extends ShapePainter<Tree> {
     public void paintStep(Canvas canvas) {
         tree.growStep();
         while (tree.hasNextBranch()) {
-            paintBranch(tree.nextBranch());
+            paintBranchSegment(tree.nextBranch());
         }
         while (tree.hasNextLeaf()) {
             paintLeaf(tree.nextLeaf());
@@ -78,13 +78,13 @@ public class TreePainter extends ShapePainter<Tree> {
         canvas.drawBitmap(leafLayer, new Matrix(), null);
     }
 
-    private void paintBranch(Branch branch) {
+    private void paintBranchSegment(BranchSegment branchSegment) {
         Paint paint = newPaint();
         paint.setColor(branchColor);
-        paint.setStrokeWidth(branch.getWidth());
+        paint.setStrokeWidth(branchSegment.getWidth());
         paint.setStrokeCap(Paint.Cap.ROUND);
-        PointF branchBase = branch.getBase();
-        PointF branchTip = branch.getTip();
+        PointF branchBase = branchSegment.getBase();
+        PointF branchTip = branchSegment.getTip();
         paint.setShadowLayer(1,
                 lightDir.x,
                 lightDir.y,
