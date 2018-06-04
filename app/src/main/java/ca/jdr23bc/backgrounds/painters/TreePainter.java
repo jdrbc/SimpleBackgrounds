@@ -8,6 +8,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.graphics.PorterDuff;
 
 import ca.jdr23bc.backgrounds.colors.Colour;
 import ca.jdr23bc.backgrounds.shapes.tree.BranchSegment;
@@ -68,6 +69,7 @@ public class TreePainter extends ShapePainter<Tree> {
     @Override
     public void paintStep(Canvas canvas) {
         tree.growStep();
+        branchLayerCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
         while (tree.hasNextBranch()) {
             paintBranchSegment(tree.nextBranch());
         }

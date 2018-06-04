@@ -31,9 +31,12 @@ public class Tree extends Shape {
 
     // Growing properties
     private ArrayList<PointF> attractors;
+    private Branch trunk;
     private BranchSegment trunkTip;
+    private ArrayList<Branch> branches;
     private ArrayList<BranchSegment> growableBranchSegments;
-    private ArrayList<BranchSegment> unreturnedBranchSegments;
+    private int currentBranchSegmentIndex = 0;
+    private ArrayList<BranchSegment> branchSegments;
     private ArrayList<Leaf> unreturnedLeaves;
 
     // Growing state
@@ -42,6 +45,7 @@ public class Tree extends Shape {
     Tree(PointF topLeft, PointF bottomRight) {
         super(topLeft, bottomRight);
         dna = new TreeDna();
+        branches = new ArrayList<>();
         attractorInitCenter = getUpperHalfCenter();
     }
 
@@ -59,7 +63,7 @@ public class Tree extends Shape {
         currentGrowState = GrowState.INIT;
 
         growableBranchSegments = new ArrayList<>();
-        unreturnedBranchSegments = new ArrayList<>();
+        branchSegments = new ArrayList<>();
         unreturnedLeaves = new ArrayList<>();
     }
 
@@ -68,7 +72,7 @@ public class Tree extends Shape {
     }
 
     public Boolean hasNextBranch() {
-        return !unreturnedBranchSegments.isEmpty();
+        return currentBranchSegmentIndex < branchSegments.size();
     }
 
     public Boolean hasNextLeaf() {
@@ -76,7 +80,7 @@ public class Tree extends Shape {
     }
 
     public BranchSegment nextBranch() {
-        return unreturnedBranchSegments.remove(0);
+        return branchSegments.get(currentBranchSegmentIndex++);
     }
 
     public Leaf nextLeaf() {
@@ -85,8 +89,10 @@ public class Tree extends Shape {
 
     private void initTrunk() {
         // Trunk starts in middle bottom and grows straight up
+        trunk = new Branch(dna);
         trunkTip = new BranchSegment(new PointF(getCenter().x, getHeight()),
-                getUpUnitVector(), dna.getBranchSegmentLength(), dna.getTrunkMaxWidth());
+                getUpUnitVector(), trunk);
+        branches.add(trunk);
     }
 
     private void initAttractors() {
@@ -107,28 +113,32 @@ public class Tree extends Shape {
     }
 
     public void growStep() {
+        currentBranchSegmentIndex = 0;
         switch (currentGrowState) {
             case INIT:
                 growableBranchSegments.add(trunkTip);
                 currentGrowState = GrowState.GROW_TRUNK;
-                unreturnedBranchSegments.add(trunkTip);
+                branchSegments.add(trunkTip);
                 break;
             case GROW_TRUNK:
-                trunkTip = trunkTip.grow();
+                trunkTip = trunkTip.growOnParent();
                 growableBranchSegments.add(trunkTip);
                 if (isTrunkWithinRangeOfAttractor()) {
                     currentGrowState = GrowState.GROW_BRANCHES;
                 }
-                unreturnedBranchSegments.add(trunkTip);
+                branchSegments.add(trunkTip);
                 break;
             case GROW_BRANCHES:
-                int prevSize = unreturnedBranchSegments.size();
+                int prevSize = branchSegments.size();
                 growBranches();
                 // If growth did not create any new branches then branch growth is complete
-                if (unreturnedBranchSegments.size() == prevSize) {
+                if (branchSegments.size() == prevSize) {
                     currentGrowState = GrowState.COMPLETE;
                 }
                 break;
+        }
+        for (Branch branch : branches) {
+            branch.updateSegmentWidths();
         }
     }
 
@@ -182,13 +192,22 @@ public class Tree extends Shape {
 
         // Grow any attracted branches
         for (BranchSegment branchSegment : segmentsToGrow) {
-            BranchSegment next = branchSegment.grow();
+            BranchSegment next;
+            if (branchSegment.getNumberOfChildren() == 0) {
+                next = branchSegment.growOnParent();
+            // If there's more than one child then that is the start of a new branch
+            } else {
+                Branch newBranch = branchSegment.splitAndGrow();
+                branches.add(newBranch);
+                next = newBranch.getTip();
+            }
+
             if (next.getWidth() > dna.getBranchTipWidth()) {
                 next.setWidth(branchSegment.getWidth() * BRANCH_CHILD_WIDTH_PERCENTAGE_OF_PARENT);
             }
             growableBranchSegments.add(branchSegment);
             growableBranchSegments.add(next);
-            unreturnedBranchSegments.add(next);
+            branchSegments.add(next);
         }
     }
 

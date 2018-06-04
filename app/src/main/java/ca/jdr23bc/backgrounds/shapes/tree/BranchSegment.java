@@ -7,30 +7,67 @@ import java.util.ArrayList;
 import ca.jdr23bc.backgrounds.utils.MathUtils;
 
 public class BranchSegment {
+    static final float DEFAULT_BRANCH_SEGMENT_LENGTH = 10;
+    static final float DEFAULT_BRANCH_SEGMENT_WIDTH = 10;
     private float width;
     private PointF tip;
     private PointF base;
     private PointF dir;
-    private float lengthOfChildBranches;
     private Leaf leaf;
+    private Integer numChildren;
+    private Branch parentBranch;
 
     // List of attracting points
     private ArrayList<PointF> curAttractors = new ArrayList<>();
 
-    BranchSegment(PointF tip, PointF base, PointF dir, float lengthOfChildBranches, float width) {
+    BranchSegment(PointF tip, PointF base, PointF dir, Branch parentBranch) {
         this.tip = tip;
         this.base = base;
         this.dir = dir;
-        this.lengthOfChildBranches = lengthOfChildBranches;
-        this.width = width;
+        this.parentBranch = parentBranch;
+        this.width = DEFAULT_BRANCH_SEGMENT_WIDTH;
+        this.numChildren = 0;
+        parentBranch.addSegment(this);
     }
 
-    // Root constructor - root has length of 0, but child branches will have length 'lengthOfChildBranches'
-    BranchSegment(PointF tip, PointF dir, float lengthOfChildBranches, float width) {
-        this(tip, tip, dir, lengthOfChildBranches, width);
+    // Root constructor - root has length of 0
+    BranchSegment(PointF tip, PointF dir, Branch trunk) {
+        this(tip, tip, dir, trunk);
     }
 
-    BranchSegment grow() {
+    /**
+     * Create a new branch segment and add the new segment to the branch parent
+     * @precondition This segment has no children segments
+     * @return The branches
+     */
+    public BranchSegment growOnParent() {
+        if (numChildren != 0) {
+            throw new IllegalStateException("Cannot have any child segments");
+        }
+        BranchSegment segment = grow(parentBranch);
+        return segment;
+    }
+
+    /**
+     * Create a new branch segment, add it to a new branch, and return the new branch
+     * @precondition This segment has at least one child segment
+     * @return The new branch
+     */
+    Branch splitAndGrow() {
+        if (numChildren == 0) {
+            throw new IllegalStateException("Must have at least one child segment");
+        }
+        Branch newBranch = new Branch(this);
+        grow(newBranch);
+        return newBranch;
+    }
+
+    /**
+     * @param branchToAddTo The parent branch of the new segment
+     * @return The new branch segment
+     */
+    private BranchSegment grow(Branch branchToAddTo) {
+        numChildren++;
         PointF attractedDir = new PointF(dir.x, dir.y);
         // Two attractors leads to risk of branch trapping
         if (curAttractors.size() == 2) {
@@ -43,9 +80,17 @@ public class BranchSegment {
         }
         attractedDir = MathUtils.normalize(attractedDir);
         curAttractors.clear();
-        PointF nextBranchTip = MathUtils.add(tip, MathUtils.mult(attractedDir, lengthOfChildBranches));
+        PointF nextBranchTip = MathUtils.add(tip, MathUtils.mult(attractedDir, DEFAULT_BRANCH_SEGMENT_LENGTH));
         PointF nextBranchBase = tip;
-        return new BranchSegment(nextBranchTip, nextBranchBase, attractedDir, lengthOfChildBranches, width);
+        return new BranchSegment(nextBranchTip, nextBranchBase, attractedDir, branchToAddTo);
+    }
+
+    Branch getParentBranch() {
+        return parentBranch;
+    }
+
+    Integer getNumberOfChildren() {
+        return numChildren;
     }
 
     public PointF getTip() {
