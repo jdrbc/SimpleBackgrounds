@@ -8,9 +8,7 @@ import android.util.Log;
 import ca.jdr23bc.backgrounds.layout.Layout;
 import ca.jdr23bc.backgrounds.painters.ShapePainter;
 import ca.jdr23bc.backgrounds.painters.TreePainter;
-import ca.jdr23bc.backgrounds.shapes.Shape;
 import ca.jdr23bc.backgrounds.shapes.ShapeFactory;
-import ca.jdr23bc.backgrounds.shapes.tree.Tree;
 import ca.jdr23bc.backgrounds.shapes.tree.TreeFactory;
 
 public class TreeBackground extends ShapeBackground {
