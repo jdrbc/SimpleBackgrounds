@@ -12,7 +12,7 @@ public abstract class Layout implements Iterator<Cell> {
     private PointF bottomRight;
     private Boolean initCalled;
 
-    public void Layout() {
+    public Layout() {
         initCalled = false;
     }
 
@@ -32,6 +32,8 @@ public abstract class Layout implements Iterator<Cell> {
     public String toString() {
         return getClass().getSimpleName();
     }
+
+    public abstract Integer getNumberOfCells();
 
     protected abstract boolean finished();
 
