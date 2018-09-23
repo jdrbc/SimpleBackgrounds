@@ -19,9 +19,8 @@ public abstract class ShapeBackground extends Background {
         ShapeFactory factory = getFactory();
         factory.init(new PointF(0, 0), new PointF(getWidth(), getHeight()));
 
-        ShapePainter painter = getPainter();
-        painter.init(factory.next());
-        painter.fillBackground(getCanvas());
+        queueNextShapeForPainting();
+        getPainter().fillBackground(getCanvas());
     }
 
     @Override
@@ -33,11 +32,15 @@ public abstract class ShapeBackground extends Background {
     public void drawStep() {
         ShapePainter painter = getPainter();
         if (!painter.hasNextPaintStep()) {
-            Shape next = getFactory().next();
-            Log.d(TAG, "painting shape: " + next.toString());
-            painter.init(next);
+            queueNextShapeForPainting();
         }
         painter.paintStep(getCanvas());
+    }
+
+    protected void queueNextShapeForPainting() {
+        Shape shape = getFactory().next();
+        Log.d(TAG, "painting shape: " + shape.toString());
+        getPainter().init(shape);
     }
 
     public String toString() {

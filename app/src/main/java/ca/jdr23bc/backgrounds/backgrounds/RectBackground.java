@@ -10,6 +10,7 @@ import ca.jdr23bc.backgrounds.shapes.ShapeFactory;
 import ca.jdr23bc.backgrounds.utils.RandomUtils;
 
 public class RectBackground extends ShapeBackground {
+    private static final String TAG = RectBackground.class.getCanonicalName();
     RectFactory factory;
     RectPainter painter;
 

@@ -18,6 +18,13 @@ public abstract class ShapeFactory implements Iterator<Shape> {
         return layout;
     }
 
+    /**
+     * @return The number of shapes this factory will produce
+     */
+    public Integer getTotalNumberOfShapes() {
+        return layout.getNumberOfCells();
+    }
+
     public void init(PointF topLeft, PointF bottomRight) {
         layout.init(topLeft, bottomRight);
     }

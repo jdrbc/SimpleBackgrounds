@@ -17,8 +17,10 @@ public class OverlappingSingleCellLayout extends Layout {
     private List<SingleCellLayout> layouts;
     private SingleCellLayout currentLayout;
     private int currentLayoutIndex;
+    private int totalNumCells;
 
     public OverlappingSingleCellLayout(Integer numCells) {
+        totalNumCells = numCells;
         layouts = new ArrayList<>();
         for (Integer i = 0; i < numCells; i++) {
             SingleCellLayout layout = new SingleCellLayout();
@@ -39,6 +41,11 @@ public class OverlappingSingleCellLayout extends Layout {
             layout.init(offsetTopLeft, offsetBottomRight);
         }
         currentLayout = layouts.get(currentLayoutIndex);
+    }
+    
+    @Override
+    public Integer getNumberOfCells() {
+        return totalNumCells;
     }
 
     @Override

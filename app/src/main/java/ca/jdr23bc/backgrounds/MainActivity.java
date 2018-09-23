@@ -57,7 +57,8 @@ public class MainActivity extends Activity {
         }
 
         private Background startBackgroundCreation(Canvas canvas) {
-            Background background = new BackgroundFactory().getTreeBackground(canvas.getWidth(), canvas.getHeight());
+            Background background = new BackgroundFactory().getMultiTreeBackground(canvas.getWidth(), canvas.getHeight());
+//            Background background = new RectBackground(canvas.getWidth(), canvas.getHeight(), new GridLayout());
             Log.d(TAG, "drawing: " + background.toString());
             backgroundBuilder = new BackgroundBuilder(this, LOADING_ANIMATION_STEP_LENGTH_MS, background);
             backgroundBuilder.start();

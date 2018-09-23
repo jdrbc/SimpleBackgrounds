@@ -1,6 +1,7 @@
 package ca.jdr23bc.backgrounds.painters;
 
 import android.graphics.Canvas;
+import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.os.Build;
 import android.util.Log;
@@ -14,6 +15,7 @@ public abstract class ShapePainter<Shape> {
 
     private ColorScheme colorScheme;
     private Paint paint;
+    private ColorFilter filter;
     private Integer backgroundColor;
 
     public ShapePainter() {
@@ -33,6 +35,11 @@ public abstract class ShapePainter<Shape> {
         Log.d(TAG, "Background color: " + getBackgroundColor());
         paint.setColor(getBackgroundColor());
         canvas.drawPaint(paint);
+    }
+
+    public void setColorFilter(ColorFilter filter) {
+        this.filter = filter;
+        paint.setColorFilter(filter);
     }
 
     @Override
@@ -78,6 +85,7 @@ public abstract class ShapePainter<Shape> {
 
     Paint newPaint() {
         Paint paint = new Paint();
+        paint.setColorFilter(filter);
         paint.setAntiAlias(true);
         return paint;
     }

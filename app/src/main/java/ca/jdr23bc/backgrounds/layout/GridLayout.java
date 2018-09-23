@@ -20,6 +20,7 @@ public class GridLayout extends Layout {
     private float rowSkew;
     private float cellOverlap;
     private GridCell currCell;
+    private Integer numberOfCells;
 
     public GridLayout() {
         squareCellsActive = true;
@@ -62,7 +63,13 @@ public class GridLayout extends Layout {
         if (rowSkewActive) {
             rowSkew = RandomUtils.getRandomFloatInRange(-cellWidth, cellWidth);
         }
-        this.padding = RandomUtils.getRandomFloatInRange(cellWidth, cellWidth * 2);
+        this.padding = RandomUtils.getRandomFloatInRange(cellWidth, cellWidth * 1.5f);
+        this.numberOfCells = getNumberOfCols() * getNumberOfRows();
+    }
+
+    @Override
+    public Integer getNumberOfCells() {
+        return numberOfCells;
     }
 
     @Override
@@ -148,7 +155,11 @@ public class GridLayout extends Layout {
     }
 
     private int getNumberOfRows() {
-        return (int) (getBottomRightWithPadding().y / cellHeight);
+        return (int) ((getBottomRightWithPadding().y - getTopLeftWithPadding().y) / cellHeight);
+    }
+
+    private int getNumberOfCols() {
+        return (int) ((getBottomRightWithPadding().x - getTopLeftWithPadding().x) / cellWidth);
     }
 
     private float getCellOverlap() {

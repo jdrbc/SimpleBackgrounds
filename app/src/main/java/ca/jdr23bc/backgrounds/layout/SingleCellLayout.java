@@ -8,6 +8,11 @@ public class SingleCellLayout extends Layout {
     }
 
     @Override
+    public Integer getNumberOfCells() {
+        return 1;
+    }
+
+    @Override
     public boolean finished() {
         return !hasNext;
     }

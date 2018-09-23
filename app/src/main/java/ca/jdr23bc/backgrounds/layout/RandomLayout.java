@@ -28,6 +28,11 @@ public class RandomLayout extends Layout {
     }
 
     @Override
+    public Integer getNumberOfCells() {
+        return numPoints;
+    }
+
+    @Override
     protected boolean finished() {
         return currPoint >= numPoints;
     }
@@ -39,13 +44,11 @@ public class RandomLayout extends Layout {
         float cellSize = ratio * Math.max(getHeight(), getWidth());
         PointF randomPoint = RandomUtils.getRandomPointInRect(getTopLeft(), getBottomRight());
         if (RandomUtils.random.nextBoolean()) {
-            PointF topLeft = randomPoint;
-            PointF bottomRight = new PointF(topLeft.x + cellSize, topLeft.y + cellSize);
-            return new Cell(topLeft, bottomRight);
+            PointF bottomRight = new PointF(randomPoint.x + cellSize, randomPoint.y + cellSize);
+            return new Cell(randomPoint, bottomRight);
         } else {
             PointF topLeft = new PointF(randomPoint.x - cellSize, randomPoint.y + cellSize);
-            PointF bottomRight = randomPoint;
-            return new Cell(topLeft, bottomRight);
+            return new Cell(topLeft, randomPoint);
         }
     }
 }
