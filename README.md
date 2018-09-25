@@ -11,6 +11,9 @@ Double tap the wallpaper to see a new background.
 This is a live wallpaper. Opening the app will launch the live wallpaper picker.
 
 ☆ Laid back attitude. These wallpapers just sink into the background & emit feel-good vibes.
+
 ☆ Endless Variety. Double tap the wallpaper & a new wallpaper will be drawn as you watch.
+
 ☆ No Permissions Necessary. No, we don't need to read your files or make phone calls to draw wallpapers 👍.
+
 ☆ Free and Ad-Free.
