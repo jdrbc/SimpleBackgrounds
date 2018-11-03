@@ -21,6 +21,9 @@ public class TreePainter extends ShapePainter<Tree> {
     // Set saturation in the middle so that leaves & branches don't blend into background color
     private static final float ROOT_COLOR_SATURATION = 0.5f;
 
+    // Don't spend too long in the draw loop
+    private static final Integer MAX_NUM_ITEMS_TO_PAINT_PER_STEP = 100;
+
     private Tree tree;
     private int branchColor;
     private int leafColor;
@@ -30,6 +33,8 @@ public class TreePainter extends ShapePainter<Tree> {
     private Canvas branchLayerCanvas;
     private Bitmap leafLayer;
     private Canvas leafLayerCanvas;
+    private Bitmap behindLeafLayer;
+    private Canvas behindLeafLayerCanvas;
 
     public TreePainter() {
         super();
@@ -58,6 +63,8 @@ public class TreePainter extends ShapePainter<Tree> {
         this.branchLayerCanvas = new Canvas(branchLayer);
         this.leafLayer = Bitmap.createBitmap((int) tree.getWidth(), (int) tree.getHeight(), Bitmap.Config.ARGB_8888);
         this.leafLayerCanvas = new Canvas(leafLayer);
+        this.behindLeafLayer = Bitmap.createBitmap((int) tree.getWidth(), (int) tree.getHeight(), Bitmap.Config.ARGB_8888);
+        this.behindLeafLayerCanvas = new Canvas(behindLeafLayer);
         tree.init();
     }
 
@@ -68,34 +75,58 @@ public class TreePainter extends ShapePainter<Tree> {
 
     @Override
     public void paintStep(Canvas canvas) {
-        tree.growStep();
-        branchLayerCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-        while (tree.hasNextBranch()) {
-            paintBranchSegment(tree.nextBranch());
+        if (!tree.hasNextBranch() && !tree.hasNextLeaf()) {
+            branchLayerCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+            // don't redraw behind leaves
+            behindLeafLayerCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+            tree.growStep();
+        } else {
+            Paint paint = newPaint();
+            paint.setColor(branchColor);
+            paint.setStrokeCap(Paint.Cap.ROUND);
+            paint.setShadowLayer(1,
+                    lightDir.x,
+                    lightDir.y,
+                    shadowColor);
+            Integer numItemsPainted = 0;
+            while (tree.hasNextBranch()) {
+                paintBranchSegment(paint, tree.nextBranch());
+                numItemsPainted++;
+                if (numItemsPainted > MAX_NUM_ITEMS_TO_PAINT_PER_STEP) {
+                    return;
+                }
+            }
+
+            paint = newPaint();
+            paint.setStrokeWidth(10);
+            paint.setStyle(Paint.Style.FILL_AND_STROKE);
+            paint.setColor(leafColor);
+            paint.setShadowLayer(1,
+                    lightDir.x,
+                    lightDir.y,
+                    shadowColor);
+            while (tree.hasNextLeaf()) {
+                paintLeaf(paint, tree.nextLeaf());
+                numItemsPainted++;
+                if (numItemsPainted > MAX_NUM_ITEMS_TO_PAINT_PER_STEP) {
+                    return;
+                }
+            }
+            canvas.drawBitmap(branchLayer, new Matrix(), null);
+            canvas.drawBitmap(leafLayer, new Matrix(), null);
+            canvas.drawBitmap(behindLeafLayer, new Matrix(), null);
         }
-        while (tree.hasNextLeaf()) {
-            paintLeaf(tree.nextLeaf());
-        }
-        canvas.drawBitmap(branchLayer, new Matrix(), null);
-        canvas.drawBitmap(leafLayer, new Matrix(), null);
     }
 
-    private void paintBranchSegment(BranchSegment branchSegment) {
-        Paint paint = newPaint();
-        paint.setColor(branchColor);
+    private void paintBranchSegment(Paint paint, BranchSegment branchSegment) {
         paint.setStrokeWidth(branchSegment.getWidth());
-        paint.setStrokeCap(Paint.Cap.ROUND);
         PointF branchBase = branchSegment.getBase();
         PointF branchTip = branchSegment.getTip();
-        paint.setShadowLayer(1,
-                lightDir.x,
-                lightDir.y,
-                shadowColor);
         branchLayerCanvas.drawLine(branchBase.x, branchBase.y,
                 branchTip.x, branchTip.y, paint);
     }
 
-    private void paintLeaf(Leaf leaf) {
+    private void paintLeaf(Paint paint, Leaf leaf) {
         PointF base = leaf.getBase();
         PointF tip = leaf.getTip();
         PointF side1 = leaf.getSideRightOfBase();
@@ -107,14 +138,10 @@ public class TreePainter extends ShapePainter<Tree> {
         path.quadTo(side2.x, side2.y, base.x, base.y);
         path.close();
 
-        Paint paint = newPaint();
-        paint.setStrokeWidth(10);
-        paint.setStyle(Paint.Style.FILL_AND_STROKE);
-        paint.setColor(leafColor);
-        paint.setShadowLayer(1,
-                lightDir.x,
-                lightDir.y,
-                shadowColor);
-        leafLayerCanvas.drawPath(path, paint);
+        if (RandomUtils.getRandomBoolean()) {
+            leafLayerCanvas.drawPath(path, paint);
+        } else {
+            behindLeafLayerCanvas.drawPath(path, paint);
+        }
     }
 }

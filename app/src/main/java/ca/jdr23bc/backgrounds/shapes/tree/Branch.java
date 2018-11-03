@@ -8,6 +8,7 @@ class Branch {
     ArrayList<BranchSegment> segments;
     BranchSegment parentSegment;
     private int segmentCountOnLastUpdate;
+    private float parentSegmentWidthOnLastUpdate;
 
     Branch(TreeDna dna) {
         this.dna = dna;
@@ -35,32 +36,41 @@ class Branch {
     }
 
     void updateSegmentWidths() {
-        // If no new segments have been added widths will be the same
-        if (segmentCountOnLastUpdate == segments.size()) {
+        // If no new segments have been added & parent segment hasn't changed then widths will be the same
+        if (segmentCountOnLastUpdate == segments.size() &&
+                (!isTrunk() && parentSegmentWidthOnLastUpdate == parentSegment.getWidth())) {
             return;
         } else {
             segmentCountOnLastUpdate = segments.size();
+            if (!isTrunk()) {
+                parentSegmentWidthOnLastUpdate = parentSegment.getWidth();
+            }
         }
-        float distFromTip = 0;
-        float currentWidth = dna.getBranchTipWidth();
-        float maxWidth = dna.getTrunkMaxWidth();
-        if (parentSegment != null) {
-            maxWidth = Math.min(maxWidth, parentSegment.getWidth() * dna.getChildWidthToParentWidthRatio());
+        Integer segNumber = 0;
+        float maxWidth = 0;
+        if (!isTrunk()) {
+            maxWidth = parentSegment.getWidth() * dna.getChildWidthToParentWidthRatio();
         }
-        Boolean maxWidthReached = false;
         // Go from tip to base
+        Boolean maxWidthReached = false;
+        float currentWidth = dna.getBranchTipWidth();
         for (Integer i = segments.size() - 1; i >= 0; i--) {
             BranchSegment segment = segments.get(i);
-            if (!maxWidthReached) {
-                segment.setWidth(currentWidth);
-                distFromTip += segment.getLength();
-                currentWidth += distFromTip * dna.getBranchWidthGrowthRate();
-                if (currentWidth > maxWidth) {
+            if (isTrunk() || !maxWidthReached) {
+                if (currentWidth > segment.getWidth()) {
+                    segment.setWidth(currentWidth);
+                }
+                currentWidth = dna.getBranchSegmentWidth(currentWidth, segNumber++);
+                if (!isTrunk() && currentWidth > maxWidth) {
                     maxWidthReached = true;
                 }
             } else {
                 segment.setWidth(maxWidth);
             }
         }
+    }
+
+    private boolean isTrunk() {
+        return parentSegment == null;
     }
 }

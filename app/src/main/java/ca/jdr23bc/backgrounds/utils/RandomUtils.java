@@ -32,6 +32,10 @@ public class RandomUtils {
         return min + random.nextInt(max - min);
     }
 
+    public static boolean getRandomBoolean() {
+        return random.nextBoolean();
+    }
+
     public static float getRandomFloatInRange(float min, float max) {
         float randomFloat = random.nextFloat();
         return min + (randomFloat * (max - min));
