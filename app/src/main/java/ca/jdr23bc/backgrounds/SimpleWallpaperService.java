@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.PorterDuff;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.service.wallpaper.WallpaperService;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -14,6 +15,7 @@ import java.lang.ref.WeakReference;
 
 import ca.jdr23bc.backgrounds.backgrounds.Background;
 import ca.jdr23bc.backgrounds.backgrounds.BackgroundFactory;
+import ca.jdr23bc.backgrounds.backgrounds.BackgroundPreferences;
 import ca.jdr23bc.backgrounds.utils.MathUtils;
 
 /**
@@ -89,7 +91,10 @@ public class SimpleWallpaperService extends WallpaperService {
             }
 
             Log.d(TAG, "creating new background");
-            Background background = new BackgroundFactory().getRandomBackground();
+            BackgroundPreferences preferences = new BackgroundPreferences(
+                    PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+            );
+            Background background = new BackgroundFactory(preferences).getRandomBackground();
             Log.d(TAG, "new background created");
 
             Log.d(TAG, "creating new background animation");
@@ -142,7 +147,7 @@ public class SimpleWallpaperService extends WallpaperService {
 
         @Override
         public void run() {
-            Log.d(logTag, "run!");
+            Log.v(logTag, "run!");
             background.drawStep();
             draw();
 
@@ -176,7 +181,7 @@ public class SimpleWallpaperService extends WallpaperService {
         }
 
         private void draw(SurfaceHolder holder) {
-            Log.d(logTag, "draw!");
+            Log.v(logTag, "draw!");
             Canvas canvas = null;
             try {
                 canvas = holder.lockCanvas();

@@ -12,9 +12,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <!--android:name=".utils.Log"-->
+
+        <!-- android:name=".utils.Log" -->
         <activity
-            android:name="ca.jdr23bc.backgrounds.MainActivity"
+            android:name=".MainActivity"
             android:hardwareAccelerated="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +25,7 @@
         </activity>
 
         <service
-            android:name="ca.jdr23bc.backgrounds.SimpleWallpaperService"
+            android:name=".SimpleWallpaperService"
             android:directBootAware="true"
             android:hardwareAccelerated="false"
             android:permission="android.permission.BIND_WALLPAPER">
@@ -36,6 +37,9 @@
                 android:name="android.service.wallpaper"
                 android:resource="@xml/simplewallpaper" />
         </service>
+
+        <activity android:name=".WallpaperPicker" />
+        <activity android:name=".PrefsActivity"></activity>
     </application>
 
 </manifest>

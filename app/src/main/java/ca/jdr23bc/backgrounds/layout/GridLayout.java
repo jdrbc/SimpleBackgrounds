@@ -6,7 +6,7 @@ import ca.jdr23bc.backgrounds.utils.MathUtils;
 import ca.jdr23bc.backgrounds.utils.RandomUtils;
 
 public class GridLayout extends Layout {
-    private static final float MIN_CELL_SIZE = 50f;
+    private static final float MIN_CELL_SIZE = 100f;
     private static final int MIN_CELL_PER_ROW = 2;
     private static final int MIN_CELL_PER_COL = 2;
 

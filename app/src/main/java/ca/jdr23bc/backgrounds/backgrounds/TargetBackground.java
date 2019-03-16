@@ -42,13 +42,10 @@ public class TargetBackground extends ShapeBackground {
     }
 
     private void gridSetup() {
-        Boolean constantRingCount = RandomUtils.random.nextBoolean();
         Boolean squareCells = RandomUtils.random.nextBoolean();
-        Boolean cellOverlap = squareCells && constantRingCount && RandomUtils.random.nextBoolean();
-        if (constantRingCount) {
+        Boolean cellOverlap = squareCells && RandomUtils.random.nextBoolean();
             factory.withRingCount(RandomUtils.getRandomIntInRange(
                     Target.MIN_RINGS_FOR_RANDOM_INIT_VALUE, Target.MAX_RINGS_FOR_RANDOM_INIT_VALUE));
-        }
         ((GridLayout) factory.getLayout()).withSquareCellsActive(squareCells)
                 .withCellOverlapActive(cellOverlap);
     }

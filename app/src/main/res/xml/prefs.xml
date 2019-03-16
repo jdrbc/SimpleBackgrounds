@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:summary=""
+        android:title="Backgrounds" >
+        <CheckBoxPreference
+            android:key="circlesEnabled"
+            android:summary="On/Off"
+            android:title="Circles" />
+        <CheckBoxPreference
+            android:key="rectanglesEnabled"
+            android:summary="On/Off"
+            android:title="Rectangles" />
+        <CheckBoxPreference
+            android:key="targetsEnabled"
+            android:summary="On/Off"
+            android:title="Targets" />
+        <CheckBoxPreference
+            android:key="starsEnabled"
+            android:summary="On/Off"
+            android:title="Stars" />
+        <CheckBoxPreference
+            android:key="linesEnabled"
+            android:summary="On/Off"
+            android:title="Lines" />
+        <CheckBoxPreference
+            android:key="treesEnabled"
+            android:summary="On/Off"
+            android:title="Trees" />
+    </PreferenceCategory>
+</PreferenceScreen>
