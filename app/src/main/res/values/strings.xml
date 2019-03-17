@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Simple Backgrounds</string>
     <string name="wallpaper_description">Simple Wallpaper</string>
-    <string name="set_wallpaper">Activate Simple Backgrounds</string>
+    <string name="set_wallpaper">Activate</string>
     <string name="settings">Settings</string>
     <string name="lines">lines</string>
     <string name="title_activity_prefs">PrefsActivity</string>
