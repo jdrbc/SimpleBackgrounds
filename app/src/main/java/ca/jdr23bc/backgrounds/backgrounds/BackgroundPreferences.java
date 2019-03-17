@@ -11,26 +11,26 @@ public class BackgroundPreferences {
     }
 
     public Boolean treesEnabled() {
-        return preferences.getBoolean("treesEnabled", false);
+        return preferences.getBoolean("treesEnabled", true);
     }
 
     public Boolean circlesEnabled() {
-        return preferences.getBoolean("circlesEnabled", false);
+        return preferences.getBoolean("circlesEnabled", true);
     }
 
     public Boolean rectanglesEnabled() {
-        return preferences.getBoolean("rectanglesEnabled", false);
+        return preferences.getBoolean("rectanglesEnabled", true);
     }
 
     public Boolean targetsEnabled() {
-        return preferences.getBoolean("targetsEnabled", false);
+        return preferences.getBoolean("targetsEnabled", true);
     }
 
     public Boolean linesEnabled() {
-        return preferences.getBoolean("linesEnabled", false);
+        return preferences.getBoolean("linesEnabled", true);
     }
 
     public Boolean starsEnabled() {
-        return preferences.getBoolean("starsEnabled", false);
+        return preferences.getBoolean("starsEnabled", true);
     }
 }
