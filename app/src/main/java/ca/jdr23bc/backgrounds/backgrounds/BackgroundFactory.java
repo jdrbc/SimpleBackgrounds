@@ -42,7 +42,7 @@ public class BackgroundFactory {
         return getRandomBackground(getDefaultWidth(), getDefaultHeight());
     }
 
-    public Background getRandomBackground(int width, int height) {
+    private Background getRandomBackground(int width, int height) {
         List<PatternType> enabledPatterns = getEnabledPatterns();
         if (enabledPatterns.isEmpty()) {
             return new PlainBackground(width, height);
@@ -122,7 +122,7 @@ public class BackgroundFactory {
         return getTreeBackground(getDefaultWidth(), getDefaultHeight());
     }
 
-    public TreeBackground getTreeBackground(int width, int height) {
+    private TreeBackground getTreeBackground(int width, int height) {
         return new TreeBackground(width, height, new SingleCellLayout());
     }
 
@@ -130,7 +130,7 @@ public class BackgroundFactory {
         return getMultiTreeBackground(getDefaultWidth(), getDefaultHeight());
     }
 
-    public TreeBackground getMultiTreeBackground(int width, int height) {
+    private TreeBackground getMultiTreeBackground(int width, int height) {
         return new TreeBackground(width, height, new OverlappingSingleCellLayout(RandomUtils.getRandomIntInRange(1, MAX_NUM_TREES_IN_MULTI_TREE)));
     }
 
@@ -139,6 +139,13 @@ public class BackgroundFactory {
     }
 
     private int getDefaultHeight() {
-        return Resources.getSystem().getDisplayMetrics().heightPixels;
+        // navigation bar height
+        int navigationBarHeight = 0;
+        int resourceId = Resources.getSystem().getIdentifier(
+                "navigation_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            navigationBarHeight = Resources.getSystem().getDimensionPixelSize(resourceId);
+        }
+        return Resources.getSystem().getDisplayMetrics().heightPixels + navigationBarHeight;
     }
 }
