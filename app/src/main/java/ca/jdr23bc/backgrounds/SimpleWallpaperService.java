@@ -73,7 +73,7 @@ public class SimpleWallpaperService extends WallpaperService {
 
         private void drawBackgroundOrStartNewBackgroundCreation() {
             Log.d(TAG, "drawing background or starting new background creation...");
-            if (backgroundAnimation == null || backgroundAnimation.hasStopped() || !backgroundAnimation.isValid()) {
+            if (backgroundAnimation == null || !backgroundAnimation.isValid()) {
                 Log.d(TAG, "...background animation not defined, finished animating or lost " +
                         "reference to background");
                 startNewBackgroundCreation();
@@ -88,6 +88,7 @@ public class SimpleWallpaperService extends WallpaperService {
             if (backgroundAnimation != null) {
                 Log.d(TAG, "stopping old background animation");
                 backgroundAnimation.stop();
+                backgroundAnimation.freeMemory();
             }
 
             Log.d(TAG, "creating new background");
@@ -118,7 +119,6 @@ public class SimpleWallpaperService extends WallpaperService {
         Background background;
         int delay;
         WeakReference<SurfaceHolder> holder;
-        Boolean hasStopped;
         Integer animationNumber;
         String logTag;
 
@@ -126,7 +126,6 @@ public class SimpleWallpaperService extends WallpaperService {
             this.delay = Math.round(MathUtils.getMillisecondsBetweenFrames(fps));
             this.background = background;
             this.holder = new WeakReference<> (holder);
-            this.hasStopped = false;
             this.animationNumber = backgroundAnimationCount++;
             this.logTag = BackgroundAnimation.class.getCanonicalName() + "-" + animationNumber;
             holder.addCallback(this);
@@ -141,8 +140,11 @@ public class SimpleWallpaperService extends WallpaperService {
         void stop() {
             Log.d(logTag, "stop!");
             removeCallbacks(this);
+        }
+
+        void freeMemory() {
+            Log.d(logTag, "freeing memory!");
             background.freeMemory();
-            hasStopped = true;
         }
 
         @Override
@@ -163,10 +165,6 @@ public class SimpleWallpaperService extends WallpaperService {
          */
         Boolean isValid() {
             return holder.get() != null;
-        }
-
-        Boolean hasStopped() {
-            return hasStopped;
         }
 
         void draw() {
