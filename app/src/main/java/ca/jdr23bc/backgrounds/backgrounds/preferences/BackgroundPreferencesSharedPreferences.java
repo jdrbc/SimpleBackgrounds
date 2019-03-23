@@ -1,12 +1,12 @@
-package ca.jdr23bc.backgrounds.backgrounds;
+package ca.jdr23bc.backgrounds.backgrounds.preferences;
 
 import android.content.SharedPreferences;
 
-public class BackgroundPreferences {
+public class BackgroundPreferencesSharedPreferences implements IBackgroundPreferences {
 
     private SharedPreferences preferences;
 
-    public BackgroundPreferences(SharedPreferences prefs) {
+    public BackgroundPreferencesSharedPreferences(SharedPreferences prefs) {
         this.preferences = prefs;
     }
 

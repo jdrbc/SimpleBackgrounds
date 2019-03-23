@@ -15,7 +15,8 @@ import java.lang.ref.WeakReference;
 
 import ca.jdr23bc.backgrounds.backgrounds.Background;
 import ca.jdr23bc.backgrounds.backgrounds.BackgroundFactory;
-import ca.jdr23bc.backgrounds.backgrounds.BackgroundPreferences;
+import ca.jdr23bc.backgrounds.backgrounds.preferences.BackgroundPreferencesAllDisabled;
+import ca.jdr23bc.backgrounds.backgrounds.preferences.BackgroundPreferencesSharedPreferences;
 import ca.jdr23bc.backgrounds.utils.MathUtils;
 
 /**
@@ -64,7 +65,7 @@ public class SimpleWallpaperService extends WallpaperService {
 
         @Override
         public void onTouchEvent(MotionEvent event) {
-            Log.i(TAG, "touch event");
+            Log.d(TAG, "touch event");
             super.onTouchEvent(event);
             if (isVisible()) {
                 gestureDetector.onTouchEvent(event);
@@ -72,9 +73,9 @@ public class SimpleWallpaperService extends WallpaperService {
         }
 
         private void drawBackgroundOrStartNewBackgroundCreation() {
-            Log.d(TAG, "drawing background or starting new background creation...");
+            Log.i(TAG, "drawing background or starting new background creation...");
             if (backgroundAnimation == null || !backgroundAnimation.isValid()) {
-                Log.d(TAG, "...background animation not defined, finished animating or lost " +
+                Log.i(TAG, "...background animation not defined, finished animating or lost " +
                         "reference to background");
                 startNewBackgroundCreation();
             } else {
@@ -84,24 +85,33 @@ public class SimpleWallpaperService extends WallpaperService {
         }
 
         private void startNewBackgroundCreation() {
-            Log.d(TAG, "starting new background creation!");
+            Log.i(TAG, "starting new background creation!");
             if (backgroundAnimation != null) {
-                Log.d(TAG, "stopping old background animation");
+                Log.i(TAG, "stopping old background animation");
                 backgroundAnimation.stop();
                 backgroundAnimation.freeMemory();
             }
 
-            Log.d(TAG, "creating new background");
-            BackgroundPreferences preferences = new BackgroundPreferences(
-                    PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-            );
-            Background background = new BackgroundFactory(preferences).getRandomBackground();
-            Log.d(TAG, "new background created");
+            Log.i(TAG, "creating new background");
+            Background background = getBackgroundFactory().getRandomBackground();
+            Log.i(TAG, "new background created");
 
-            Log.d(TAG, "creating new background animation");
+            Log.i(TAG, "creating new background animation");
             backgroundAnimation = new BackgroundAnimation(24, background, getSurfaceHolder());
             backgroundAnimation.start();
-            Log.d(TAG, "new background animation created & started");
+            Log.i(TAG, "new background animation created & started");
+        }
+
+        private BackgroundFactory getBackgroundFactory() {
+            try {
+                BackgroundPreferencesSharedPreferences preferences = new BackgroundPreferencesSharedPreferences(
+                        PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                );
+                return new BackgroundFactory(preferences);
+            } catch (Exception e) {
+                Log.w(TAG, "exception thrown when creating background factory: " + e);
+                return new BackgroundFactory(new BackgroundPreferencesAllDisabled());
+            }
         }
 
         private class GestureListener extends GestureDetector.SimpleOnGestureListener {

@@ -6,6 +6,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.jdr23bc.backgrounds.backgrounds.preferences.IBackgroundPreferences;
 import ca.jdr23bc.backgrounds.layout.GridLayout;
 import ca.jdr23bc.backgrounds.layout.OverlappingSingleCellLayout;
 import ca.jdr23bc.backgrounds.layout.RandomLayout;
@@ -22,7 +23,6 @@ public class BackgroundFactory {
         RECT_GRID,
         RECT_RANDOM,
         TARGET_GRID,
-        TARGET_SINGLE,
         STAR_GRID,
         STAR_SINGLE,
         LINE,
@@ -32,9 +32,9 @@ public class BackgroundFactory {
     }
     private static final int MAX_NUM_TREES_IN_MULTI_TREE = 10;
 
-    private BackgroundPreferences preferences;
+    private IBackgroundPreferences preferences;
 
-    public BackgroundFactory(BackgroundPreferences preferences) {
+    public BackgroundFactory(IBackgroundPreferences preferences) {
         this.preferences = preferences;
     }
 
@@ -52,40 +52,37 @@ public class BackgroundFactory {
         );
         switch(patternType) {
             case CIRCLE_GRID:
-                Log.d(TAG, "circle grid");
+                Log.i(TAG, "circle grid");
                 return new CircleBackground(width, height, new GridLayout());
             case CIRCLE_RANDOM:
-                Log.d(TAG, "circle random");
+                Log.i(TAG, "circle random");
                 return new CircleBackground(width, height, new RandomLayout());
             case RECT_GRID:
-                Log.d(TAG, "rect grid");
+                Log.i(TAG, "rect grid");
                 return new RectBackground(width, height, new GridLayout());
             case RECT_RANDOM:
-                Log.d(TAG, "rect random");
+                Log.i(TAG, "rect random");
                 return new RectBackground(width, height, new RandomLayout());
             case TARGET_GRID:
-                Log.d(TAG, "target grid");
+                Log.i(TAG, "target grid");
                 return new TargetBackground(width, height, new GridLayout());
-            case TARGET_SINGLE:
-                Log.d(TAG, "target single");
-                return new TargetBackground(width, height, new SingleCellLayout());
             case STAR_GRID:
-                Log.d(TAG, "star grid");
+                Log.i(TAG, "star grid");
                 return new StarBackground(width, height, new GridLayout());
             case STAR_SINGLE:
-                Log.d(TAG, "star single");
+                Log.i(TAG, "star single");
                 return new StarBackground(width, height, new SingleCellLayout());
             case LINE:
-                Log.d(TAG, "line");
+                Log.i(TAG, "line");
                 return new LineBackground(width, height);
             case MULTI_TREE:
-                Log.d(TAG, "mutli tree");
+                Log.i(TAG, "mutli tree");
                 return getMultiTreeBackground(width, height);
             case TREE:
-                Log.d(TAG, "tree");
+                Log.i(TAG, "tree");
                 return getTreeBackground(width, height);
             default:
-                Log.d(TAG, "plain");
+                Log.i(TAG, "plain");
                 return new PlainBackground(width, height);
         }
     }
@@ -106,10 +103,6 @@ public class BackgroundFactory {
         if (preferences.rectanglesEnabled()) {
             ret.add(PatternType.RECT_GRID);
             ret.add(PatternType.RECT_RANDOM);
-        }
-        if (preferences.targetsEnabled()) {
-            ret.add(PatternType.TARGET_GRID);
-            ret.add(PatternType.TARGET_SINGLE);
         }
         if (preferences.starsEnabled()) {
             ret.add(PatternType.STAR_GRID);
