@@ -7,10 +7,9 @@ import ca.jdr23bc.backgrounds.utils.RandomUtils;
 
 public class TargetFactory extends ShapeFactory {
 
-    int ringCount;
+    int ringCount = 3;
     float raduisMultiplier;
     boolean raduisMultiplierActive;
-    boolean ringCountSet;
     boolean randomCenter;
 
     public TargetFactory(Layout layout) {
@@ -31,16 +30,13 @@ public class TargetFactory extends ShapeFactory {
 
     public TargetFactory withRingCount(int ringCount) {
         this.ringCount = ringCount;
-        this.ringCountSet = true;
         return this;
     }
 
     @Override
     public Shape build(PointF topLeft, PointF bottomRight) {
-        Target target = new Target(topLeft, bottomRight);
-        if (ringCountSet) {
-            target.withRingCount(ringCount);
-        }
+        Target target = new Target(topLeft, bottomRight)
+                .withRingCount(ringCount);
         if (randomCenter) {
             target.withCenter(RandomUtils.getRandomPointInRect(topLeft, bottomRight));
         }

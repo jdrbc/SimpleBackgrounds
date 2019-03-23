@@ -1,9 +1,7 @@
 package ca.jdr23bc.backgrounds.backgrounds;
 
 
-import ca.jdr23bc.backgrounds.layout.GridLayout;
 import ca.jdr23bc.backgrounds.layout.Layout;
-import ca.jdr23bc.backgrounds.layout.SingleCellLayout;
 import ca.jdr23bc.backgrounds.painters.ShapePainter;
 import ca.jdr23bc.backgrounds.painters.TargetPainter;
 import ca.jdr23bc.backgrounds.shapes.ShapeFactory;
@@ -19,11 +17,10 @@ public class TargetBackground extends ShapeBackground {
         super(width, height);
         factory = new TargetFactory(layout);
         painter = new TargetPainter();
-        if (layout instanceof SingleCellLayout) {
-            singleCellSetup();
-        } else if (layout instanceof GridLayout) {
-            gridSetup();
-        }
+        Boolean squareCells = RandomUtils.random.nextBoolean();
+        Boolean cellOverlap = squareCells && RandomUtils.random.nextBoolean();
+        factory.withRingCount(RandomUtils.getRandomIntInRange(
+                Target.MIN_RINGS_FOR_RANDOM_INIT_VALUE, Target.MAX_RINGS_FOR_RANDOM_INIT_VALUE));
     }
 
     @Override
@@ -34,19 +31,5 @@ public class TargetBackground extends ShapeBackground {
     @Override
     protected ShapePainter getPainter() {
         return painter;
-    }
-
-    private void singleCellSetup() {
-        factory.withRandomCenter(RandomUtils.random.nextBoolean())
-                .withRadiusMultiplier(3);
-    }
-
-    private void gridSetup() {
-        Boolean squareCells = RandomUtils.random.nextBoolean();
-        Boolean cellOverlap = squareCells && RandomUtils.random.nextBoolean();
-            factory.withRingCount(RandomUtils.getRandomIntInRange(
-                    Target.MIN_RINGS_FOR_RANDOM_INIT_VALUE, Target.MAX_RINGS_FOR_RANDOM_INIT_VALUE));
-        ((GridLayout) factory.getLayout()).withSquareCellsActive(squareCells)
-                .withCellOverlapActive(cellOverlap);
     }
 }

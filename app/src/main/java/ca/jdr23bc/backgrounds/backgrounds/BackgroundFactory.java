@@ -9,13 +9,14 @@ import java.util.List;
 import ca.jdr23bc.backgrounds.backgrounds.preferences.IBackgroundPreferences;
 import ca.jdr23bc.backgrounds.layout.GridLayout;
 import ca.jdr23bc.backgrounds.layout.OverlappingSingleCellLayout;
+import ca.jdr23bc.backgrounds.layout.RandomGridLayout;
 import ca.jdr23bc.backgrounds.layout.RandomLayout;
 import ca.jdr23bc.backgrounds.layout.SingleCellLayout;
 import ca.jdr23bc.backgrounds.utils.RandomUtils;
 
 
 public class BackgroundFactory {
-    private static final String TAG = "BackgroundFactory";
+    private static final String TAG = Background.class.getCanonicalName();
 
     private enum PatternType {
         CIRCLE_GRID,
@@ -45,6 +46,7 @@ public class BackgroundFactory {
     private Background getRandomBackground(int width, int height) {
         List<PatternType> enabledPatterns = getEnabledPatterns();
         if (enabledPatterns.isEmpty()) {
+            Log.i(TAG, "plain");
             return new PlainBackground(width, height);
         }
         PatternType patternType = enabledPatterns.get(
@@ -65,10 +67,10 @@ public class BackgroundFactory {
                 return new RectBackground(width, height, new RandomLayout());
             case TARGET_GRID:
                 Log.i(TAG, "target grid");
-                return new TargetBackground(width, height, new GridLayout());
+                return new TargetBackground(width, height, new RandomGridLayout());
             case STAR_GRID:
                 Log.i(TAG, "star grid");
-                return new StarBackground(width, height, new GridLayout());
+                return new StarBackground(width, height, new RandomGridLayout());
             case STAR_SINGLE:
                 Log.i(TAG, "star single");
                 return new StarBackground(width, height, new SingleCellLayout());
@@ -107,6 +109,9 @@ public class BackgroundFactory {
         if (preferences.starsEnabled()) {
             ret.add(PatternType.STAR_GRID);
             ret.add(PatternType.STAR_SINGLE);
+        }
+        if (preferences.targetsEnabled()) {
+            ret.add(PatternType.TARGET_GRID);
         }
         return ret;
     }

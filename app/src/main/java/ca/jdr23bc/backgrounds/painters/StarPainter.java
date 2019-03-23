@@ -10,7 +10,7 @@ import ca.jdr23bc.backgrounds.shapes.Star;
 
 public class StarPainter extends ShapePainter<Star> {
     private static final String TAG = StarPainter.class.getCanonicalName();
-    private static final int STAR_STROKE_WIDTH = 3;
+    private static final int STAR_STROKE_WIDTH = 5;
 
     private Star star;
     private Boolean firstStep = false;
