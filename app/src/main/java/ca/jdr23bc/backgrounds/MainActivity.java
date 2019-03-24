@@ -36,11 +36,6 @@ public class MainActivity extends Activity {
         startActivity(intent);
     }
 
-    public void launchIntentToPickWallpapers(View view) {
-        Intent i = new Intent(this, WallpaperPicker.class);
-        startActivity(i);
-    }
-
     // Quit once the user has set the background
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

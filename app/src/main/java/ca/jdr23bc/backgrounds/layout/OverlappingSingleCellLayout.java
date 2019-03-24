@@ -14,10 +14,10 @@ public class OverlappingSingleCellLayout extends Layout {
     private static final int WIDTH_OFFSET_RATIO = 2;
     private static final int HEIGHT_OFFSET_RATIO = 2;
 
-    private List<SingleCellLayout> layouts;
+    private final List<SingleCellLayout> layouts;
     private SingleCellLayout currentLayout;
     private int currentLayoutIndex;
-    private int totalNumCells;
+    private final int totalNumCells;
 
     public OverlappingSingleCellLayout(Integer numCells) {
         totalNumCells = numCells;

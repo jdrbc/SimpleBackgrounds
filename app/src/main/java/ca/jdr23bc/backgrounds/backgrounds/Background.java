@@ -28,13 +28,13 @@ public abstract class Background {
         System.gc();
     }
 
-    protected Canvas getCanvas() { return canvas; }
+    Canvas getCanvas() { return canvas; }
 
-    protected int getWidth() {
+    int getWidth() {
         return bitmap.getWidth();
     }
 
-    protected int getHeight() {
+    int getHeight() {
         return bitmap.getHeight();
     }
 }

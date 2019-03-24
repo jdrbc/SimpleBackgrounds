@@ -39,9 +39,8 @@ public class GridLayout extends Layout {
         return this;
     }
 
-    public GridLayout withShuffledRowsActive(Boolean active) {
+    public void withShuffledRowsActive(Boolean active) {
         this.shuffledRowsActive = active;
-        return this;
     }
 
     public GridLayout withRowSkewActive(Boolean rowSkewActive) {
@@ -124,6 +123,7 @@ public class GridLayout extends Layout {
     private void setRandomSquareCellDimensions() {
         float maxSize = Math.min(getMaxCellHeight(), getMaxCellWidth());
         this.cellHeight = RandomUtils.getRandomFloatInRange(MIN_CELL_SIZE, maxSize);
+        //noinspection SuspiciousNameCombination
         this.cellWidth = cellHeight;
     }
 
@@ -167,11 +167,11 @@ public class GridLayout extends Layout {
     }
 
     public class GridCell extends Cell {
-        GridLayout grid;
-        float width;
-        float height;
-        float x;
-        float y;
+        final GridLayout grid;
+        final float width;
+        final float height;
+        final float x;
+        final float y;
 
         GridCell(float x, float y, GridLayout grid) {
             super(new PointF(x, y), new PointF(x + grid.cellWidth, y + grid.cellHeight));

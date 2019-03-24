@@ -11,25 +11,25 @@ public class LineBackground extends Background {
 
     public enum Direction { VERTICAL, HORIZONTAL }
 
-    public static final int MIN_COUNT = 1;
-    public static final int MAX_COUNT = 9;
+    private static final int MIN_COUNT = 1;
+    private static final int MAX_COUNT = 9;
 
-    public static final int MAX_WIDTH = 150;
-    public static final int MIN_WIDTH = 25;
+    private static final int MAX_WIDTH = 150;
+    private static final int MIN_WIDTH = 25;
 
-    public static final int MIN_ALPHA = 100;
-    public static final int MAX_ALPHA = 255;
+    private static final int MIN_ALPHA = 100;
+    private static final int MAX_ALPHA = 255;
 
     private int alpha = MIN_ALPHA;
     private Direction direction;
-    private boolean sameDirection;
-    private boolean sameColor;
-    private int color;
-    private boolean sameWeight;
+    private final boolean sameDirection;
+    private final boolean sameColor;
+    private final int color;
+    private final boolean sameWeight;
     private float strokeWeight;
-    private int numberOfLines;
+    private final int numberOfLines;
     private int lineCount;
-    private ColorScheme colorScheme;
+    private final ColorScheme colorScheme;
 
     public LineBackground(int width, int height) {
         super(width, height);

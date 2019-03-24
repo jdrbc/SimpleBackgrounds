@@ -12,7 +12,7 @@ public abstract class Layout implements Iterator<Cell> {
     private PointF bottomRight;
     private Boolean initCalled;
 
-    public Layout() {
+    Layout() {
         initCalled = false;
     }
 
@@ -37,19 +37,19 @@ public abstract class Layout implements Iterator<Cell> {
 
     protected abstract boolean finished();
 
-    protected PointF getTopLeft() {
+    PointF getTopLeft() {
         return topLeft;
     }
 
-    protected PointF getBottomRight() {
+    PointF getBottomRight() {
         return bottomRight;
     }
 
-    protected float getWidth() {
+    float getWidth() {
         return MathUtils.getWidth(getTopLeft(), getBottomRight());
     }
 
-    protected float getHeight() {
+    float getHeight() {
         return MathUtils.getHeight(getTopLeft(), getBottomRight());
     }
 }

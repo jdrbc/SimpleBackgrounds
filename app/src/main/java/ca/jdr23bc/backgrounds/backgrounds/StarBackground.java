@@ -10,8 +10,8 @@ import ca.jdr23bc.backgrounds.shapes.ShapeFactory;
 import ca.jdr23bc.backgrounds.shapes.StarFactory;
 
 public class StarBackground extends ShapeBackground {
-    private StarPainter painter;
-    private StarFactory factory;
+    private final StarPainter painter;
+    private final StarFactory factory;
 
     StarBackground(int width, int height, Layout layout) {
         super(width, height);

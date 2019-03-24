@@ -14,11 +14,11 @@ public abstract class ShapePainter<Shape> {
     private static final String TAG = ShapePainter.class.getCanonicalName();
 
     private ColorScheme colorScheme;
-    private Paint paint;
+    private final Paint paint;
     private ColorFilter filter;
     private Integer backgroundColor;
 
-    public ShapePainter() {
+    ShapePainter() {
         this.paint = newPaint();
         colorScheme = new ColorScheme(RandomUtils.getRandomColor());
     }
@@ -51,8 +51,8 @@ public abstract class ShapePainter<Shape> {
         return paint;
     }
 
-    void setColorScheme(int rootColor, Colour.ColorScheme schemeType) {
-        colorScheme = new ColorScheme(rootColor, schemeType);
+    void setColorScheme(int rootColor) {
+        colorScheme = new ColorScheme(rootColor, Colour.ColorScheme.ColorSchemeMonochromatic);
     }
 
     protected int getRootColor() {

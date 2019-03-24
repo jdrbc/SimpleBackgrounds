@@ -7,14 +7,14 @@ import ca.jdr23bc.backgrounds.utils.RandomUtils;
 
 public class TargetFactory extends ShapeFactory {
 
-    int ringCount = 3;
-    float raduisMultiplier;
-    boolean raduisMultiplierActive;
-    boolean randomCenter;
+    private int ringCount = 3;
+    private float radiusMultiplier;
+    private boolean radiusMultiplierActive;
+    private boolean randomCenter;
 
     public TargetFactory(Layout layout) {
         super(layout);
-        raduisMultiplierActive = false;
+        radiusMultiplierActive = false;
     }
 
     public TargetFactory withRandomCenter(Boolean randomCenter) {
@@ -23,8 +23,8 @@ public class TargetFactory extends ShapeFactory {
     }
 
     public TargetFactory withRadiusMultiplier(float multiplier) {
-        this.raduisMultiplier = multiplier;
-        raduisMultiplierActive = true;
+        this.radiusMultiplier = multiplier;
+        radiusMultiplierActive = true;
         return this;
     }
 
@@ -40,8 +40,8 @@ public class TargetFactory extends ShapeFactory {
         if (randomCenter) {
             target.withCenter(RandomUtils.getRandomPointInRect(topLeft, bottomRight));
         }
-        if (raduisMultiplierActive) {
-            target.withRadius(target.getRadius() * raduisMultiplier);
+        if (radiusMultiplierActive) {
+            target.withRadius(target.getRadius() * radiusMultiplier);
         }
         return target;
     }

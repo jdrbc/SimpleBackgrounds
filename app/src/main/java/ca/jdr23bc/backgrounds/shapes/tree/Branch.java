@@ -3,10 +3,9 @@ package ca.jdr23bc.backgrounds.shapes.tree;
 import java.util.ArrayList;
 
 class Branch {
-    TreeDna dna;
-    Branch parent;
-    ArrayList<BranchSegment> segments;
-    BranchSegment parentSegment;
+    private final TreeDna dna;
+    private final ArrayList<BranchSegment> segments;
+    private BranchSegment parentSegment;
     private int segmentCountOnLastUpdate;
     private float parentSegmentWidthOnLastUpdate;
 
@@ -18,16 +17,14 @@ class Branch {
 
     Branch(BranchSegment parentBranchSegment) {
         this(parentBranchSegment.getParentBranch().getDna());
-        this.parent = parentBranchSegment.getParentBranch();
         this.parentSegment = parentBranchSegment;
     }
 
-    Branch addSegment(BranchSegment segment) {
+    void addSegment(BranchSegment segment) {
         segments.add(segment);
-        return this;
     }
 
-    TreeDna getDna() {
+    private TreeDna getDna() {
         return dna;
     }
 

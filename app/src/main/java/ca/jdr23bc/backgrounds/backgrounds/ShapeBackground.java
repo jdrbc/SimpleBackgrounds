@@ -10,7 +10,7 @@ import ca.jdr23bc.backgrounds.shapes.ShapeFactory;
 public abstract class ShapeBackground extends Background {
     private static final String TAG = ShapeBackground.class.getCanonicalName();
 
-    public ShapeBackground(int width, int height) {
+    ShapeBackground(int width, int height) {
         super(width, height);
     }
 
@@ -37,9 +37,10 @@ public abstract class ShapeBackground extends Background {
         painter.paintStep(getCanvas());
     }
 
-    protected void queueNextShapeForPainting() {
+    void queueNextShapeForPainting() {
         Shape shape = getFactory().next();
         Log.d(TAG, "painting shape: " + shape.toString());
+        //noinspection unchecked
         getPainter().init(shape);
     }
 

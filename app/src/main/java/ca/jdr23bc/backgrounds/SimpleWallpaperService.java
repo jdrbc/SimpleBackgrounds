@@ -42,7 +42,7 @@ public class SimpleWallpaperService extends WallpaperService {
     }
 
     private class SimpleWallpaperEngine extends Engine {
-        private GestureDetector gestureDetector = new GestureDetector(getApplicationContext(), new GestureListener());
+        private final GestureDetector gestureDetector = new GestureDetector(getApplicationContext(), new GestureListener());
         BackgroundAnimation backgroundAnimation;
 
         @Override
@@ -97,7 +97,7 @@ public class SimpleWallpaperService extends WallpaperService {
             Log.i(TAG, "new background created");
 
             Log.i(TAG, "creating new background animation");
-            backgroundAnimation = new BackgroundAnimation(24, background, getSurfaceHolder());
+            backgroundAnimation = new BackgroundAnimation(background, getSurfaceHolder());
             backgroundAnimation.start();
             Log.i(TAG, "new background animation created & started");
         }
@@ -126,14 +126,14 @@ public class SimpleWallpaperService extends WallpaperService {
 
     private static Integer backgroundAnimationCount = 0;
     static class BackgroundAnimation extends Handler implements Runnable, SurfaceHolder.Callback {
-        Background background;
-        int delay;
-        WeakReference<SurfaceHolder> holder;
-        Integer animationNumber;
-        String logTag;
+        final Background background;
+        final int delay;
+        final WeakReference<SurfaceHolder> holder;
+        final Integer animationNumber;
+        final String logTag;
 
-        BackgroundAnimation(int fps, Background background, SurfaceHolder holder) {
-            this.delay = Math.round(MathUtils.getMillisecondsBetweenFrames(fps));
+        BackgroundAnimation(Background background, SurfaceHolder holder) {
+            this.delay = Math.round(MathUtils.getMillisecondsBetweenFrames(24));
             this.background = background;
             this.holder = new WeakReference<> (holder);
             this.animationNumber = backgroundAnimationCount++;

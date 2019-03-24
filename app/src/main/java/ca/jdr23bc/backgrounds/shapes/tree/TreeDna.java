@@ -9,12 +9,12 @@ class TreeDna {
     private static final int DEFAULT_NUMBER_OF_ATTRACTORS = 200;
     private static final float DEFAULT_CHILD_WIDTH_TO_PARENT_WIDTH_RATIO = 1f;
 
-    private float attractorConnectedThreshold;
-    private float branchTipWidth;
-    private float branchSegmentLength;
-    private int numberOfAttractors;
-    private float childWidthToParentWidthRatio;
-    private int segNumberDivisor;
+    private final float attractorConnectedThreshold;
+    private final float branchTipWidth;
+    private final float branchSegmentLength;
+    private final int numberOfAttractors;
+    private final float childWidthToParentWidthRatio;
+    private final int segNumberDivisor;
 
     TreeDna() {
         attractorConnectedThreshold = DEFAULT_ATTRACTOR_CONNECTED_THRESHOLD;
@@ -26,7 +26,7 @@ class TreeDna {
     }
 
     /**
-     * @param parentSegmentWidth The width of a branch segement's parent
+     * @param parentSegmentWidth The width of a branch segment's parent
      * @param segNumber The number of the segment in the branch
      * @return The width of a segment
      */

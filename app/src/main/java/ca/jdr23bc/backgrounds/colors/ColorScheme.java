@@ -2,9 +2,11 @@ package ca.jdr23bc.backgrounds.colors;
 
 import android.annotation.TargetApi;
 import android.graphics.Color;
+import android.os.Build;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class ColorScheme {
@@ -12,9 +14,9 @@ public class ColorScheme {
     // TODO-jdr use black as a foreground & background color more often
     // TODO-jdr Divide colors into base, main, accent ect
 
-    private List<Integer> colors = new ArrayList<>();
-    private Integer rootColor;
-    private Colour.ColorScheme csType;
+    private final List<Integer> colors = new ArrayList<>();
+    private final Integer rootColor;
+    private final Colour.ColorScheme csType;
 
     public ColorScheme(int rootColor) {
         this(rootColor, Colour.getRandomScheme());
@@ -24,8 +26,10 @@ public class ColorScheme {
         this.rootColor = rootColor;
         this.csType = csType;
         int[] colors = Colour.colorSchemeOfType(rootColor, csType);
-        for (int color : colors) {
-            this.colors.add(color);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            for (int color : Objects.requireNonNull(colors)) {
+                this.colors.add(color);
+            }
         }
     }
 

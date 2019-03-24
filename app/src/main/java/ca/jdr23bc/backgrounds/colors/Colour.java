@@ -7,6 +7,7 @@ import java.util.Random;
 /**
  * The type Colour.
  */
+@SuppressWarnings("ALL")
 public class Colour extends Color {
     private static final String TAG = Color.class.getCanonicalName();
 
@@ -15,6 +16,7 @@ public class Colour extends Color {
         ColorSchemeAnalagous, ColorSchemeMonochromatic, ColorSchemeTriad, ColorSchemeComplementary
     }
 
+    @SuppressWarnings("unused")
     public enum ColorDistanceFormula {
         ColorDistanceFormulaCIE76, ColorDistanceFormulaCIE94, ColorDistanceFormulaCIE2000
     }
@@ -64,7 +66,7 @@ public class Colour extends Color {
         }
     }
 
-    public static int[] analagousColors(float[] hsv) {
+    private static int[] analagousColors(float[] hsv) {
         float[] CA1 = {Colour.addDegrees(hsv[0], 15),
                 (float) (hsv[1] - 0.05), (float) (hsv[2] - 0.05)};
         float[] CA2 = {Colour.addDegrees(hsv[0], 30),
@@ -85,7 +87,7 @@ public class Colour extends Color {
         return Color.HSVToColor(hsv);
     }
 
-    public static int[] monochromaticColors(float[] hsv) {
+    private static int[] monochromaticColors(float[] hsv) {
         float[] CA1 = {hsv[0], (hsv[1]), ((hsv[2] + 1.0f) / 2)};
         float[] CA2 = {hsv[0], ((hsv[1] + 1.0f) / 2), (hsv[2])};
         float[] CB1 = {hsv[0], (hsv[1]), (hsv[2] / 2)};
@@ -95,7 +97,7 @@ public class Colour extends Color {
                 Color.HSVToColor(CB1), Color.HSVToColor(CB2)};
 }
 
-    public static int[] triadColors(float[] hsv) {
+    private static int[] triadColors(float[] hsv) {
 
         float[] CA1 = {Colour.addDegrees(hsv[0], 120), (float) (hsv[1]),
                 (float) (hsv[2])};
@@ -110,7 +112,7 @@ public class Colour extends Color {
                 Color.HSVToColor(CB1), Color.HSVToColor(CB2)};
     }
 
-    public static int[] complementaryColors(float[] hsv) {
+    private static int[] complementaryColors(float[] hsv) {
         float[] CA1 = {hsv[0], (float) (hsv[1] * 5 / 7), (float) (hsv[2])};
         float[] CA2 = {hsv[0], (float) (hsv[1]), (float) (hsv[2] * 4 / 5)};
         float[] CB1 = {Colour.addDegrees(hsv[0], 180), (float) (hsv[1]),
@@ -122,11 +124,10 @@ public class Colour extends Color {
                 Color.HSVToColor(CB1), Color.HSVToColor(CB2)};
     }
 
-    public static float addDegrees(float addDeg, float staticDeg) {
+    private static float addDegrees(float addDeg, float staticDeg) {
         staticDeg += addDeg;
         if (staticDeg > 360) {
-            float offset = staticDeg - 360;
-            return offset;
+            return staticDeg - 360;
         } else if (staticDeg < 0) {
             return -1 * staticDeg;
         } else {
@@ -211,7 +212,7 @@ public class Colour extends Color {
      * @param color the color int
      * @return double[]
      */
-    public static double[] colorToCIE_LAB(int color) {
+    private static double[] colorToCIE_LAB(int color) {
         // Convert Color to XYZ format first
         double r = Colour.red(color) / 255.0;
         double g = Colour.green(color) / 255.0;
@@ -274,7 +275,7 @@ public class Colour extends Color {
         return distanceBetweenColorsWithFormula(colorA, colorB, ColorDistanceFormula.ColorDistanceFormulaCIE94);
     }
 
-    public static double distanceBetweenColorsWithFormula(int colorA, int colorB, ColorDistanceFormula formula) {
+    private static double distanceBetweenColorsWithFormula(int colorA, int colorB, ColorDistanceFormula formula) {
         double[] lab1 = Colour.colorToCIE_LAB(colorA);
         double[] lab2 = Colour.colorToCIE_LAB(colorB);
         double L1 = lab1[0];
@@ -286,8 +287,7 @@ public class Colour extends Color {
 
         // CIE76 first
         if (formula == ColorDistanceFormula.ColorDistanceFormulaCIE76) {
-            double distance = Math.sqrt(Math.pow((L1 - L2), 2) + Math.pow((A1 - A2), 2) + Math.pow((B1 - B2), 2));
-            return distance;
+            return Math.sqrt(Math.pow((L1 - L2), 2) + Math.pow((A1 - A2), 2) + Math.pow((B1 - B2), 2));
         }
 
         // More Common Variables

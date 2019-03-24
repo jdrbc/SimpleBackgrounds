@@ -7,8 +7,8 @@ import ca.jdr23bc.backgrounds.shapes.CircleFactory;
 import ca.jdr23bc.backgrounds.shapes.ShapeFactory;
 
 public class CircleBackground extends ShapeBackground {
-    CirclePainter painter;
-    CircleFactory factory;
+    private final CirclePainter painter;
+    private final CircleFactory factory;
 
     public CircleBackground(int width, int height, Layout layout) {
         super(width, height);

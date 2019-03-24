@@ -12,7 +12,7 @@ public class RandomLayout extends Layout {
     private static final float MIN_RANDOM_CELL_RATIO = 1f / 16f;
     private static final float MAX_RANDOM_CELL_RATIO = 1f / 2f;
 
-    private int numPoints;
+    private final int numPoints;
     private int currPoint;
 
     public RandomLayout() {

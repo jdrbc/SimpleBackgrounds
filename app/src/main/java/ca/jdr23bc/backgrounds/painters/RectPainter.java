@@ -8,8 +8,8 @@ import ca.jdr23bc.backgrounds.shapes.Rect;
 import ca.jdr23bc.backgrounds.utils.RandomUtils;
 
 public class RectPainter extends ShapePainter<Rect> {
-    public final int MAX_BORDER_WIDTH = 30;
-    public final int MIN_BORDER_WIDTH = 1;
+    private final int MAX_BORDER_WIDTH = 30;
+    private final int MIN_BORDER_WIDTH = 1;
 
     private Rect rect;
     private Paint borderPaint;

@@ -8,9 +8,9 @@ import ca.jdr23bc.backgrounds.layout.Cell;
 import ca.jdr23bc.backgrounds.layout.Layout;
 
 public abstract class ShapeFactory implements Iterator<Shape> {
-    private Layout layout;
+    private final Layout layout;
 
-    public ShapeFactory(Layout layout) {
+    protected ShapeFactory(Layout layout) {
         this.layout = layout;
     }
 
@@ -38,7 +38,7 @@ public abstract class ShapeFactory implements Iterator<Shape> {
         return build(cell.getTopLeft(), cell.getBottomRight());
     }
 
-    public abstract Shape build(PointF topLeft, PointF bottomRight);
+    protected abstract Shape build(PointF topLeft, PointF bottomRight);
 
     @Override
     public String toString() {

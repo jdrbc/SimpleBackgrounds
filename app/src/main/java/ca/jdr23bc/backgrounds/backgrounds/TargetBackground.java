@@ -10,8 +10,8 @@ import ca.jdr23bc.backgrounds.shapes.TargetFactory;
 import ca.jdr23bc.backgrounds.utils.RandomUtils;
 
 public class TargetBackground extends ShapeBackground {
-    TargetFactory factory;
-    TargetPainter painter;
+    private final TargetFactory factory;
+    private final TargetPainter painter;
 
     public TargetBackground(int width, int height, Layout layout) {
         super(width, height);

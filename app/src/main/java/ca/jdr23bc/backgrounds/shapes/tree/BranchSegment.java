@@ -7,20 +7,20 @@ import java.util.ArrayList;
 import ca.jdr23bc.backgrounds.utils.MathUtils;
 
 public class BranchSegment {
-    static final float DEFAULT_BRANCH_SEGMENT_LENGTH = 10;
-    static final float DEFAULT_BRANCH_SEGMENT_WIDTH = 10;
+    private static final float DEFAULT_BRANCH_SEGMENT_LENGTH = 10;
+    private static final float DEFAULT_BRANCH_SEGMENT_WIDTH = 10;
     private float width;
-    private PointF tip;
-    private PointF base;
-    private PointF dir;
+    private final PointF tip;
+    private final PointF base;
+    private final PointF dir;
     private Leaf leaf;
     private Integer numChildren;
-    private Branch parentBranch;
+    private final Branch parentBranch;
 
     // List of attracting points
-    private ArrayList<PointF> curAttractors = new ArrayList<>();
+    private final ArrayList<PointF> curAttractors = new ArrayList<>();
 
-    BranchSegment(PointF tip, PointF base, PointF dir, Branch parentBranch) {
+    private BranchSegment(PointF tip, PointF base, PointF dir, Branch parentBranch) {
         this.tip = tip;
         this.base = base;
         this.dir = dir;
@@ -44,8 +44,7 @@ public class BranchSegment {
         if (numChildren != 0) {
             throw new IllegalStateException("Cannot have any child segments");
         }
-        BranchSegment segment = grow(parentBranch);
-        return segment;
+        return grow(parentBranch);
     }
 
     /**
@@ -81,8 +80,7 @@ public class BranchSegment {
         attractedDir = MathUtils.normalize(attractedDir);
         curAttractors.clear();
         PointF nextBranchTip = MathUtils.add(tip, MathUtils.mult(attractedDir, DEFAULT_BRANCH_SEGMENT_LENGTH));
-        PointF nextBranchBase = tip;
-        return new BranchSegment(nextBranchTip, nextBranchBase, attractedDir, branchToAddTo);
+        return new BranchSegment(nextBranchTip, tip, attractedDir, branchToAddTo);
     }
 
     Branch getParentBranch() {

@@ -3,10 +3,7 @@
     <string name="wallpaper_description">Simple Wallpaper</string>
     <string name="set_wallpaper">Activate</string>
     <string name="settings">Settings</string>
-    <string name="lines">lines</string>
-    <string name="title_activity_prefs">PrefsActivity</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="instructions">Click \'Activate\' below to use this live wallpaper. Double tap the background to generate a new background.</string>
 </resources>

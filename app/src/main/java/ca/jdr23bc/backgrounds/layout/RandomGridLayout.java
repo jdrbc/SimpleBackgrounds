@@ -11,8 +11,8 @@ import ca.jdr23bc.backgrounds.utils.RandomUtils;
 public class RandomGridLayout extends Layout {
     private static final String TAG = RandomGridLayout.class.getCanonicalName();
 
-    int numCells;
-    List<Cell> cells = new ArrayList<>();
+    private int numCells;
+    private final List<Cell> cells = new ArrayList<>();
 
     @Override
     public void init(PointF topLeft, PointF bottomRight) {

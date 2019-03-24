@@ -4,7 +4,7 @@ import android.content.SharedPreferences;
 
 public class BackgroundPreferencesSharedPreferences implements IBackgroundPreferences {
 
-    private SharedPreferences preferences;
+    private final SharedPreferences preferences;
 
     public BackgroundPreferencesSharedPreferences(SharedPreferences prefs) {
         this.preferences = prefs;

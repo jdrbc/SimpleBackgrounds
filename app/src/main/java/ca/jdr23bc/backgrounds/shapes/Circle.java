@@ -9,8 +9,8 @@ public class Circle extends Shape {
 
     private static final float MIN_CIRCLE_SIZE = 10;
 
-    private float radius;
-    private PointF center;
+    private final float radius;
+    private final PointF center;
 
     public Circle(PointF topLeft, PointF bottomRight) {
         super(topLeft, bottomRight);

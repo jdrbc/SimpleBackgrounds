@@ -2,17 +2,13 @@ package ca.jdr23bc.backgrounds.shapes;
 
 import android.graphics.PointF;
 
-import java.util.Random;
-
 import ca.jdr23bc.backgrounds.utils.RandomUtils;
 
 public abstract class Shape {
-    private PointF topLeft;
-    private PointF bottomRight;
-    private Random random;
+    private final PointF topLeft;
+    private final PointF bottomRight;
 
-    public Shape(PointF topLeft, PointF bottomRight) {
-        this.random = new Random();
+    protected Shape(PointF topLeft, PointF bottomRight) {
         this.topLeft = topLeft;
         this.bottomRight = bottomRight;
     }
@@ -32,15 +28,15 @@ public abstract class Shape {
                 "bottomRight: " + bottomRight + " }";
     }
 
-    protected PointF getTopLeft() {
+    PointF getTopLeft() {
         return topLeft;
     }
 
-    protected PointF getBottomRight() {
+    PointF getBottomRight() {
         return bottomRight;
     }
 
-    protected PointF getMiddleRight() {
+    private PointF getMiddleRight() {
         return new PointF(bottomRight.x, bottomRight.y / 2);
     }
 

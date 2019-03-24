@@ -10,7 +10,6 @@ import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.PorterDuff;
 
-import ca.jdr23bc.backgrounds.colors.Colour;
 import ca.jdr23bc.backgrounds.shapes.tree.BranchSegment;
 import ca.jdr23bc.backgrounds.shapes.tree.Leaf;
 import ca.jdr23bc.backgrounds.shapes.tree.Tree;
@@ -25,9 +24,9 @@ public class TreePainter extends ShapePainter<Tree> {
     private static final Integer MAX_NUM_ITEMS_TO_PAINT_PER_STEP = 100;
 
     private Tree tree;
-    private int branchColor;
-    private int leafColor;
-    private int shadowColor;
+    private final int branchColor;
+    private final int leafColor;
+    private final int shadowColor;
     private PointF lightDir;
     private Bitmap branchLayer;
     private Canvas branchLayerCanvas;
@@ -41,7 +40,7 @@ public class TreePainter extends ShapePainter<Tree> {
         float[] rootColorHsv = new float[3];
         Color.colorToHSV(RandomUtils.getRandomColor(), rootColorHsv);
         rootColorHsv[1] = ROOT_COLOR_SATURATION;
-        setColorScheme(Color.HSVToColor(rootColorHsv), Colour.ColorScheme.ColorSchemeMonochromatic);
+        setColorScheme(Color.HSVToColor(rootColorHsv));
         if (RandomUtils.random.nextBoolean()) {
             this.leafColor = popLightestPaintColor();
             this.shadowColor = popDarkestPaintColor();

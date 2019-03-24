@@ -4,8 +4,8 @@ package ca.jdr23bc.backgrounds.layout;
 import android.graphics.PointF;
 
 public class Cell {
-    private PointF topLeft;
-    private PointF bottomRight;
+    private final PointF topLeft;
+    private final PointF bottomRight;
 
     public Cell(PointF topLeft, PointF bottomRight) {
         this.topLeft = topLeft;

@@ -8,10 +8,10 @@ import ca.jdr23bc.backgrounds.utils.RandomUtils;
 
 public class Leaf {
 
-    private PointF base;
-    private PointF direction;
-    private float length;
-    private float width;
+    private final PointF base;
+    private final PointF direction;
+    private final float length;
+    private final float width;
 
     public Leaf (PointF base, Tree tree) {
         this.length = tree.getLeafLength();
@@ -28,11 +28,13 @@ public class Leaf {
         return MathUtils.add(base, MathUtils.mult(direction, length));
     }
 
+    @SuppressWarnings("SuspiciousNameCombination")
     public PointF getSideRightOfBase() {
         return MathUtils.add(getWidestPoint(), MathUtils.mult(new PointF(-direction.y, direction.x), width / 2));
     }
 
     public PointF getSideLeftOfBase() {
+        //noinspection SuspiciousNameCombination
         return MathUtils.add(getWidestPoint(), MathUtils.mult(new PointF(direction.y, -direction.x), width / 2));
     }
 

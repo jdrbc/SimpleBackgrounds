@@ -29,11 +29,11 @@ public class BackgroundFactory {
         LINE,
         MULTI_TREE,
         TREE,
-        SOLID
+        @SuppressWarnings("unused") SOLID
     }
     private static final int MAX_NUM_TREES_IN_MULTI_TREE = 10;
 
-    private IBackgroundPreferences preferences;
+    private final IBackgroundPreferences preferences;
 
     public BackgroundFactory(IBackgroundPreferences preferences) {
         this.preferences = preferences;
@@ -78,7 +78,7 @@ public class BackgroundFactory {
                 Log.i(TAG, "line");
                 return new LineBackground(width, height);
             case MULTI_TREE:
-                Log.i(TAG, "mutli tree");
+                Log.i(TAG, "multi tree");
                 return getMultiTreeBackground(width, height);
             case TREE:
                 Log.i(TAG, "tree");
@@ -116,16 +116,8 @@ public class BackgroundFactory {
         return ret;
     }
 
-    public TreeBackground getTreeBackground() {
-        return getTreeBackground(getDefaultWidth(), getDefaultHeight());
-    }
-
     private TreeBackground getTreeBackground(int width, int height) {
         return new TreeBackground(width, height, new SingleCellLayout());
-    }
-
-    public TreeBackground getMultiTreeBackground() {
-        return getMultiTreeBackground(getDefaultWidth(), getDefaultHeight());
     }
 
     private TreeBackground getMultiTreeBackground(int width, int height) {

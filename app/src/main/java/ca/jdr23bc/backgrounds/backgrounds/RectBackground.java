@@ -11,8 +11,8 @@ import ca.jdr23bc.backgrounds.utils.RandomUtils;
 
 public class RectBackground extends ShapeBackground {
     private static final String TAG = RectBackground.class.getCanonicalName();
-    RectFactory factory;
-    RectPainter painter;
+    private final RectFactory factory;
+    private final RectPainter painter;
 
     public RectBackground(int width, int height, Layout layout) {
         super(width, height);

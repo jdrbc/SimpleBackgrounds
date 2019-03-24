@@ -26,14 +26,13 @@ public class Tree extends Shape {
     }
 
     // Init properties
-    private TreeDna dna;
-    private PointF attractorInitCenter;
+    private final TreeDna dna;
+    private final PointF attractorInitCenter;
 
     // Growing properties
     private ArrayList<PointF> attractors;
-    private Branch trunk;
     private BranchSegment trunkTip;
-    private ArrayList<Branch> branches;
+    private final ArrayList<Branch> branches;
     private ArrayList<BranchSegment> growableBranchSegments;
     private int currentBranchSegmentIndex = 0;
     private ArrayList<BranchSegment> branchSegments;
@@ -89,7 +88,7 @@ public class Tree extends Shape {
 
     private void initTrunk() {
         // Trunk starts in middle bottom and grows straight up
-        trunk = new Branch(dna);
+        Branch trunk = new Branch(dna);
         trunkTip = new BranchSegment(new PointF(getCenter().x, getHeight()),
                 getUpUnitVector(), trunk);
         branches.add(trunk);

@@ -15,12 +15,12 @@ public class Star extends Shape implements Iterator<Pair<PointF, PointF>> {
     private static final Integer MIN_SKIP_POINTS_RATIO_TO_TOTAL_POINTS = 4;
     private static final Integer MAX_SKIP_POINTS_RATIO_TO_TOTAL_POINTS = 2;
 
-    private float radius;
+    private final float radius;
     private PointF center;
     private PointF startingPoint;
     private int numberOfPoints;
     private float rotationStep;
-    private int skip;
+    private final int skip;
 
     private int count;
     private int currentRotationStepCount;
@@ -31,8 +31,7 @@ public class Star extends Shape implements Iterator<Pair<PointF, PointF>> {
         this.radius = Math.min(getWidth(),getHeight()) / 2;
 
         float minAngleBetweenPoints = 2 * ((float) Math.asin((MIN_DISTANCE_BETWEEN_POINTS / 2)/ radius));
-        float maxAngleBetweenPoints = MAX_ANGLE_BETWEEN_POINTS;
-        float randomAngleInRange = getRandomFloatInRange(minAngleBetweenPoints, maxAngleBetweenPoints);
+        float randomAngleInRange = getRandomFloatInRange(minAngleBetweenPoints, MAX_ANGLE_BETWEEN_POINTS);
         this.setRotationStepAndNumberOfPoints(randomAngleInRange);
 
         int minSkip = numberOfPoints / MIN_SKIP_POINTS_RATIO_TO_TOTAL_POINTS;
@@ -70,7 +69,7 @@ public class Star extends Shape implements Iterator<Pair<PointF, PointF>> {
     @Override
     public Pair<PointF, PointF> next() {
         float rotation = rotationStep * skip;
-        float prevAngle = (float) ((rotation * (currentRotationStepCount - 1) + currentRotationStepStartingAngle) % TWO_PI);
+        float prevAngle = (rotation * (currentRotationStepCount - 1) + currentRotationStepStartingAngle) % TWO_PI;
         Log.d(TAG, "prevAngle: " + prevAngle);
         float nextAngle = (float) ((rotation * currentRotationStepCount + currentRotationStepStartingAngle) % TWO_PI);
         Log.d(TAG, "nextAngle: " + nextAngle);
