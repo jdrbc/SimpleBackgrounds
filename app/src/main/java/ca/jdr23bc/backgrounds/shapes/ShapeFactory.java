@@ -1,6 +1,7 @@
 package ca.jdr23bc.backgrounds.shapes;
 
 import android.graphics.PointF;
+import android.support.annotation.NonNull;
 
 import java.util.Iterator;
 
@@ -12,10 +13,6 @@ public abstract class ShapeFactory implements Iterator<Shape> {
 
     protected ShapeFactory(Layout layout) {
         this.layout = layout;
-    }
-
-    public Layout getLayout() {
-        return layout;
     }
 
     /**
@@ -40,6 +37,7 @@ public abstract class ShapeFactory implements Iterator<Shape> {
 
     protected abstract Shape build(PointF topLeft, PointF bottomRight);
 
+    @NonNull
     @Override
     public String toString() {
         return "{ layout: " + layout.toString() + " }";

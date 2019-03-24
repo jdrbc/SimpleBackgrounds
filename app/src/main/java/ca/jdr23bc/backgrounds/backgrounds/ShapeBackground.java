@@ -1,6 +1,7 @@
 package ca.jdr23bc.backgrounds.backgrounds;
 
 import android.graphics.PointF;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import ca.jdr23bc.backgrounds.painters.ShapePainter;
@@ -44,6 +45,7 @@ public abstract class ShapeBackground extends Background {
         getPainter().init(shape);
     }
 
+    @NonNull
     public String toString() {
         return "{ name: " + this.getClass().getSimpleName() + ", " +
                 "factory: " + getFactory().toString() + ", " +

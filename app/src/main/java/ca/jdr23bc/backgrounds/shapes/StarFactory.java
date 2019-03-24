@@ -13,6 +13,7 @@ public class StarFactory extends ShapeFactory {
         isCentered = RandomUtils.random.nextBoolean();
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public StarFactory withIsCentered(Boolean isCentered) {
         this.isCentered = isCentered;
         return this;

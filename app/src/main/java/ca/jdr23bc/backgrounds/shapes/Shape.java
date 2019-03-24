@@ -1,6 +1,7 @@
 package ca.jdr23bc.backgrounds.shapes;
 
 import android.graphics.PointF;
+import android.support.annotation.NonNull;
 
 import ca.jdr23bc.backgrounds.utils.RandomUtils;
 
@@ -21,6 +22,7 @@ public abstract class Shape {
         return bottomRight.y - topLeft.y;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "{ name: " + this.getClass().getSimpleName() + ", " +
@@ -60,6 +62,7 @@ public abstract class Shape {
         return RandomUtils.getRandomIntInRange(min, max);
     }
 
+    @SuppressWarnings("SameParameterValue")
     float getRandomFloatInRange(float min, float max) {
         if (min <= 0 || max <= min) {
             return max;

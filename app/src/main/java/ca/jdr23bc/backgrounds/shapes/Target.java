@@ -12,11 +12,11 @@ public class Target extends Shape implements Iterator<Target.TargetRing> {
     public static final int MIN_RINGS_FOR_RANDOM_INIT_VALUE = 4;
 
     private TargetRing currentRing;
-    private PointF center;
-    private float radius;
+    private final PointF center;
+    private final float radius;
     private int ringCount;
 
-    public Target(PointF topLeft, PointF bottomRight) {
+    Target(PointF topLeft, PointF bottomRight) {
         super(topLeft, bottomRight);
         center = MathUtils.getPointBetween(topLeft, bottomRight);
         radius = Math.min(
@@ -27,27 +27,13 @@ public class Target extends Shape implements Iterator<Target.TargetRing> {
                 MIN_RINGS_FOR_RANDOM_INIT_VALUE, MAX_RINGS_FOR_RANDOM_INIT_VALUE);
     }
 
-    public Target withCenter(PointF center) {
-        this.center = center;
-        return this;
-    }
-
-    public Target withRadius(float radius) {
-        this.radius = radius;
-        return this;
-    }
-
-    public Target withRingCount(int ringCount) {
+    Target withRingCount(int ringCount) {
         this.ringCount = ringCount;
         return this;
     }
 
     public void init() {
         currentRing = new TargetRing(center, radius, 1);
-    }
-
-    public float getRadius() {
-        return this.radius;
     }
 
     public float getRingWidth() {

@@ -1,6 +1,7 @@
 package ca.jdr23bc.backgrounds.shapes;
 
 import android.graphics.PointF;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.util.Pair;
 
@@ -26,7 +27,7 @@ public class Star extends Shape implements Iterator<Pair<PointF, PointF>> {
     private int currentRotationStepCount;
     private float currentRotationStepStartingAngle;
 
-    public Star(PointF topLeft, PointF bottomRight) {
+    Star(PointF topLeft, PointF bottomRight) {
         super(topLeft, bottomRight);
         this.radius = Math.min(getWidth(),getHeight()) / 2;
 
@@ -45,7 +46,7 @@ public class Star extends Shape implements Iterator<Pair<PointF, PointF>> {
         return startingPoint;
     }
 
-    public Star withIsCentered(Boolean isCentered) {
+    Star withIsCentered(Boolean isCentered) {
         if (isCentered) {
             this.center = getCenter();
         } else {
@@ -71,7 +72,7 @@ public class Star extends Shape implements Iterator<Pair<PointF, PointF>> {
         float rotation = rotationStep * skip;
         float prevAngle = (rotation * (currentRotationStepCount - 1) + currentRotationStepStartingAngle) % TWO_PI;
         Log.d(TAG, "prevAngle: " + prevAngle);
-        float nextAngle = (float) ((rotation * currentRotationStepCount + currentRotationStepStartingAngle) % TWO_PI);
+        @SuppressWarnings("RedundantCast") float nextAngle = (float) ((rotation * currentRotationStepCount + currentRotationStepStartingAngle) % TWO_PI);
         Log.d(TAG, "nextAngle: " + nextAngle);
         float diff = Math.abs(nextAngle - currentRotationStepStartingAngle);
         // If next angle has arrived at the starting angle for this rotation step, then move to next step
@@ -84,6 +85,7 @@ public class Star extends Shape implements Iterator<Pair<PointF, PointF>> {
         return new Pair<>(getPoint(prevAngle), getPoint(nextAngle));
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "star radius: " + radius + "; center: " + center.toString() + "; number of points: " +

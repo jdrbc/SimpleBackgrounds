@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ca.jdr23bc.backgrounds">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="ca.jdr23bc.backgrounds"
+    tools:ignore="GoogleAppIndexingWarning">
 
     <uses-feature
         android:name="android.software.live_wallpaper"
@@ -28,7 +30,8 @@
             android:name=".SimpleWallpaperService"
             android:directBootAware="true"
             android:hardwareAccelerated="false"
-            android:permission="android.permission.BIND_WALLPAPER">
+            android:permission="android.permission.BIND_WALLPAPER"
+            tools:targetApi="n">
             <intent-filter>
                 <action android:name="android.service.wallpaper.WallpaperService" />
             </intent-filter>

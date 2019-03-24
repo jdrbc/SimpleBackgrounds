@@ -1,6 +1,7 @@
 package ca.jdr23bc.backgrounds.shapes;
 
 import android.graphics.PointF;
+import android.support.annotation.NonNull;
 
 import ca.jdr23bc.backgrounds.utils.MathUtils;
 import ca.jdr23bc.backgrounds.utils.RandomUtils;
@@ -12,7 +13,7 @@ public class Circle extends Shape {
     private final float radius;
     private final PointF center;
 
-    public Circle(PointF topLeft, PointF bottomRight) {
+    Circle(PointF topLeft, PointF bottomRight) {
         super(topLeft, bottomRight);
         this.center = MathUtils.getPointBetween(topLeft, bottomRight);
         this.radius = RandomUtils.getRandomFloatInRange(MIN_CIRCLE_SIZE, Math.min(getHeight(), getWidth()));
@@ -26,6 +27,7 @@ public class Circle extends Shape {
         return radius;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "{ name: " + Circle.class.getSimpleName() + ", " +

@@ -13,14 +13,11 @@ public class TargetBackground extends ShapeBackground {
     private final TargetFactory factory;
     private final TargetPainter painter;
 
-    public TargetBackground(int width, int height, Layout layout) {
+    TargetBackground(int width, int height, Layout layout) {
         super(width, height);
-        factory = new TargetFactory(layout);
+        factory = new TargetFactory(layout)
+                .withRingCount(RandomUtils.getRandomIntInRange(Target.MIN_RINGS_FOR_RANDOM_INIT_VALUE, Target.MAX_RINGS_FOR_RANDOM_INIT_VALUE));
         painter = new TargetPainter();
-        Boolean squareCells = RandomUtils.random.nextBoolean();
-        Boolean cellOverlap = squareCells && RandomUtils.random.nextBoolean();
-        factory.withRingCount(RandomUtils.getRandomIntInRange(
-                Target.MIN_RINGS_FOR_RANDOM_INIT_VALUE, Target.MAX_RINGS_FOR_RANDOM_INIT_VALUE));
     }
 
     @Override

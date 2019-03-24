@@ -3,6 +3,7 @@ package ca.jdr23bc.backgrounds.colors;
 import android.annotation.TargetApi;
 import android.graphics.Color;
 import android.os.Build;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +82,7 @@ public class ColorScheme {
         return rootColor;
     }
 
+    @NonNull
     public String toString() {
         return "ROOT: " + rootColor + "\n" +
                 "COLOR SCHEME TYPE: " + csType;

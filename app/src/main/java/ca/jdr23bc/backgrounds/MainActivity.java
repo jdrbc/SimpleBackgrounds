@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.View;
 
 public class MainActivity extends Activity {
-    private static final String TAG = MainActivity.class.getCanonicalName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -22,8 +21,10 @@ public class MainActivity extends Activity {
 
         if(Build.VERSION.SDK_INT > 15){
             i.setAction(WallpaperManager.ACTION_CHANGE_LIVE_WALLPAPER);
+            //noinspection ConstantConditions
             String p = SimpleWallpaperService.class.getPackage().getName();
             String c = SimpleWallpaperService.class.getCanonicalName();
+            assert c != null;
             i.putExtra(WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT, new ComponentName(p, c));
         } else {
             i.setAction(WallpaperManager.ACTION_LIVE_WALLPAPER_CHOOSER);

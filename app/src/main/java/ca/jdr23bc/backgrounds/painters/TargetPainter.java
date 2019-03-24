@@ -7,8 +7,6 @@ import android.graphics.PointF;
 import ca.jdr23bc.backgrounds.shapes.Target;
 
 public class TargetPainter extends ShapePainter<Target> {
-    private static final String TAG = "TargetPainter";
-
     private Target target;
 
     public TargetPainter() {

@@ -1,6 +1,7 @@
 package ca.jdr23bc.backgrounds.layout;
 
 import android.graphics.PointF;
+import android.support.annotation.NonNull;
 
 import ca.jdr23bc.backgrounds.utils.MathUtils;
 import ca.jdr23bc.backgrounds.utils.RandomUtils;
@@ -14,28 +15,20 @@ public class GridLayout extends Layout {
     private float cellWidth;
     private float cellHeight;
     private boolean squareCellsActive;
-    private boolean cellOverlapActive;
     private boolean rowSkewActive;
     private boolean shuffledRowsActive;
     private float rowSkew;
-    private float cellOverlap;
     private GridCell currCell;
     private Integer numberOfCells;
 
     public GridLayout() {
         squareCellsActive = true;
-        cellOverlapActive = false;
         rowSkewActive = false;
         shuffledRowsActive = false;
     }
 
     public GridLayout withSquareCellsActive(Boolean active) {
         this.squareCellsActive = active;
-        return this;
-    }
-
-    public GridLayout withCellOverlapActive(boolean active) {
-        this.cellOverlapActive = active;
         return this;
     }
 
@@ -55,9 +48,6 @@ public class GridLayout extends Layout {
             setRandomSquareCellDimensions();
         } else {
             setRandomRectangularCellDimensions();
-        }
-        if (cellOverlapActive) {
-            cellOverlap = RandomUtils.getRandomFloatInRange(0, cellWidth / 2);
         }
         if (rowSkewActive) {
             rowSkew = RandomUtils.getRandomFloatInRange(-cellWidth, cellWidth);
@@ -94,17 +84,16 @@ public class GridLayout extends Layout {
         return currCell;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "GridLayout: " + "{ " +
                 "padding: " + padding + ", " +
                 "cellWidth: " + cellWidth + ", " +
                 "cellHeight:  " + cellHeight + ", " +
-                "cellOverlapActive:  " + cellOverlapActive + ", " +
                 "rowSkewActive:  " + rowSkewActive + ", " +
                 "shuffledRowsActive:  " + shuffledRowsActive + ", " +
-                "rowSkew:  " + rowSkew + ", " +
-                "cellOverlap:  " + cellOverlap + " }";
+                "rowSkew:  " + rowSkew + " }";
     }
 
     private PointF getTopLeftWithPadding() {
@@ -140,10 +129,6 @@ public class GridLayout extends Layout {
         return new GridCell(topLeftWithPadding.x, topLeftWithPadding.y, this);
     }
 
-    private Boolean isCellOverlapActive() {
-        return cellOverlapActive;
-    }
-
     private float getRowSkew(int rowNumber) {
         if (shuffledRowsActive) {
             return -1 * RandomUtils.getRandomFloatInRange(0, cellWidth);
@@ -160,10 +145,6 @@ public class GridLayout extends Layout {
 
     private int getNumberOfCols() {
         return (int) ((getBottomRightWithPadding().x - getTopLeftWithPadding().x) / cellWidth);
-    }
-
-    private float getCellOverlap() {
-        return cellOverlap;
     }
 
     public class GridCell extends Cell {
@@ -205,13 +186,10 @@ public class GridLayout extends Layout {
         }
 
         private float getNextX() {
-            if (grid.isCellOverlapActive()) {
-                return x + width - getCellOverlap();
-            } else {
-                return x + width;
-            }
+            return x + width;
         }
 
+        @NonNull
         @Override
         public String toString() {
             return "Cell p1: " + getTopLeft() + " & p2: " + getBottomRight();

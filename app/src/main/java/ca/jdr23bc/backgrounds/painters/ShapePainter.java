@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import ca.jdr23bc.backgrounds.colors.ColorScheme;
@@ -42,6 +43,7 @@ public abstract class ShapePainter<Shape> {
         paint.setColorFilter(filter);
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "{ colorScheme: " + colorScheme.toString() + " }";
@@ -55,6 +57,7 @@ public abstract class ShapePainter<Shape> {
         colorScheme = new ColorScheme(rootColor, Colour.ColorScheme.ColorSchemeMonochromatic);
     }
 
+    @SuppressWarnings("unused")
     protected int getRootColor() {
         return colorScheme.getRootColor();
     }

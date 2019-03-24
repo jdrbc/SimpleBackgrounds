@@ -2,6 +2,7 @@ package ca.jdr23bc.backgrounds.layout;
 
 
 import android.graphics.PointF;
+import android.support.annotation.NonNull;
 
 import java.util.Iterator;
 
@@ -28,6 +29,7 @@ public abstract class Layout implements Iterator<Cell> {
         return initCalled && !finished;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return getClass().getSimpleName();

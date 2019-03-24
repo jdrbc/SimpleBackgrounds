@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import ca.jdr23bc.backgrounds.utils.MathUtils;
 
+@SuppressWarnings("unused")
 public class BranchSegment {
     private static final float DEFAULT_BRANCH_SEGMENT_LENGTH = 10;
     private static final float DEFAULT_BRANCH_SEGMENT_WIDTH = 10;
@@ -40,7 +41,7 @@ public class BranchSegment {
      * @precondition This segment has no children segments
      * @return The branches
      */
-    public BranchSegment growOnParent() {
+    BranchSegment growOnParent() {
         if (numChildren != 0) {
             throw new IllegalStateException("Cannot have any child segments");
         }

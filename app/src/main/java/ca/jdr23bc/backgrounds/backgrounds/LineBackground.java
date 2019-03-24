@@ -20,7 +20,7 @@ public class LineBackground extends Background {
     private static final int MIN_ALPHA = 100;
     private static final int MAX_ALPHA = 255;
 
-    private int alpha = MIN_ALPHA;
+    private final int alpha;
     private Direction direction;
     private final boolean sameDirection;
     private final boolean sameColor;
@@ -31,7 +31,7 @@ public class LineBackground extends Background {
     private int lineCount;
     private final ColorScheme colorScheme;
 
-    public LineBackground(int width, int height) {
+    LineBackground(int width, int height) {
         super(width, height);
         int rootColor = Color.rgb(
                 RandomUtils.random.nextInt(256),
