@@ -44,6 +44,6 @@ public class MathUtils {
     }
 
     public static float getMillisecondsBetweenFrames(int fps) {
-        return (1 / fps) * 1000;
+        return (1.0f / fps) * 1000;
     }
 }

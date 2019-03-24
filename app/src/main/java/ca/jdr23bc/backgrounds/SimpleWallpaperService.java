@@ -35,6 +35,7 @@ import ca.jdr23bc.backgrounds.utils.MathUtils;
  */
 public class SimpleWallpaperService extends WallpaperService {
     private static final String TAG = SimpleWallpaperService.class.getCanonicalName();
+    private static final int FPS = 24;
 
     @Override
     public Engine onCreateEngine() {
@@ -133,7 +134,7 @@ public class SimpleWallpaperService extends WallpaperService {
         final String logTag;
 
         BackgroundAnimation(Background background, SurfaceHolder holder) {
-            this.delay = Math.round(MathUtils.getMillisecondsBetweenFrames(24));
+            this.delay = Math.round(MathUtils.getMillisecondsBetweenFrames(FPS));
             this.background = background;
             this.holder = new WeakReference<> (holder);
             this.animationNumber = backgroundAnimationCount++;
