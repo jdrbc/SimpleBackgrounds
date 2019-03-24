@@ -20,6 +20,7 @@ public class BackgroundFactory {
 
     private enum PatternType {
         CIRCLE_GRID,
+        CIRCLE_RANDOM_GRID,
         CIRCLE_RANDOM,
         RECT_GRID,
         RECT_RANDOM,
@@ -56,6 +57,9 @@ public class BackgroundFactory {
             case CIRCLE_GRID:
                 Log.i(TAG, "circle grid");
                 return new CircleBackground(width, height, new GridLayout());
+            case CIRCLE_RANDOM_GRID:
+                Log.i(TAG, "circle grid");
+                return new CircleBackground(width, height, new RandomGridLayout());
             case CIRCLE_RANDOM:
                 Log.i(TAG, "circle random");
                 return new CircleBackground(width, height, new RandomLayout());
@@ -97,6 +101,7 @@ public class BackgroundFactory {
         }
         if (preferences.circlesEnabled()) {
             ret.add(PatternType.CIRCLE_GRID);
+            ret.add(PatternType.CIRCLE_RANDOM_GRID);
             ret.add(PatternType.CIRCLE_RANDOM);
         }
         if (preferences.linesEnabled()) {
