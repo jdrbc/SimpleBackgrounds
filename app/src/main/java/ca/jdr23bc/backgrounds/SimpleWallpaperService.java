@@ -35,7 +35,7 @@ import ca.jdr23bc.backgrounds.utils.MathUtils;
  */
 public class SimpleWallpaperService extends WallpaperService {
     private static final String TAG = SimpleWallpaperService.class.getCanonicalName();
-    private static final int FPS = 24;
+    private static final int FPS = 60;
 
     @Override
     public Engine onCreateEngine() {

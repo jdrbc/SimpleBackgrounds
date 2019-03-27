@@ -43,7 +43,7 @@ public class MathUtils {
         return new PointF((p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
     }
 
-    public static float getMillisecondsBetweenFrames(int fps) {
+    public static float getMillisecondsBetweenFrames(float fps) {
         return (1.0f / fps) * 1000;
     }
 }

@@ -7,21 +7,20 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import ca.jdr23bc.backgrounds.colors.ColorScheme;
-import ca.jdr23bc.backgrounds.colors.Colour;
+import ca.jdr23bc.backgrounds.colors.ColorPalette;
 import ca.jdr23bc.backgrounds.utils.RandomUtils;
 
 public abstract class ShapePainter<Shape> {
     private static final String TAG = ShapePainter.class.getCanonicalName();
 
-    private ColorScheme colorScheme;
+    private ColorPalette colorPalette;
     private final Paint paint;
     private ColorFilter filter;
     private Integer backgroundColor;
 
     ShapePainter() {
         this.paint = newPaint();
-        colorScheme = new ColorScheme(RandomUtils.getRandomColor());
+        colorPalette = new ColorPalette(RandomUtils.getRandomColor());
     }
 
     public abstract void init(Shape shape);
@@ -46,43 +45,39 @@ public abstract class ShapePainter<Shape> {
     @NonNull
     @Override
     public String toString() {
-        return "{ colorScheme: " + colorScheme.toString() + " }";
+        return "{ colorPalette: " + colorPalette.toString() + " }";
     }
 
     Paint getPaint() {
         return paint;
     }
 
-    void setColorScheme(int rootColor) {
-        colorScheme = new ColorScheme(rootColor, Colour.ColorScheme.ColorSchemeMonochromatic);
+    void setColorPalette(int rootColor) {
+        colorPalette = new ColorPalette(rootColor);
     }
 
     @SuppressWarnings("unused")
     protected int getRootColor() {
-        return colorScheme.getRootColor();
+        return colorPalette.getRootColor();
     }
 
     int getRandomPaintColor() {
-        return colorScheme.getRandom();
-    }
-
-    private int popRandomPaintColor() {
-        return colorScheme.popRandom();
+        return colorPalette.getRandom();
     }
 
     int popDarkestPaintColor() {
         if (Build.VERSION.SDK_INT >= 24) {
-            return colorScheme.popDarkest();
+            return colorPalette.popDarkest();
         } else {
-            return colorScheme.popRandom();
+            return colorPalette.popRandom();
         }
     }
 
     int popLightestPaintColor() {
         if (Build.VERSION.SDK_INT >= 24) {
-            return colorScheme.popLightest();
+            return colorPalette.popLightest();
         } else {
-            return colorScheme.popRandom();
+            return colorPalette.popRandom();
         }
     }
 
@@ -99,7 +94,7 @@ public abstract class ShapePainter<Shape> {
 
     private int getBackgroundColor() {
         if (backgroundColor == null) {
-            backgroundColor = popRandomPaintColor();
+            backgroundColor = colorPalette.getRandomBackgroundColor();
         }
         return backgroundColor;
     }

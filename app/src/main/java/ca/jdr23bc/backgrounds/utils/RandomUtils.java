@@ -1,15 +1,40 @@
 package ca.jdr23bc.backgrounds.utils;
 
 import android.graphics.Color;
+import android.graphics.ColorSpace;
 import android.graphics.PointF;
 
 import java.util.Random;
 
 public class RandomUtils {
-    public static final Random random = new Random();
+    public static final Random random = new Random() ;
 
+    /**
+     * @return random RGB color
+     */
     public static int getRandomColor() {
-        return Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256));
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            ColorSpace lab = ColorSpace.get(ColorSpace.Named.CIE_LAB);
+            Color randomLab = Color.valueOf(
+                    getRandomFloatInRange(45, 55),
+                    getRandomIntInRange(-128, 128),
+                    getRandomIntInRange(-128, 128),
+                    1.0f,
+                    lab
+            );
+            float[] randomRgb = ColorSpace.connect(lab).transform(randomLab.getComponents());
+            return Color.rgb(
+                    randomRgb[0],
+                    randomRgb[1],
+                    randomRgb[2]
+            );
+        } else {
+            return Color.rgb(
+                    random.nextInt(256),
+                    random.nextInt(256),
+                    random.nextInt(256)
+            );
+        }
     }
 
     public static PointF getRandomPointInRect(PointF topLeft, PointF bottomRight) {

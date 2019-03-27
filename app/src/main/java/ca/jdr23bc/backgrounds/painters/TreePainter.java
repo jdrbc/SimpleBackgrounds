@@ -40,7 +40,7 @@ public class TreePainter extends ShapePainter<Tree> {
         float[] rootColorHsv = new float[3];
         Color.colorToHSV(RandomUtils.getRandomColor(), rootColorHsv);
         rootColorHsv[1] = ROOT_COLOR_SATURATION;
-        setColorScheme(Color.HSVToColor(rootColorHsv));
+        setColorPalette(Color.HSVToColor(rootColorHsv));
         if (RandomUtils.random.nextBoolean()) {
             this.leafColor = popLightestPaintColor();
             this.shadowColor = popDarkestPaintColor();
