@@ -8,8 +8,8 @@ android {
         applicationId "ca.jdr23bc.backgrounds"
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 12
-        versionName "1.9"
+        versionCode 14
+        versionName "1.11"
     }
     buildTypes {back
         release {
@@ -23,6 +23,5 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation 'com.github.matthewyork:ColoursLibrary:1.0.0@aar'
     testImplementation 'junit:junit:4.12'
 }

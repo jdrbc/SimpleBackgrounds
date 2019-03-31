@@ -16,7 +16,7 @@ public class RandomUtils {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             ColorSpace lab = ColorSpace.get(ColorSpace.Named.CIE_LAB);
             Color randomLab = Color.valueOf(
-                    getRandomFloatInRange(45, 55),
+                    getRandomFloatInRange(0, 100),
                     getRandomIntInRange(-128, 128),
                     getRandomIntInRange(-128, 128),
                     1.0f,

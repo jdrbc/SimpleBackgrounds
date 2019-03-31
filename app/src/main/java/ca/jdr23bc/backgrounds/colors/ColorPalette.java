@@ -6,51 +6,44 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.mattyork.colours.Colour;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 import ca.jdr23bc.backgrounds.utils.RandomUtils;
 
 public class ColorPalette {
     private static final String TAG = ColorPalette.class.getCanonicalName();
-
-    // TODO-jdr Divide colors into base, main, accent ect
+    private static final List<ColorSchemeUtils.ColorScheme> supportedSchemes = Arrays.asList(
+            ColorSchemeUtils.ColorScheme.ColorSchemeMonochromatic,
+            ColorSchemeUtils.ColorScheme.ColorSchemeTetrad,
+            ColorSchemeUtils.ColorScheme.ColorSchemeAnalagous,
+            ColorSchemeUtils.ColorScheme.ColorSchemeTriad
+    );
 
     private final List<Integer> backgroundColors = new ArrayList<>();
     private final List<Integer> colors = new ArrayList<>();
     private final Integer rootColor;
-    private final Colour.ColorScheme csType;
-    private final List<Colour.ColorScheme> supportedSchemes = Arrays.asList(
-            Colour.ColorScheme.ColorSchemeMonochromatic,
-            Colour.ColorScheme.ColorSchemeComplementary,
-            Colour.ColorScheme.ColorSchemeAnalagous
-    );
+    private final ColorSchemeUtils.ColorScheme csType;
 
-    public ColorPalette(int rootColor) {
-        this(rootColor, Colour.ColorScheme.values()[
-                RandomUtils.getRandomIntInRange(0, Colour.ColorScheme.values().length)
-        ]);
-    }
-
-    private ColorPalette(int rootColor, Colour.ColorScheme csType) {
+    private ColorPalette(int base) {
+        this.rootColor = base;
+        Log.i(TAG, "root color: " + rootColor);
+        this.csType = supportedSchemes.get(
+                RandomUtils.getRandomIntInRange(0, supportedSchemes.size())
+        );
         Log.i(TAG, String.format("color scheme: %s", csType));
-        this.rootColor = rootColor;
-        this.csType = csType;
-        int[] colors = Colour.colorSchemeOfType(rootColor, csType);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            for (int color : Objects.requireNonNull(colors)) {
-                this.colors.add(color);
-            }
-            this.backgroundColors.add(Color.BLACK);
-            this.backgroundColors.add(getDarkest());
-            this.backgroundColors.add(Color.WHITE);
-            this.backgroundColors.add(getLightest());
+        int[] colors = ColorSchemeUtils.generateSchemeOfType(rootColor, csType);
+        Log.i(TAG, String.format("num colors: %s", colors.length));
+        for (int color : colors) {
+            this.colors.add(color);
+            Log.i(TAG, "color int: " + color);
         }
+//            this.backgroundColors.add(Color.BLACK);
+        this.backgroundColors.add(getDarkest());
+//            this.backgroundColors.add(Color.WHITE);
+        this.backgroundColors.add(getLightest());
     }
 
     public int getRandomBackgroundColor() {
