@@ -129,9 +129,9 @@ public class SimpleWallpaperService extends WallpaperService {
     static class BackgroundAnimation extends Handler implements Runnable, SurfaceHolder.Callback {
         final Background background;
         final int delay;
-        final WeakReference<SurfaceHolder> holder;
         final Integer animationNumber;
         final String logTag;
+        WeakReference<SurfaceHolder> holder;
 
         BackgroundAnimation(Background background, SurfaceHolder holder) {
             this.delay = Math.round(MathUtils.getMillisecondsBetweenFrames(FPS));
@@ -149,12 +149,12 @@ public class SimpleWallpaperService extends WallpaperService {
         }
 
         void stop() {
-            Log.d(logTag, "stop!");
+            Log.i(logTag, "stop!");
             removeCallbacks(this);
         }
 
         void freeMemory() {
-            Log.d(logTag, "freeing memory!");
+            Log.i(logTag, "freeing memory!");
             background.freeMemory();
         }
 
@@ -164,10 +164,14 @@ public class SimpleWallpaperService extends WallpaperService {
             background.drawStep();
             draw();
 
-            if (background.hasNextDrawStep() && holder.get() != null) {
-                postDelayed(this, delay);
-            } else {
+            if (!background.hasNextDrawStep()) {
+                Log.i(TAG, "all draw steps complete");
                 stop();
+            } else if (holder.get() == null) {
+                Log.i(TAG, "lost reference to surface");
+                stop();
+            } else {
+                postDelayed(this, delay);
             }
         }
 
@@ -206,16 +210,19 @@ public class SimpleWallpaperService extends WallpaperService {
 
         @Override
         public void surfaceCreated(SurfaceHolder surfaceHolder) {
-            stop();
+            Log.i(TAG, "surface created");
+            holder = new WeakReference<>(surfaceHolder);
         }
 
         @Override
         public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-            stop();
+            Log.i(TAG, "surface changed");
+            holder = new WeakReference<>(surfaceHolder);
         }
 
         @Override
         public void surfaceDestroyed(SurfaceHolder holder) {
+            Log.i(TAG, "surface destroyed");
             stop();
         }
     }
