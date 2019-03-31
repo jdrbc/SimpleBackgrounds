@@ -27,7 +27,7 @@ public class ColorPalette {
     private final Integer rootColor;
     private final ColorSchemeUtils.ColorScheme csType;
 
-    private ColorPalette(int base) {
+    public ColorPalette(int base) {
         this.rootColor = base;
         Log.i(TAG, "root color: " + rootColor);
         this.csType = supportedSchemes.get(

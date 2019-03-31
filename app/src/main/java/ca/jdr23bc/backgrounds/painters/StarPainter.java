@@ -10,7 +10,6 @@ import ca.jdr23bc.backgrounds.shapes.Star;
 
 public class StarPainter extends ShapePainter<Star> {
     private static final String TAG = StarPainter.class.getCanonicalName();
-    private static final int STAR_STROKE_WIDTH = 5;
 
     private Star star;
     private Boolean firstStep = false;
@@ -19,7 +18,8 @@ public class StarPainter extends ShapePainter<Star> {
         this.star = star;
         Paint paint = getPaint();
         paint.setColor(getRandomPaintColor());
-        paint.setStrokeWidth(STAR_STROKE_WIDTH);
+        paint.setStrokeWidth(star.getWidth() / 50);
+        paint.setStrokeCap(Paint.Cap.ROUND);
         star.init();
         Log.d(TAG, "painting star " + star.toString());
         firstStep = true;
