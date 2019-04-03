@@ -40,9 +40,10 @@ public class ColorPalette {
             this.colors.add(color);
             Log.i(TAG, "color int: " + color);
         }
-//            this.backgroundColors.add(Color.BLACK);
+        if (this.colors.isEmpty()) {
+            this.colors.add(0);
+        }
         this.backgroundColors.add(getDarkest());
-//            this.backgroundColors.add(Color.WHITE);
         this.backgroundColors.add(getLightest());
     }
 
@@ -59,7 +60,11 @@ public class ColorPalette {
     }
 
     public int popDarkest() {
-        return colors.remove(getDarkestColorIndex());
+        if (colors.isEmpty()) {
+            return Color.BLACK;
+        } else {
+            return colors.remove(getDarkestColorIndex());
+        }
     }
 
     private int getDarkest() {
@@ -68,8 +73,8 @@ public class ColorPalette {
 
     @TargetApi(Build.VERSION_CODES.N)
     private int getDarkestColorIndex() {
-        if (colors.size() == 0) {
-            return rootColor;
+        if (colors.isEmpty()) {
+            return 0;
         }
         int darkestIndex = 0;
         float darkestLuminance = Color.luminance(colors.get(0));
@@ -84,8 +89,8 @@ public class ColorPalette {
 
     @TargetApi(Build.VERSION_CODES.N)
     private int getLightestIndex() {
-        if (colors.size() == 0) {
-            return rootColor;
+        if (colors.isEmpty()) {
+            return 0;
         }
         int lightestIndex = 0;
         float lightestLuminance = Color.luminance(colors.get(0));
@@ -100,7 +105,11 @@ public class ColorPalette {
 
     @TargetApi(24)
     public int popLightest() {
-        return colors.remove(getLightestIndex());
+        if (colors.isEmpty()) {
+            return Color.WHITE;
+        } else {
+            return colors.remove(getLightestIndex());
+        }
     }
 
     @TargetApi(24)
